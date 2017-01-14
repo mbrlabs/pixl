@@ -1,0 +1,20 @@
+BasedOnStyle: Chromium
+
+AlignTrailingComments: true
+AllowShortIfStatementsOnASingleLine: false
+BreakBeforeBraces: Attach
+ColumnLimit: 0
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: true
+Language: Cpp
+MaxEmptyLinesToKeep: 4
+ObjCSpaceAfterProperty: true
+ObjCSpaceBeforeProtocolList: false
+PointerBindsToType: false
+SpacesBeforeTrailingComments: 1
+TabWidth: 4
+AccessModifierOffset: -4
+PointerAlignment: Left
+UseTab: Never
+NamespaceIndentation: All
+ColumnLimit: 120

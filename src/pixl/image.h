@@ -10,7 +10,6 @@ namespace pixl {
         Image();
         ~Image();
     };
-
 }
 
 #endif
