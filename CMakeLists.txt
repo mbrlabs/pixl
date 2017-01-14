@@ -27,5 +27,5 @@ target_include_directories(pixl PUBLIC ${STB_IMAGE})
 # └──────────────────────────────────────────────────────────────────┘
 
 # --------------------------------------------------------------------------
-add_executable(pixltest src/main.cc)
+add_executable(pixltest examples/main.cc)
 target_link_libraries(pixltest pixl)
