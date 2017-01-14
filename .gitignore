@@ -1,0 +1,15 @@
+# Compilation units
+*.out
+*.gch
+*ppm
+
+# Binaries
+bin/
+*.so
+*.a
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*cmake
