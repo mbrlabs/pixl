@@ -7,16 +7,17 @@ namespace pixl {
 
     class Image {
     public:
-        Image();
+        Image(i32 width, i32 height, i32 channels, u8* data);
         ~Image();
         inline u8* getData() { return this->data; }
-        inline u32 getWidth() { return this->width; }
-        inline u32 getHeight() { return this->height; }
-        inline u32 getSize() { return this->size; }
+        inline i32 getWidth() { return this->width; }
+        inline i32 getHeight() { return this->height; }
+        inline i32 getChannels() { return this->channels; }
+
     private:
-        u32 width;
-        u32 height;
-        u32 size;
+        i32 width;
+        i32 height;
+        i32 channels;
         u8* data;
     };
 }

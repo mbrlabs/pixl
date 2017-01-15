@@ -17,4 +17,4 @@ AccessModifierOffset: -4
 PointerAlignment: Left
 UseTab: Never
 NamespaceIndentation: All
-ColumnLimit: 120
+ColumnLimit: 100
