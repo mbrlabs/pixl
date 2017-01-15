@@ -33,40 +33,40 @@ namespace pixl {
     // ----------------------------------------------------------------------------
     void Image::setPixel(i32 x, i32 y, const Pixel<u8>& pixel) {
         u8* start = GET_DATA_POINTER_AT(x, y);
-        if(channels == 4) {
+        if (channels == 4) {
             *start = pixel.r;
             *(++start) = pixel.g;
             *(++start) = pixel.b;
             *(++start) = pixel.a;
-        } else if(channels == 3) {
+        } else if (channels == 3) {
             *start = pixel.r;
             *(++start) = pixel.g;
             *(++start) = pixel.b;
-        } else if(channels == 2) {
+        } else if (channels == 2) {
             *start = pixel.r;
             *(++start) = pixel.g;
         } else {
-            *start = pixel.r;            
+            *start = pixel.r;
         }
     }
 
-    // ----------------------------------------------------------------------------    
+    // ----------------------------------------------------------------------------
     void Image::getPixel(i32 x, i32 y, Pixel<u8>& pixel) {
         u8* start = GET_DATA_POINTER_AT(x, y);
-        if(channels == 4) {
+        if (channels == 4) {
             pixel.r = *start;
             pixel.g = *(++start);
             pixel.b = *(++start);
             pixel.a = *(++start);
-        } else if(channels == 3) {
+        } else if (channels == 3) {
             pixel.r = *start;
             pixel.g = *(++start);
             pixel.b = *(++start);
-        } else if(channels == 2) {
+        } else if (channels == 2) {
             pixel.r = *start;
             pixel.g = *(++start);
         } else {
-            pixel.r = *start;         
+            pixel.r = *start;
         }
     }
 }

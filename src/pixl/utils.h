@@ -14,28 +14,20 @@
 // limitations under the License.
 //
 
-#ifndef PIXL_TRANSFORM_H
-#define PIXL_TRANSFORM_H
+#ifndef PIXL_UTILS_H
+#define PIXL_UTILS_H
 
-#include "image.h"
+#include <utility>
+
+#include "types.h"
 
 namespace pixl {
 
-    class Transformation {
-    public:
-        Transformation(Image* image) : image(image) {}
-        virtual void apply() = 0;
-
-    protected:
-        Image* image;
-    };
-
-    class FlipTransformation : public Transformation {
-    public:
-        FlipTransformation(Image* image) : Transformation(image), horizontal(true) {}
-        void apply();
-        bool horizontal;
-    };
+    inline void aswap(u8* x, u8* y, i32 len) {
+        for (i32 i = 0; i < len; i++) {
+            std::swap(x[i], y[i]);
+        }
+    }
 }
 
 #endif

@@ -21,7 +21,7 @@
 
 namespace pixl {
 
-    template<typename T>
+    template <typename T>
     struct Pixel {
         T r;
         T g;
