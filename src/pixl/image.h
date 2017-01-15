@@ -21,9 +21,19 @@
 
 namespace pixl {
 
+    template<typename T>
+    struct Pixel {
+        T r;
+        T g;
+        T b;
+        T a;
+    };
+
     struct Image {
         Image(i32 width, i32 height, i32 channels, u8* data);
         ~Image();
+        void setPixel(i32 x, i32 y, const Pixel<u8>& pixel);
+        void getPixel(i32 x, i32 y, Pixel<u8>& pixel);
         i32 width;
         i32 height;
         i32 channels;
