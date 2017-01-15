@@ -8,7 +8,7 @@ int main() {
     std::cout << "channles: " << img->channels << std::endl;
     std::cout << "size: " << img->width << "x" << img->height << std::endl;
 
-    pixl::FlipTransformation flip(img, false);
+    pixl::FlipTransformation flip(img, true);
     flip.apply();
 
     pixl::write("lenna_flip.png", img);
