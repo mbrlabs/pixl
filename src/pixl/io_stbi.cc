@@ -44,7 +44,6 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void StbiImageWriter::write(const char* path, Image* image) {
-        stbi_write_png(path, image->getWidth(), image->getHeight(), image->getChannels(),
-                       image->getData(), 0);
+        stbi_write_png(path, image->width, image->height, image->channels, image->data, 0);
     }
 }
