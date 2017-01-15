@@ -7,5 +7,7 @@ int main() {
     std::cout << "channles: " << img->getChannels() << std::endl;
     std::cout << "size: " << img->getWidth() << "x" << img->getHeight() << std::endl;
 
+    pixl::write("lenna.png", img);
+
     return 0;
 }

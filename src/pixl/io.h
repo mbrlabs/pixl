@@ -18,12 +18,12 @@ namespace pixl {
     };
 
 
-    class StbiImageReader : ImageReader {
+    class StbiImageReader : public ImageReader {
     public:
         Image* read(const char* path);
     };
 
-    class StbiImageWriter : ImageWriter {
+    class StbiImageWriter : public ImageWriter {
     public:
         void write(const char* path, Image* image);
     };
@@ -41,7 +41,6 @@ namespace pixl {
         DefaultWriter writer;
         writer.write(path, image);
     }
-    
 }
 
 #endif

@@ -18,7 +18,7 @@ file(GLOB PIXL_SOURCES
     src/pixl/*
 )
 set(STB_IMAGE libs/stb_image-2.13)
-set(STB_IMAGE_WRITE libs/stb_image-write-1.02)
+set(STB_IMAGE_WRITE libs/stb_image_write-1.02)
 
 add_library(pixl STATIC ${PIXL_SOURCES})
 target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE})
