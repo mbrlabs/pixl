@@ -23,9 +23,9 @@
 
 namespace pixl {
 
-    inline void aswap(u8* x, u8* y, i32 len) {
+    inline void aswap(u8* a, u8* b, i32 len) {
         for (i32 i = 0; i < len; i++) {
-            std::swap(x[i], y[i]);
+            std::swap(a[i], b[i]);
         }
     }
 }

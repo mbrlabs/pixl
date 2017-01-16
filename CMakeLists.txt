@@ -31,3 +31,12 @@ target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE})
 add_executable(pixltest examples/main.cc)
 target_include_directories(pixltest PUBLIC src/)
 target_link_libraries(pixltest pixl)
+
+# ┌──────────────────────────────────────────────────────────────────┐
+# │  Build test suite                                                │
+# └──────────────────────────────────────────────────────────────────┘
+
+set(CATCH "libs/catch-1.6.0")
+add_executable(tests ${PIXL_SOURCES} tests/test_suite.cc)
+target_include_directories(tests PUBLIC src/ ${CATCH})
+target_link_libraries(tests pixl)
