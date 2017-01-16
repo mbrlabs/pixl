@@ -9,13 +9,20 @@ decoding/encoding options, but until then do NOT use this library in a productio
 
 ## Usage
 ```cpp
-auto image = pixl::read("path/to/image.png");
+#include <pixl/pixl.h>
 
-// flip image horizontally
-pixl::FlipTransformation flip(image);
-flip.apply();
+int main() {
+	// load image
+	auto image = pixl::read("path/to/image.png");
 
-pixl::write("path/to/flipped_image.png", image);
+	// flip image horizontally
+	pixl::FlipTransformation flip(image);
+	flip.apply();
+
+	// write flipped image
+	pixl::write("path/to/flipped_image.png", image);
+	return 0;
+}
 ```
 
 ## Building

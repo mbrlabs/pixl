@@ -20,5 +20,6 @@
 #include "types.h"
 #include "image.h"
 #include "io.h"
+#include "transform.h"
 
 #endif

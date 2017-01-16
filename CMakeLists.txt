@@ -28,9 +28,9 @@ target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE})
 # └──────────────────────────────────────────────────────────────────┘
 
 # --------------------------------------------------------------------------
-add_executable(pixltest examples/main.cc)
-target_include_directories(pixltest PUBLIC src/)
-target_link_libraries(pixltest pixl)
+add_executable(example_flip examples/flip.cc)
+target_include_directories(example_flip PUBLIC src/)
+target_link_libraries(example_flip pixl)
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build test suite                                                │
