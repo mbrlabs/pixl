@@ -21,6 +21,6 @@
 #include "errors.h"
 #include "image.h"
 #include "io.h"
-#include "transform.h"
+#include "operation.h"
 
 #endif

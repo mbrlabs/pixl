@@ -21,19 +21,15 @@
 
 namespace pixl {
 
-    class Transformation {
+    class Operation {
     public:
-        Transformation(Image* image) : image(image) {}
-        virtual void apply() = 0;
-
-    protected:
-        Image* image;
+        Operation() {}
+        virtual void apply(Image* image) = 0;
     };
 
-    class FlipTransformation : public Transformation {
+    class FlipTransformation : public Operation {
     public:
-        FlipTransformation(Image* image) : Transformation(image), horizontal(true) {}
-        void apply();
+        void apply(Image* image);
         bool horizontal;
     };
 }

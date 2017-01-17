@@ -21,8 +21,8 @@ int main() {
     auto image = pixl::read("../images/lenna.png");
 
     // flip image horizontally
-    pixl::FlipTransformation flip(image);
-    flip.apply();
+    pixl::FlipTransformation flip;
+    flip.apply(image);
 
     // write flipped image
     pixl::write("lenna_flip.png", image);

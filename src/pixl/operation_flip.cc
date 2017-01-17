@@ -16,14 +16,15 @@
 
 #include "iostream"
 
-#include "transform.h"
+#include "operation.h"
 #include "image.h"
 #include "types.h"
 #include "utils.h"
 
 namespace pixl {
 
-    void flipVertically(Image* img) {
+    // ----------------------------------------------------------------------------
+    void flip_vertically(Image* img) {
         auto lineSizeInBytes = img->width * img->channels;
         for (i32 column = 0; column < img->width; column++) {
             u8* start = img->data + (column * img->channels);
@@ -37,7 +38,8 @@ namespace pixl {
         }
     }
 
-    void flipHorizontally(Image* img) {
+    // ----------------------------------------------------------------------------
+    void flip_horizontally(Image* img) {
         auto lineSizeInBytes = img->width * img->channels;
         for (i32 line = 0; line < img->height; line++) {
             u8* start = img->data + (line * lineSizeInBytes);
@@ -51,11 +53,12 @@ namespace pixl {
         }
     }
 
-    void FlipTransformation::apply() {
+    // ----------------------------------------------------------------------------
+    void FlipTransformation::apply(Image* image) {
         if (this->horizontal) {
-            flipHorizontally(this->image);
+            flip_horizontally(image);
         } else {
-            flipVertically(this->image);
+            flip_vertically(image);
         }
     }
 }

@@ -125,7 +125,7 @@ namespace pixl {
                      PNG_FILTER_TYPE_DEFAULT);
         png_write_info(png_ptr, info_ptr);
 
-        // create rowpointers
+        // create row pointers
         png_bytep row_pointers[image->height];
         u32 rowbytes = image->channels * image->width;
         for (int i = 0; i < image->height; i++) {
