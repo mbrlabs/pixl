@@ -31,7 +31,8 @@ namespace pixl {
     // Performes an operation on an image
     //
     // An operation performes a transformation on the image. A transfrmation can be modify
-    // the image in an arbitrary way (e.g. resizing, cropping, change saturation/brightness/contrast etc.) 
+    // the image in an arbitrary way (e.g. resizing, cropping, change saturation/brightness/contrast
+    // etc.)
     class Operation {
     public:
         Operation() {}
@@ -55,10 +56,11 @@ namespace pixl {
 
         // Applies added operations.
         void apply(Image* image) {
-            for(auto o : ops) {
+            for (auto o : ops) {
                 o->apply(image);
             }
-        } 
+        }
+
     private:
         std::vector<Operation*> ops;
     };

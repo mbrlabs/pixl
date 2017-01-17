@@ -1,0 +1,6 @@
+#ifndef PIXL_CLI_CONFIG_H
+#define PIXL_CLI_CONFIG_H
+
+#define ENABLE_DEBUG_OUTPUT
+
+#endif

@@ -19,7 +19,7 @@
 int main() {
     // load image
     auto image = pixl::read("../images/lenna.png");
-    
+
     // create operations
     pixl::FlipTransformation flipH;
     pixl::FlipTransformation flipV;
@@ -28,8 +28,8 @@ int main() {
     // add them to the chain
     pixl::OperationChain chain;
     chain.add(&flipH);
-    chain.add(&flipV);    
-    
+    chain.add(&flipV);
+
     // apply chain
     chain.apply(image);
 

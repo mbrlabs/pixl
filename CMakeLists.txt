@@ -29,6 +29,16 @@ target_link_libraries(pixl ${PNG_LIBRARY})
 target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE} ${PNG_INCLUDE_DIR})
 
 # ┌──────────────────────────────────────────────────────────────────┐
+# │  Build cli tool                                                  │
+# └──────────────────────────────────────────────────────────────────┘
+file(GLOB CLI_SOURCES
+    cli/*
+)
+add_executable(pixlcli ${CLI_SOURCES})
+target_include_directories(pixlcli PUBLIC src/ libs/rang/)
+target_link_libraries(pixlcli pixl)
+
+# ┌──────────────────────────────────────────────────────────────────┐
 # │  Build examples                                                  │
 # └──────────────────────────────────────────────────────────────────┘
 
