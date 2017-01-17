@@ -29,6 +29,7 @@ namespace pixl {
         virtual Image* read(const char* path) = 0;
     };
 
+
     // Image Writer interface.
     class ImageWriter {
     public:
@@ -40,40 +41,61 @@ namespace pixl {
 
 
     // Simple image reader.
-    // 
+    //
     // This reader uses the stb_image library to decode various image formats.
     // The libraries goal is ease of use, not performance and saftey. So this
     // reader should only be used in a development enviroment.
-    class StbiImageReader : public ImageReader {
+    class StbiReader : public ImageReader {
     public:
         Image* read(const char* path);
     };
 
     // Simple image writer.
-    // 
+    //
     // This writer uses the stb_image_write library to encode data to png, bmp, tga & hdr.
-    // The libraries goal is ease of use, not performance and saftey. Images encoded with this writer
+    // The libraries goal is ease of use, not performance and saftey. Images encoded with this
+    // writer
     // will result in 20-50% bigger images.
-    class StbiImageWriter : public ImageWriter {
+    class StbiWriter : public ImageWriter {
     public:
         void write(const char* path, Image* image);
     };
 
+
+    // libpng writer
+    // 
+    // This reader uses the official libpng library to decode png images.
+    class PngReader : public ImageReader {
+    public:
+        Image* read(const char* path);
+    };
+
+    // libpng writer
+    // 
+    // This writer uses the official libpng library to encode png images.
+    class PngWriter : public ImageWriter {
+    public:
+        void write(const char* path, Image* image);
+    };
+
+
     // Convenience function for decoding an image.
     //
     // This function internally picks an appropriate image decoder.
-    // Currently that's only StbiImageReader.
+    // Currently that's only StbiReader.
     static Image* read(const char* path) {
-        StbiImageReader reader;
+        StbiReader reader;
         return reader.read(path);
     }
 
     // Convenience function for encoding an image.
     //
     // This function internally picks an appropriate image encoder.
-    // Currently that's only StbiImageWriter.
+    // Currently that's only StbiWriter.
+    // The file extension of the path parameter determines wich image encoder
+    // should be used.
     static void write(const char* path, Image* image) {
-        StbiImageWriter writer;
+        StbiWriter writer;
         writer.write(path, image);
     }
 }

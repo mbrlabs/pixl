@@ -30,7 +30,7 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    Image* StbiImageReader::read(const char* path) {
+    Image* StbiReader::read(const char* path) {
         i32 width, height, channels;
         u8* data = stbi_load(path, &width, &height, &channels, 0);
         if (data == 0) {
@@ -43,7 +43,7 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void StbiImageWriter::write(const char* path, Image* image) {
+    void StbiWriter::write(const char* path, Image* image) {
         stbi_write_png(path, image->width, image->height, image->channels, image->data, 0);
     }
 }

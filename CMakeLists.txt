@@ -37,6 +37,12 @@ add_executable(example_flip examples/flip.cc)
 target_include_directories(example_flip PUBLIC src/)
 target_link_libraries(example_flip pixl)
 
+
+# --------------------------------------------------------------------------
+add_executable(example_libpng examples/libpngtest.cc)
+target_include_directories(example_libpng PUBLIC src/)
+target_link_libraries(example_libpng pixl)
+
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build test suite                                                │
 # └──────────────────────────────────────────────────────────────────┘

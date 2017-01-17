@@ -13,18 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+#include <iostream>
 
 #include <pixl/pixl.h>
 
 int main() {
     // load image
-    auto image = pixl::read("../images/lenna.png");
+    pixl::PngReader libpng;
+    auto image = libpng.read("../images/lenna.png");
 
-    // flip image horizontally
-    pixl::FlipTransformation flip(image);
-    flip.apply();
+    std::cout << image->width << std::endl;
+    std::cout << image->width << std::endl;
+    std::cout << image->channels << std::endl;
 
-    // write flipped image
-    pixl::write("lenna_flip.png", image);
+    pixl::write("libpng_lenna.png", image);
+
+
     return 0;
 }
