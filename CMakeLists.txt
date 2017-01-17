@@ -33,15 +33,20 @@ target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE} ${PNG_INC
 # └──────────────────────────────────────────────────────────────────┘
 
 # --------------------------------------------------------------------------
-add_executable(example_flip examples/flip.cc)
-target_include_directories(example_flip PUBLIC src/)
-target_link_libraries(example_flip pixl)
+add_executable(e_flip examples/e_flip.cc)
+target_include_directories(e_flip PUBLIC src/)
+target_link_libraries(e_flip pixl)
 
 
 # --------------------------------------------------------------------------
-add_executable(example_libpng examples/libpngtest.cc)
-target_include_directories(example_libpng PUBLIC src/)
-target_link_libraries(example_libpng pixl)
+add_executable(e_libpng examples/e_libpng.cc)
+target_include_directories(e_libpng PUBLIC src/)
+target_link_libraries(e_libpng pixl)
+
+# --------------------------------------------------------------------------
+add_executable(e_chain examples/e_chain.cc)
+target_include_directories(e_chain PUBLIC src/)
+target_link_libraries(e_chain pixl)
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build test suite                                                │

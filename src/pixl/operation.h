@@ -17,15 +17,46 @@
 #ifndef PIXL_TRANSFORM_H
 #define PIXL_TRANSFORM_H
 
+#include <vector>
 #include "image.h"
 
 namespace pixl {
 
+    // Performes an operation on an image
+    //
+    // An operation performes a transformation on the image. A transfrmation can be modify
+    // the image in an arbitrary way (e.g. resizing, cropping, change saturation/brightness/contrast etc.) 
     class Operation {
     public:
         Operation() {}
+
+        // Applies the operation to the image
         virtual void apply(Image* image) = 0;
     };
+
+
+    // Allows operations to be chained.
+    //
+    // Chained operations will be executed in a row, one after the other.
+    class OperationChain : public Operation {
+    public:
+        OperationChain() {}
+        // Adds new operation to the end of the chain.
+        void add(Operation* o) { ops.push_back(o); }
+
+        // Removes all operations from the chain.
+        void clear() { ops.clear(); }
+
+        // Applies added operations.
+        void apply(Image* image) {
+            for(auto o : ops) {
+                o->apply(image);
+            }
+        } 
+    private:
+        std::vector<Operation*> ops;
+    };
+
 
     class FlipTransformation : public Operation {
     public:
