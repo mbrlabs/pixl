@@ -59,11 +59,13 @@ namespace pixl {
         png_set_sig_bytes(png_ptr, 8);
         png_read_info(png_ptr, info_ptr);
 
+        png_byte bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+        if (bit_depth != 8)
+            throw PixlException("Error: bit_depth != 8");
+
         i32 width = png_get_image_width(png_ptr, info_ptr);
         i32 height = png_get_image_height(png_ptr, info_ptr);
         png_byte channels = png_get_channels(png_ptr, info_ptr);
-        // png_byte color_type = png_get_color_type(png_ptr, info_ptr);
-        // png_byte bit_depth = png_get_bit_depth(png_ptr, info_ptr);
         png_read_update_info(png_ptr, info_ptr);
 
         // read file
@@ -87,6 +89,59 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void PngWriter::write(const char* path, Image* image) {
-        // TODO implement
+        // create file
+        FILE* file = fopen(path, "wb");
+        if (!file)
+            throw PixlException("Failed to open file for writing");
+
+
+        // initialize stuff
+        png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+        if (!png_ptr)
+            throw PixlException("png_create_write_struct failed");
+
+        png_infop info_ptr = png_create_info_struct(png_ptr);
+        if (!info_ptr)
+            throw PixlException("png_create_info_struct failed");
+
+        if (setjmp(png_jmpbuf(png_ptr)))
+            throw PixlException("Error during init_io");
+        png_init_io(png_ptr, file);
+
+
+        // write header
+        if (setjmp(png_jmpbuf(png_ptr)))
+            throw PixlException("Error during writing header");
+
+        auto color_type = (image->channels == 3) ? PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGB_ALPHA;
+        png_set_IHDR(png_ptr,
+                     info_ptr,
+                     image->width,
+                     image->height,
+                     8,
+                     color_type,
+                     PNG_INTERLACE_NONE,
+                     PNG_COMPRESSION_TYPE_DEFAULT,
+                     PNG_FILTER_TYPE_DEFAULT);
+        png_write_info(png_ptr, info_ptr);
+
+        // create rowpointers
+        png_bytep row_pointers[image->height];
+        u32 rowbytes = image->channels * image->width;
+        for (int i = 0; i < image->height; i++) {
+            row_pointers[i] = image->data + i * rowbytes;
+        }
+
+        // write bytes
+        if (setjmp(png_jmpbuf(png_ptr)))
+            throw PixlException("Error during writing bytes");
+        png_write_image(png_ptr, row_pointers);
+
+        // end write
+        if (setjmp(png_jmpbuf(png_ptr)))
+            throw PixlException("Error during end of write");
+        png_write_end(png_ptr, NULL);
+
+        fclose(file);
     }
 }

@@ -102,6 +102,13 @@ namespace pixl {
     // The file extension of the path parameter determines wich image encoder
     // should be used.
     static void write(const char* path, Image* image) {
+        // png
+        if (is_png(path)) {
+            PngWriter writer;
+            return writer.write(path, image);
+        }
+
+        // other
         StbiWriter writer;
         writer.write(path, image);
     }

@@ -19,14 +19,16 @@
 
 int main() {
     // load image
-    pixl::PngReader libpng;
-    auto image = libpng.read("../images/lenna.png");
+    pixl::PngReader reader;
+    auto image = reader.read("../images/lenna.png");
 
     std::cout << "width: " << image->width << std::endl;
     std::cout << "height: " << image->height << std::endl;
     std::cout << "channels: " << image->channels << std::endl;
 
-    pixl::write("libpng_lenna.png", image);
+    pixl::PngWriter writer;
+
+    writer.write("libpng_lenna.png", image);
 
 
     return 0;
