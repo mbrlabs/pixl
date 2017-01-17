@@ -18,6 +18,7 @@
 #include "io.h"
 #include "image.h"
 #include "utils.h"
+#include "errors.h"
 
 namespace pixl {
 
@@ -25,18 +26,12 @@ namespace pixl {
 	FILE* openAndVerifyHeader(const char* path) {
 		// open file
         FILE *file = fopen(path, "rb");
-        if(!file) {
-        	PIXL_ERROR("Failed to read " << path);
-        	return 0;
-        }
-        
+        if(!file) throw PixlException("Failed to read file");
+
         // verify header
         png_byte header[8]; 
         fread(header, 1, 8, file);
-        if(png_sig_cmp(header, 0, 8)) {
-        	PIXL_ERROR(path << " is not a valid png image");
-        	return 0;
-        }
+        if(png_sig_cmp(header, 0, 8)) throw PixlException("Invalid png file");
 
         return file;
 	}
@@ -48,20 +43,12 @@ namespace pixl {
 
         // setup
         png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-        if (!png_ptr) {
-            PIXL_ERROR("png_create_read_struct failed");
-            return 0;
-        }
+        if (!png_ptr) throw PixlException("png_create_read_struct failed");
 
         png_infop info_ptr = png_create_info_struct(png_ptr);
-        if (!info_ptr) {
-        	PIXL_ERROR("png_create_info_struct failed");
-        }
+        if (!info_ptr) throw PixlException("png_create_info_struct failed");
 
-        if (setjmp(png_jmpbuf(png_ptr))) {
-        	PIXL_ERROR("Error during init_io");
-        	return 0;
-        }
+        if (setjmp(png_jmpbuf(png_ptr))) throw PixlException("Error during init_io");
 
         png_init_io(png_ptr, file);
         png_set_sig_bytes(png_ptr, 8);
@@ -75,15 +62,13 @@ namespace pixl {
         png_read_update_info(png_ptr, info_ptr);
 
         // read file
-        if (setjmp(png_jmpbuf(png_ptr))) {
-        	PIXL_ERROR("Error during read_image");
-        }
+        if (setjmp(png_jmpbuf(png_ptr))) throw PixlException("Error during read_image");
 
 		png_bytep  	row_pointers[height];
         u32 		rowbytes = png_get_rowbytes(png_ptr, info_ptr);
         u8* 		image_data = (u8*) malloc(rowbytes * height);
 
-        for (int i = 0;  i < height;  ++i) {
+        for (int i = 0; i < height; i++) {
         	row_pointers[i] = image_data + i * rowbytes;
         }
 

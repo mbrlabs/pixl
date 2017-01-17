@@ -18,6 +18,7 @@
 #define PIXL_PIXL_H
 
 #include "types.h"
+#include "errors.h"
 #include "image.h"
 #include "io.h"
 #include "transform.h"

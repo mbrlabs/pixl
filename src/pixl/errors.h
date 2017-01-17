@@ -13,21 +13,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
+#ifndef PIXL_ERRORS_H
+#define PIXL_ERRORS_H
+
+#include <exception>
 #include <iostream>
+#include <string>
 
-#include <pixl/pixl.h>
+namespace pixl {
 
-int main() {
-    // load image
-    pixl::PngReader libpng;
-    auto image = libpng.read("../images/lenna.png");
-
-    std::cout << "width: " << image->width << std::endl;
-    std::cout << "height: " << image->height << std::endl;
-    std::cout << "channels: " << image->channels << std::endl;
-
-    pixl::write("libpng_lenna.png", image);
-
-
-    return 0;
+    // Base exception of all pixl exceptions.
+    class PixlException {
+    public:
+        PixlException(std::string message) : message(message) {}
+        void printMessage() { std::cout << this->message << std::endl; }
+        std::string getMessage() { return this->message; }
+    private:
+        std::string message;
+    };
+    
 }
+
+#endif
