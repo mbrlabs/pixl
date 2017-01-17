@@ -17,9 +17,14 @@
 #ifndef PIXL_UTILS_H
 #define PIXL_UTILS_H
 
+#include <iostream>
 #include <utility>
 
 #include "types.h"
+
+#define PIXL_DEBUG(msg) std::cout << "[DEBUG] " << msg << std::endl 
+#define PIXL_WARNING(msg) std::cout << "[WARNING] " << msg << std::endl 
+#define PIXL_ERROR(msg) std::cout << "[ERROR] " << msg << std::endl 
 
 namespace pixl {
 

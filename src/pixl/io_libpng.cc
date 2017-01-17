@@ -13,31 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#include <iostream>
-
 #include <png.h>
 
 #include "io.h"
 #include "image.h"
-
-#define LOG(msg) std::cout << msg << std::endl
+#include "utils.h"
 
 namespace pixl {
-	
+
     // ----------------------------------------------------------------------------
 	FILE* openAndVerifyHeader(const char* path) {
 		// open file
         FILE *file = fopen(path, "rb");
         if(!file) {
-        	LOG("Failed to read " << path);
+        	PIXL_ERROR("Failed to read " << path);
         	return 0;
         }
         
         // verify header
+        png_byte header[8]; 
         fread(header, 1, 8, file);
-        png_byte header[8];  
         if(png_sig_cmp(header, 0, 8)) {
-        	LOG(path << " is not a valid png image");
+        	PIXL_ERROR(path << " is not a valid png image");
         	return 0;
         }
 
@@ -45,23 +42,24 @@ namespace pixl {
 	}
 
     // ----------------------------------------------------------------------------
+    // TODO clean libpng allocated memory
     Image* PngReader::read(const char* path) {
         FILE* file = openAndVerifyHeader(path);
 
         // setup
         png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
         if (!png_ptr) {
-            LOG("png_create_read_struct failed");
+            PIXL_ERROR("png_create_read_struct failed");
             return 0;
         }
 
         png_infop info_ptr = png_create_info_struct(png_ptr);
         if (!info_ptr) {
-        	LOG("png_create_info_struct failed");
+        	PIXL_ERROR("png_create_info_struct failed");
         }
 
         if (setjmp(png_jmpbuf(png_ptr))) {
-        	LOG("Error during init_io");
+        	PIXL_ERROR("Error during init_io");
         	return 0;
         }
 
@@ -78,7 +76,7 @@ namespace pixl {
 
         // read file
         if (setjmp(png_jmpbuf(png_ptr))) {
-        	LOG("Error during read_image");
+        	PIXL_ERROR("Error during read_image");
         }
 
 		png_bytep  	row_pointers[height];
