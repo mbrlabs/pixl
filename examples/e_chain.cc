@@ -23,7 +23,7 @@ int main() {
     // create operations
     pixl::FlipTransformation flipH;
     pixl::FlipTransformation flipV;
-    flipV.horizontal = false;
+    flipV.orientation = pixl::Orientation::VERTICAL;
 
     // add them to the chain
     pixl::OperationChain chain;

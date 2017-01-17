@@ -22,6 +22,12 @@
 
 namespace pixl {
 
+    // TODO
+    enum class Orientation {
+        HORIZONTAL,
+        VERTICAL,
+    };
+
     // Performes an operation on an image
     //
     // An operation performes a transformation on the image. A transfrmation can be modify
@@ -60,8 +66,9 @@ namespace pixl {
 
     class FlipTransformation : public Operation {
     public:
+        FlipTransformation() : orientation(Orientation::HORIZONTAL) {}
         void apply(Image* image);
-        bool horizontal;
+        Orientation orientation;
     };
 }
 

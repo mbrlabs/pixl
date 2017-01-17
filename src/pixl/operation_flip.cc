@@ -55,9 +55,9 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void FlipTransformation::apply(Image* image) {
-        if (this->horizontal) {
+        if (this->orientation == Orientation::HORIZONTAL) {
             flip_horizontally(image);
-        } else {
+        } else if(this->orientation == Orientation::VERTICAL) {
             flip_vertically(image);
         }
     }
