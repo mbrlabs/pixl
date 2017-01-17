@@ -24,15 +24,15 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    Image::Image(i32 width, i32 height, i32 channels, u8 *data)
+    Image::Image(i32 width, i32 height, i32 channels, u8* data)
         : width(width), height(height), channels(channels), data(data) {}
 
     // ----------------------------------------------------------------------------
     Image::~Image() { free(data); }
 
     // ----------------------------------------------------------------------------
-    void Image::setPixel(i32 x, i32 y, const Pixel<u8> &pixel) {
-        u8 *start = GET_DATA_POINTER_AT(x, y);
+    void Image::setPixel(i32 x, i32 y, const Pixel<u8>& pixel) {
+        u8* start = GET_DATA_POINTER_AT(x, y);
         if (channels == 4) {
             *start = pixel.r;
             *(++start) = pixel.g;
@@ -51,8 +51,8 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void Image::getPixel(i32 x, i32 y, Pixel<u8> &pixel) {
-        u8 *start = GET_DATA_POINTER_AT(x, y);
+    void Image::getPixel(i32 x, i32 y, Pixel<u8>& pixel) {
+        u8* start = GET_DATA_POINTER_AT(x, y);
         if (channels == 4) {
             pixel.r = *start;
             pixel.g = *(++start);

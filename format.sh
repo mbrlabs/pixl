@@ -1,5 +1,7 @@
 #!/bin/bash
 
-ls src/pixl/* | xargs clang-format -i -style=file
-ls tests/* | xargs clang-format -i -style=file
-ls examples/* | xargs clang-format -i -style=file
+CLANGF=clang-format
+
+ls src/pixl/* | xargs $CLANGF -i -style=file
+ls tests/* | xargs $CLANGF -i -style=file
+ls examples/* | xargs $CLANGF -i -style=file

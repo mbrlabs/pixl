@@ -23,9 +23,9 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    FILE *openAndVerifyHeader(const char *path) {
+    FILE* openAndVerifyHeader(const char* path) {
         // open file
-        FILE *file = fopen(path, "rb");
+        FILE* file = fopen(path, "rb");
         if (!file)
             throw PixlException("Failed to read file");
 
@@ -40,8 +40,8 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     // TODO clean libpng allocated memory
-    Image *PngReader::read(const char *path) {
-        FILE *file = openAndVerifyHeader(path);
+    Image* PngReader::read(const char* path) {
+        FILE* file = openAndVerifyHeader(path);
 
         // setup
         png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
@@ -72,7 +72,7 @@ namespace pixl {
 
         png_bytep row_pointers[height];
         u32 rowbytes = png_get_rowbytes(png_ptr, info_ptr);
-        u8 *image_data = (u8 *)malloc(rowbytes * height);
+        u8* image_data = (u8*)malloc(rowbytes * height);
 
         for (int i = 0; i < height; i++) {
             row_pointers[i] = image_data + i * rowbytes;
@@ -86,7 +86,7 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void PngWriter::write(const char *path, Image *image) {
+    void PngWriter::write(const char* path, Image* image) {
         // TODO implement
     }
 }

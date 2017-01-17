@@ -10,7 +10,6 @@ Language: Cpp
 MaxEmptyLinesToKeep: 4
 ObjCSpaceAfterProperty: true
 ObjCSpaceBeforeProtocolList: false
-PointerBindsToType: false
 SpacesBeforeTrailingComments: 1
 TabWidth: 4
 AccessModifierOffset: -4
