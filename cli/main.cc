@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+#include <vector>
+
 #include "log.h"
 #include "cli_parser.h"
 
