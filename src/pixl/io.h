@@ -18,6 +18,7 @@
 #define PIXL_IO_H
 
 #include "image.h"
+#include "utils.h"
 
 namespace pixl {
 
@@ -26,7 +27,7 @@ namespace pixl {
     public:
         // Decodes an image and returns a pointer to that image.
         // The caller is responsible for deleting the image.
-        virtual Image* read(const char* path) = 0;
+        virtual Image *read(const char *path) = 0;
     };
 
 
@@ -36,7 +37,7 @@ namespace pixl {
         // Encodes an image and writes the file to the specified path.
         // The file extension of the path parameter determines wich image encoder
         // should be used.
-        virtual void write(const char* path, Image* image) = 0;
+        virtual void write(const char *path, Image *image) = 0;
     };
 
 
@@ -47,7 +48,7 @@ namespace pixl {
     // reader should only be used in a development enviroment.
     class StbiReader : public ImageReader {
     public:
-        Image* read(const char* path);
+        Image *read(const char *path);
     };
 
     // Simple image writer.
@@ -58,32 +59,38 @@ namespace pixl {
     // will result in 20-50% bigger images.
     class StbiWriter : public ImageWriter {
     public:
-        void write(const char* path, Image* image);
+        void write(const char *path, Image *image);
     };
 
 
     // libpng writer
-    // 
+    //
     // This reader uses the official libpng library to decode png images.
     class PngReader : public ImageReader {
     public:
-        Image* read(const char* path);
+        Image *read(const char *path);
     };
 
     // libpng writer
-    // 
+    //
     // This writer uses the official libpng library to encode png images.
     class PngWriter : public ImageWriter {
     public:
-        void write(const char* path, Image* image);
+        void write(const char *path, Image *image);
     };
 
 
     // Convenience function for decoding an image.
     //
     // This function internally picks an appropriate image decoder.
-    // Currently that's only StbiReader.
-    static Image* read(const char* path) {
+    static Image *read(const char* path) {
+        // png
+        if (is_png(path)) {
+            PngReader reader;
+            return reader.read(path);
+        }
+
+        // other
         StbiReader reader;
         return reader.read(path);
     }
@@ -94,7 +101,7 @@ namespace pixl {
     // Currently that's only StbiWriter.
     // The file extension of the path parameter determines wich image encoder
     // should be used.
-    static void write(const char* path, Image* image) {
+    static void write(const char *path, Image *image) {
         StbiWriter writer;
         writer.write(path, image);
     }

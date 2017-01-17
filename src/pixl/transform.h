@@ -23,16 +23,16 @@ namespace pixl {
 
     class Transformation {
     public:
-        Transformation(Image* image) : image(image) {}
+        Transformation(Image *image) : image(image) {}
         virtual void apply() = 0;
 
     protected:
-        Image* image;
+        Image *image;
     };
 
     class FlipTransformation : public Transformation {
     public:
-        FlipTransformation(Image* image) : Transformation(image), horizontal(true) {}
+        FlipTransformation(Image *image) : Transformation(image), horizontal(true) {}
         void apply();
         bool horizontal;
     };

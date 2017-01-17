@@ -29,10 +29,10 @@ namespace pixl {
         PixlException(std::string message) : message(message) {}
         void printMessage() { std::cout << this->message << std::endl; }
         std::string getMessage() { return this->message; }
+
     private:
         std::string message;
     };
-    
 }
 
 #endif

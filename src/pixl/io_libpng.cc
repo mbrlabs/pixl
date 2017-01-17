@@ -23,32 +23,37 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-	FILE* openAndVerifyHeader(const char* path) {
-		// open file
+    FILE *openAndVerifyHeader(const char *path) {
+        // open file
         FILE *file = fopen(path, "rb");
-        if(!file) throw PixlException("Failed to read file");
+        if (!file)
+            throw PixlException("Failed to read file");
 
         // verify header
-        png_byte header[8]; 
+        png_byte header[8];
         fread(header, 1, 8, file);
-        if(png_sig_cmp(header, 0, 8)) throw PixlException("Invalid png file");
+        if (png_sig_cmp(header, 0, 8))
+            throw PixlException("Invalid png file");
 
         return file;
-	}
+    }
 
     // ----------------------------------------------------------------------------
     // TODO clean libpng allocated memory
-    Image* PngReader::read(const char* path) {
-        FILE* file = openAndVerifyHeader(path);
+    Image *PngReader::read(const char *path) {
+        FILE *file = openAndVerifyHeader(path);
 
         // setup
         png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
-        if (!png_ptr) throw PixlException("png_create_read_struct failed");
+        if (!png_ptr)
+            throw PixlException("png_create_read_struct failed");
 
         png_infop info_ptr = png_create_info_struct(png_ptr);
-        if (!info_ptr) throw PixlException("png_create_info_struct failed");
+        if (!info_ptr)
+            throw PixlException("png_create_info_struct failed");
 
-        if (setjmp(png_jmpbuf(png_ptr))) throw PixlException("Error during init_io");
+        if (setjmp(png_jmpbuf(png_ptr)))
+            throw PixlException("Error during init_io");
 
         png_init_io(png_ptr, file);
         png_set_sig_bytes(png_ptr, 8);
@@ -57,19 +62,20 @@ namespace pixl {
         i32 width = png_get_image_width(png_ptr, info_ptr);
         i32 height = png_get_image_height(png_ptr, info_ptr);
         png_byte channels = png_get_channels(png_ptr, info_ptr);
-        //png_byte color_type = png_get_color_type(png_ptr, info_ptr);
-        //png_byte bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+        // png_byte color_type = png_get_color_type(png_ptr, info_ptr);
+        // png_byte bit_depth = png_get_bit_depth(png_ptr, info_ptr);
         png_read_update_info(png_ptr, info_ptr);
 
         // read file
-        if (setjmp(png_jmpbuf(png_ptr))) throw PixlException("Error during read_image");
+        if (setjmp(png_jmpbuf(png_ptr)))
+            throw PixlException("Error during read_image");
 
-		png_bytep  	row_pointers[height];
-        u32 		rowbytes = png_get_rowbytes(png_ptr, info_ptr);
-        u8* 		image_data = (u8*) malloc(rowbytes * height);
+        png_bytep row_pointers[height];
+        u32 rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+        u8 *image_data = (u8 *)malloc(rowbytes * height);
 
         for (int i = 0; i < height; i++) {
-        	row_pointers[i] = image_data + i * rowbytes;
+            row_pointers[i] = image_data + i * rowbytes;
         }
 
         png_read_image(png_ptr, row_pointers);
@@ -80,7 +86,7 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void PngWriter::write(const char* path, Image* image) {
-    	// TODO implement
+    void PngWriter::write(const char *path, Image *image) {
+        // TODO implement
     }
 }
