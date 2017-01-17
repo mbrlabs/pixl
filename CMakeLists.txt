@@ -12,6 +12,10 @@ project(pixl)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
 # ┌──────────────────────────────────────────────────────────────────┐
+# │  libs 							                                 │
+# └──────────────────────────────────────────────────────────────────┘
+find_package(PNG REQUIRED)
+# ┌──────────────────────────────────────────────────────────────────┐
 # │  Build static library libpixl.a                                  │
 # └──────────────────────────────────────────────────────────────────┘
 file(GLOB PIXL_SOURCES
@@ -21,7 +25,8 @@ set(STB_IMAGE libs/stb_image-2.13)
 set(STB_IMAGE_WRITE libs/stb_image_write-1.02)
 
 add_library(pixl STATIC ${PIXL_SOURCES})
-target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE})
+target_link_libraries(pixl ${PNG_LIBRARY})
+target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE} ${PNG_INCLUDE_DIR})
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build examples                                                  │
@@ -35,8 +40,10 @@ target_link_libraries(example_flip pixl)
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build test suite                                                │
 # └──────────────────────────────────────────────────────────────────┘
-
+file(GLOB PIXL_TEST_SOURCES
+    tests/*
+)
 set(CATCH "libs/catch-1.6.0")
-add_executable(tests ${PIXL_SOURCES} tests/test_suite.cc)
+add_executable(tests ${PIXL_SOURCES} ${PIXL_TEST_SOURCES})
 target_include_directories(tests PUBLIC src/ ${CATCH})
 target_link_libraries(tests pixl)
