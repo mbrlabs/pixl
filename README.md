@@ -25,6 +25,19 @@ int main() {
 }
 ```
 
+## Features
+- [ ] Resize
+	- [ ] Nearest Neighbor
+	- [ ] Bilinear
+	- [ ] Bicubic
+	- [ ] Lanczos2
+	- [ ] Lanczos3
+- [x] Flip
+	- [x] Horizontally
+	- [x] Vertically
+- [ ] Crop
+- [ ] Rotate
+
 ## Building
 I am using CMake to build the library + examples.    
 Currently only Linux is supported. 

@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+#include <cstdlib>
+#include <math.h>
 
 #include "image.h"
 #include "types.h"
@@ -20,11 +22,24 @@
 
 namespace pixl {
 
-    void nearest_neighbor(Image* image, bool preserveRatio, u32 width, u32 height) {}
+    void nearest_neighbor(Image* image, u32 width, u32 height) {
+    	/*
+	   	u8* temp = (u8*) malloc(sizeof(u8)*width*height*image->channels);
+	    f64 x_ratio = image->width / (f64) width;
+	    f64 y_ratio = image->height / (f64) height;
+
+	    // TODO implement
+    
+	    image->width = width;
+	    image->height = height;
+	    free(image->data);
+	    image->data = temp; 
+	    */
+    }
 
     void ResizeTransformation::apply(Image* image) {
         if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
-            nearest_neighbor(image, this->preserveAspectRatio, this->width, this->height);
+            nearest_neighbor(image, this->width, this->height);
         }
     }
 }

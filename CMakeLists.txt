@@ -60,6 +60,12 @@ add_executable(e_chain examples/e_chain.cc)
 target_include_directories(e_chain PUBLIC src/)
 target_link_libraries(e_chain pixl)
 
+# --------------------------------------------------------------------------
+# examples/e_resize.cc
+add_executable(e_resize examples/e_resize.cc)
+target_include_directories(e_resize PUBLIC src/)
+target_link_libraries(e_resize pixl)
+
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build test suite                                                │
 # └──────────────────────────────────────────────────────────────────┘
