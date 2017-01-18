@@ -14,26 +14,17 @@
 // limitations under the License.
 //
 
-#include <pixl/pixl.h>
+#include "image.h"
+#include "types.h"
+#include "operation.h"
 
-int main() {
-    // load image
-    auto image = pixl::read("../images/lenna.png");
+namespace pixl {
 
-    // create operations
-    pixl::FlipTransformation flipH;
-    pixl::FlipTransformation flipV;
-    flipV.orientation = pixl::Orientation::VERTICAL;
+    void nearest_neighbor(Image* image, bool preserveRatio, u32 width, u32 height) {}
 
-    // add them to the chain
-    pixl::OperationChain chain;
-    chain.add(&flipH);
-    chain.add(&flipV);
-
-    // apply chain
-    chain.apply(image);
-
-    // write flipped image
-    pixl::write("lenna_chain.png", image);
-    return 0;
+    void ResizeTransformation::apply(Image* image) {
+        if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
+            nearest_neighbor(image, this->preserveAspectRatio, this->width, this->height);
+        }
+    }
 }

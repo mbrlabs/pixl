@@ -19,6 +19,7 @@
 
 #include <vector>
 #include "image.h"
+#include "types.h"
 
 namespace pixl {
 
@@ -65,12 +66,35 @@ namespace pixl {
         std::vector<Operation*> ops;
     };
 
-
+    // Flips the imag horizontally or vertically.
     class FlipTransformation : public Operation {
     public:
-        FlipTransformation() : orientation(Orientation::HORIZONTAL) {}
+        FlipTransformation(Orientation orientation = Orientation::HORIZONTAL)
+            : orientation(orientation) {}
         void apply(Image* image);
+
         Orientation orientation;
+    };
+
+    enum ResizeMethod {
+        NEARSET_NEIGHBOR,
+        // BILINAR,
+        // BICUBIC,
+        // LANCZOS_2,
+        // LANCZOS_3,
+    };
+
+    // Resizes the image.
+    class ResizeTransformation : public Operation {
+    public:
+        ResizeTransformation(ResizeMethod method = ResizeMethod::NEARSET_NEIGHBOR)
+            : method(method), preserveAspectRatio(true) {}
+        void apply(Image* image);
+
+        ResizeMethod method;
+        bool preserveAspectRatio;
+        u32 width;
+        u32 height;
     };
 }
 

@@ -114,15 +114,8 @@ namespace pixl {
             throw PixlException("Error during writing header");
 
         auto color_type = (image->channels == 3) ? PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGB_ALPHA;
-        png_set_IHDR(png_ptr,
-                     info_ptr,
-                     image->width,
-                     image->height,
-                     8,
-                     color_type,
-                     PNG_INTERLACE_NONE,
-                     PNG_COMPRESSION_TYPE_DEFAULT,
-                     PNG_FILTER_TYPE_DEFAULT);
+        png_set_IHDR(png_ptr, info_ptr, image->width, image->height, 8, color_type,
+                     PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
         png_write_info(png_ptr, info_ptr);
 
         // create row pointers

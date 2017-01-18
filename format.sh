@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CLANGF=clang-format-3.5
+CLANGF=clang-format
 
 ls src/pixl/* | xargs $CLANGF -i -style=file
 ls tests/* | xargs $CLANGF -i -style=file
