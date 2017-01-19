@@ -29,12 +29,13 @@ namespace pixl {
     // ----------------------------------------------------------------------------
     void flip_vertically(Image* img, i32 startColumn, i32 endColumn) {
         const auto lineSizeInBytes = img->width * img->channels;
+        const auto lastLine = (img->height-1) * lineSizeInBytes;
         for (i32 column = startColumn; column < endColumn; column++) {
             u8* start = img->data + (column * img->channels);
-            u8* end = start + (img->height * lineSizeInBytes);
+            u8* end = start + lastLine;
 
             while (start <= end) {
-                aswap(start, end, img->channels);
+                aswap(start, end, img->channels);                
                 start += lineSizeInBytes;
                 end -= lineSizeInBytes;
             }
