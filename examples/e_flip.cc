@@ -29,9 +29,10 @@ int main() {
     timer.begin();
     flip.apply(image);
     timer.end();
-    PIXL_DEBUG("flip hori ns: " << timer.time_ns() << " ns");
-    PIXL_DEBUG("flip hori ms: " << timer.time_ms() << " ms");
-    PIXL_DEBUG("flip hori s: " << timer.time_s() << " s");
+    PIXL_DEBUG("flip horiz ns: " << timer.time_ns() << " ns");
+    PIXL_DEBUG("flip horiz ms: " << timer.time_ms() << " ms");
+    PIXL_DEBUG("flip horiz s: " << timer.time_s() << " s");
+
 
     // flip image vertically
     flip.orientation = pixl::Orientation::VERTICAL;

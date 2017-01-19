@@ -77,12 +77,14 @@ namespace pixl {
         if (this->orientation == Orientation::HORIZONTAL) {
             auto chunk = image->height / numThreads;
             for (i32 i = 0; i < numThreads; i++) {
-                threads.emplace_back(flip_horizontally, image, chunk * i, chunk * i + chunk);
+                auto last = (i == numThreads - 1) ? image->height : chunk * i + chunk;
+                threads.emplace_back(flip_horizontally, image, chunk * i, last);
             }
         } else if (this->orientation == Orientation::VERTICAL) {
             auto chunk = image->width / numThreads;
             for (i32 i = 0; i < numThreads; i++) {
-                threads.emplace_back(flip_vertically, image, chunk * i, chunk * i + chunk);
+                auto last = (i == numThreads - 1) ? image->width : chunk * i + chunk;                
+                threads.emplace_back(flip_vertically, image, chunk * i, last);
             }
         }
 
