@@ -18,7 +18,7 @@
 
 int main() {
     // load image
-    auto image = pixl::read("../images/lenna.png");
+    auto image = pixl::read("../images/lena.png");
 
     // create operations
     pixl::FlipTransformation flipH;
@@ -34,6 +34,6 @@ int main() {
     chain.apply(image);
 
     // write flipped image
-    pixl::write("lenna_chain.png", image);
+    pixl::write("lena_chain.png", image);
     return 0;
 }

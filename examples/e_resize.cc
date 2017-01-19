@@ -18,7 +18,7 @@
 
 int main() {
     // load image
-    auto image = pixl::read("../images/lenna.png");
+    auto image = pixl::read("../images/lena_rgba.png");
 
     // scale image down
     pixl::ResizeTransformation resize;
@@ -27,6 +27,6 @@ int main() {
     resize.apply(image);
 
     // write flipped image
-    pixl::write("lenna_resized.png", image);
+    pixl::write("lena_resized.png", image);
     return 0;
 }

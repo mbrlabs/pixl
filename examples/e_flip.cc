@@ -18,13 +18,13 @@
 
 int main() {
     // load image
-    auto image = pixl::read("../images/lenna.png");
+    auto image = pixl::read("../images/lena.png");
 
     // flip image horizontally
     pixl::FlipTransformation flip;
     flip.apply(image);
 
     // write flipped image
-    pixl::write("lenna_flip.png", image);
+    pixl::write("lena_flip.png", image);
     return 0;
 }

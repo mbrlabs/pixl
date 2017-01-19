@@ -27,7 +27,7 @@ int main() {
 
 ## Features
 - [ ] Resize
-	- [ ] Nearest Neighbor
+	- [x] Nearest Neighbor
 	- [ ] Bilinear
 	- [ ] Bicubic
 	- [ ] Lanczos2

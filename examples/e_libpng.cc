@@ -20,7 +20,7 @@
 int main() {
     // load image
     pixl::PngReader reader;
-    auto image = reader.read("../images/lenna.png");
+    auto image = reader.read("../images/lena.png");
 
     std::cout << "width: " << image->width << std::endl;
     std::cout << "height: " << image->height << std::endl;
@@ -28,7 +28,7 @@ int main() {
 
     pixl::PngWriter writer;
 
-    writer.write("libpng_lenna.png", image);
+    writer.write("libpng_lena.png", image);
 
 
     return 0;
