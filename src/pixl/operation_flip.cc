@@ -14,6 +14,9 @@
 // limitations under the License.
 //
 
+#include <vector>
+#include <thread>
+
 #include "iostream"
 
 #include "operation.h"
@@ -24,9 +27,9 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    void flip_vertically(Image* img) {
+    void flip_vertically(Image* img, i32 startColumn, i32 endColumn) {
         const auto lineSizeInBytes = img->width * img->channels;
-        for (i32 column = 0; column < img->width; column++) {
+        for (i32 column = startColumn; column < endColumn; column++) {
             u8* start = img->data + (column * img->channels);
             u8* end = start + (img->height * lineSizeInBytes);
 
@@ -39,9 +42,9 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void flip_horizontally(Image* img) {
+    void flip_horizontally(Image* img, i32 startLine, i32 endLine) {
         const auto lineSizeInBytes = img->width * img->channels;
-        for (i32 line = 0; line < img->height; line++) {
+        for (i32 line = startLine; line < endLine; line++) {
             u8* start = img->data + (line * lineSizeInBytes);
             u8* end = start + lineSizeInBytes - img->channels;
 
@@ -55,10 +58,36 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void FlipTransformation::apply(Image* image) {
+        // Run operation on main thread if numThreads <= 1
+        if(numThreads <= 1) {
+            if (this->orientation == Orientation::HORIZONTAL) {
+                flip_horizontally(image, 0, image->height);
+            } else if (this->orientation == Orientation::VERTICAL) {
+                flip_vertically(image, 0, image->width);            
+            }
+            return;
+        }
+
+        // create n threads
+        std::vector<std::thread> threads;
+        threads.reserve(this->numThreads);
+
+        // start threads
         if (this->orientation == Orientation::HORIZONTAL) {
-            flip_horizontally(image);
+            auto chunk = image->height / numThreads;
+            for (i32 i = 0; i < numThreads; i++) {
+                threads.emplace_back(flip_horizontally, image, chunk * i, chunk * i + chunk);
+            }
         } else if (this->orientation == Orientation::VERTICAL) {
-            flip_vertically(image);
+            auto chunk = image->width / numThreads;
+            for (i32 i = 0; i < numThreads; i++) {
+                threads.emplace_back(flip_vertically, image, chunk * i, chunk * i + chunk);
+            }
+        }
+
+        // wait until everybody is finished
+        for (auto& t : threads) {
+            t.join();
         }
     }
 }

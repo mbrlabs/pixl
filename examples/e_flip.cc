@@ -22,6 +22,7 @@ int main() {
     auto image = pixl::read("../images/lena.png");
 
     pixl::FlipTransformation flip;
+    flip.numThreads = 1;
 
     // flip image horizontally
     pixl::Timer timer;

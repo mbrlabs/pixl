@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-#ifndef PIXL_CLI_CONFIG_H
-#define PIXL_CLI_CONFIG_H
+#ifndef PIXL_CONFIG_H
+#define PIXL_CONFIG_H
 
-#define ENABLE_DEBUG_OUTPUT
+#define PIXL_THREADS
 
 #endif

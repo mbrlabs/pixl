@@ -38,16 +38,16 @@ namespace pixl {
         const f64 yRatio = image->height / (f64)height;
         const i32 originalLineSize = image->width * image->channels;
         const i32 newRowSize = width * image->channels;
-        
-        const auto data = image->data;  
-        const auto channels = image->channels;  
+
+        const auto data = image->data;
+        const auto channels = image->channels;
 
         // Go through each image line
         i32 tempStart, oldStart;
         i32 scaledOriginalLineSize;
         for (int y = 0; y < height; y++) {
             scaledOriginalLineSize = FAST_FLOOR(y * yRatio) * originalLineSize;
-            
+
             for (int x = 0; x < width; x++) {
                 // calc start index of old and new pixel data
                 tempStart = y * newRowSize + x * channels;

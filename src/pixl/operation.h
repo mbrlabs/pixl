@@ -19,6 +19,7 @@
 
 #include <vector>
 #include "image.h"
+#include "config.h"
 #include "types.h"
 
 namespace pixl {
@@ -40,6 +41,7 @@ namespace pixl {
 
         // Applies the operation to the image
         virtual void apply(Image* image) = 0;
+        u8 numThreads = 1;
     };
 
 
@@ -66,7 +68,7 @@ namespace pixl {
         std::vector<Operation*> ops;
     };
 
-    // Flips the imag horizontally or vertically.
+    // Flips the image horizontally or vertically.
     class FlipTransformation : public Operation {
     public:
         FlipTransformation(Orientation orientation = Orientation::HORIZONTAL)
