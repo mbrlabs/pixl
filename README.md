@@ -1,5 +1,8 @@
 # pixl
-pixl is a lightweight image manipulation library, written in C++.
+pixl is a lightweight image processing library, written in C++11.
+
+The main goals of this project are ease of use and performance. 
+All operations can optionally be run on multiple threads.
 
 Image decoding/encoding is done by third party libraries. Currently i am using [libpng](http://www.libpng.org/pub/png/libpng.html) for the png image
 format and [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h) +
@@ -17,6 +20,7 @@ int main() {
 
 	// flip image horizontally
 	pixl::FlipTransformation flip;
+	flip.numThreads = 4;
 	flip.apply(image);
 
 	// write flipped image
@@ -25,7 +29,7 @@ int main() {
 }
 ```
 
-## Features
+## Transformations & Filters
 - [ ] Resize
 	- [x] Nearest Neighbor
 	- [ ] Bilinear
