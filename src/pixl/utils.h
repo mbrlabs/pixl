@@ -17,8 +17,6 @@
 #ifndef PIXL_UTILS_H
 #define PIXL_UTILS_H
 
-#include <iostream>
-#include <utility>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -33,8 +31,11 @@ namespace pixl {
 
     // Swaps the content of array a with array b from a[0] till a[len].
     inline void aswap(u8* a, u8* b, i32 len) {
+        u8 tmp;
         for (i32 i = 0; i < len; i++) {
-            std::swap(a[i], b[i]);
+            tmp = a[i];
+            a[i] = b[i];
+            b[i] = tmp;
         }
     }
 
