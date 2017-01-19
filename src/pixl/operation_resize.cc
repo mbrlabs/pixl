@@ -22,6 +22,8 @@
 
 namespace pixl {
 
+    // ----------------------------------------------------------------------------
+	// Nearest Neighbor scaling.
     void nearest_neighbor(Image* image, u32 width, u32 height) {
         // Malloc new pixel data
         u8* temp = (u8*)malloc(sizeof(u8) * width * height * image->channels);
@@ -32,8 +34,7 @@ namespace pixl {
         const i32 originalRowSize = image->width * image->channels;
         const i32 newRowSize = width * image->channels;
 
-        // Goes through each image line and performes linear interolation between
-        // the old and new image.
+        // Go through each image line
         i32 tempStart, oldStart;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -58,6 +59,7 @@ namespace pixl {
         image->data = temp;
     }
 
+    // ----------------------------------------------------------------------------
     void ResizeTransformation::apply(Image* image) {
         if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
             nearest_neighbor(image, this->width, this->height);

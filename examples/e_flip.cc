@@ -15,14 +15,31 @@
 //
 
 #include <pixl/pixl.h>
+#include <pixl/debug.h>
 
 int main() {
     // load image
     auto image = pixl::read("../images/lena.png");
+    
+    pixl::FlipTransformation flip;
 
     // flip image horizontally
-    pixl::FlipTransformation flip;
+    pixl::Timer timer;
+    timer.begin();
     flip.apply(image);
+    timer.end();
+    PIXL_DEBUG("flip hori ns: " << timer.time_ns() << " ns");
+    PIXL_DEBUG("flip hori ms: " << timer.time_ms() << " ms");
+    PIXL_DEBUG("flip hori s: " << timer.time_s() << " s");
+
+    // flip image vertically
+    flip.orientation = pixl::Orientation::VERTICAL;
+    timer.begin();
+    flip.apply(image);
+    timer.end();
+    PIXL_DEBUG("flip vert ns: " << timer.time_ns() << " ns");
+    PIXL_DEBUG("flip vert ms: " << timer.time_ms() << " ms");
+    PIXL_DEBUG("flip vert s: " << timer.time_s() << " s");
 
     // write flipped image
     pixl::write("lena_flip.png", image);

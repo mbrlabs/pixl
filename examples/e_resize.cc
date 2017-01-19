@@ -15,17 +15,29 @@
 //
 
 #include <pixl/pixl.h>
+#include <pixl/debug.h>
+
 
 int main() {
     // load image
-    auto image = pixl::read("../images/lena_rgba.png");
+    auto image = pixl::read("../images/lena.png");
 
     // scale image down
     pixl::ResizeTransformation resize;
-    resize.width = 256;
-    resize.height = 256;
-    resize.apply(image);
+    resize.width = 2048;
+    resize.height = 2048;
 
+    pixl::Timer timer;
+    
+    timer.begin();
+    resize.apply(image);
+    timer.end();
+
+    PIXL_DEBUG("resize ns: " << timer.time_ns() << " ns");
+    PIXL_DEBUG("resize ms: " << timer.time_ms() << " ms");
+    PIXL_DEBUG("resize s: " << timer.time_s() << " s");
+    
+    
     // write flipped image
     pixl::write("lena_resized.png", image);
     return 0;
