@@ -19,10 +19,10 @@
 
 int main() {
     // load image
-    auto image = pixl::read("../images/lena.png");
+    auto image = pixl::read("../images/bird.jpg");
 
     pixl::FlipTransformation flip;
-    flip.numThreads = 1;
+    flip.numThreads = 4;
 
     // flip image horizontally
     pixl::Timer timer;
@@ -43,6 +43,6 @@ int main() {
     PIXL_DEBUG("flip vert s: " << timer.time_s() << " s");
 
     // write flipped image
-    pixl::write("lena_flip.png", image);
+    pixl::write("bird_flip.png", image);
     return 0;
 }
