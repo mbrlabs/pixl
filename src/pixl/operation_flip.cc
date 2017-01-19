@@ -25,7 +25,7 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void flip_vertically(Image* img) {
-        auto lineSizeInBytes = img->width * img->channels;
+        const auto lineSizeInBytes = img->width * img->channels;
         for (i32 column = 0; column < img->width; column++) {
             u8* start = img->data + (column * img->channels);
             u8* end = start + (img->height * lineSizeInBytes);
@@ -40,7 +40,7 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void flip_horizontally(Image* img) {
-        auto lineSizeInBytes = img->width * img->channels;
+        const auto lineSizeInBytes = img->width * img->channels;
         for (i32 line = 0; line < img->height; line++) {
             u8* start = img->data + (line * lineSizeInBytes);
             u8* end = start + lineSizeInBytes - img->channels;

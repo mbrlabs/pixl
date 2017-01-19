@@ -20,7 +20,7 @@
 int main() {
     // load image
     auto image = pixl::read("../images/lena.png");
-    
+
     pixl::FlipTransformation flip;
 
     // flip image horizontally

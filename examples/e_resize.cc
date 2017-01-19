@@ -24,11 +24,11 @@ int main() {
 
     // scale image down
     pixl::ResizeTransformation resize;
-    resize.width = 2048;
-    resize.height = 2048;
+    resize.width = 500;
+    resize.height = 500;
 
     pixl::Timer timer;
-    
+
     timer.begin();
     resize.apply(image);
     timer.end();
@@ -36,8 +36,7 @@ int main() {
     PIXL_DEBUG("resize ns: " << timer.time_ns() << " ns");
     PIXL_DEBUG("resize ms: " << timer.time_ms() << " ms");
     PIXL_DEBUG("resize s: " << timer.time_s() << " s");
-    
-    
+
     // write flipped image
     pixl::write("lena_resized.png", image);
     return 0;
