@@ -41,7 +41,7 @@ namespace pixl {
 
         // Applies the operation to the image
         virtual void apply(Image* image) = 0;
-        u8 numThreads = 1;
+        u32 numThreads = 1;
     };
 
 

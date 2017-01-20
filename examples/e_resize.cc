@@ -17,6 +17,7 @@
 #include <pixl/pixl.h>
 #include <pixl/debug.h>
 
+#include <thread>
 
 int main() {
     // load image
@@ -24,8 +25,11 @@ int main() {
 
     // scale image down
     pixl::ResizeTransformation resize;
+    resize.numThreads = std::thread::hardware_concurrency();
     resize.width = 256;
     resize.height = 256;
+
+    PIXL_DEBUG(resize.numThreads);
 
     pixl::Timer timer;
 
