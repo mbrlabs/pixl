@@ -81,7 +81,7 @@ namespace pixl {
             // start threads
             if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
                 auto chunk = this->height / numThreads;
-                for (i32 i = 0; i < numThreads; i++) {
+                for (u32 i = 0; i < numThreads; i++) {
                     auto last = (i == numThreads - 1) ? this->height : chunk * i + chunk;
                     threads.push_back(std::thread(nearest_neighbor,
                                                   image,
