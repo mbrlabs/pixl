@@ -29,13 +29,13 @@ namespace pixl {
     // ----------------------------------------------------------------------------
     void flip_vertically(Image* img, i32 startColumn, i32 endColumn) {
         const auto lineSizeInBytes = img->width * img->channels;
-        const auto lastLine = (img->height-1) * lineSizeInBytes;
+        const auto lastLine = (img->height - 1) * lineSizeInBytes;
         for (i32 column = startColumn; column < endColumn; column++) {
             u8* start = img->data + (column * img->channels);
             u8* end = start + lastLine;
 
             while (start <= end) {
-                aswap(start, end, img->channels);                
+                aswap(start, end, img->channels);
                 start += lineSizeInBytes;
                 end -= lineSizeInBytes;
             }
@@ -60,11 +60,11 @@ namespace pixl {
     // ----------------------------------------------------------------------------
     void FlipTransformation::apply(Image* image) {
         // Run operation on main thread if numThreads <= 1
-        if(numThreads <= 1) {
+        if (numThreads <= 1) {
             if (this->orientation == Orientation::HORIZONTAL) {
                 flip_horizontally(image, 0, image->height);
             } else if (this->orientation == Orientation::VERTICAL) {
-                flip_vertically(image, 0, image->width);            
+                flip_vertically(image, 0, image->width);
             }
             return;
         }
@@ -83,7 +83,7 @@ namespace pixl {
         } else if (this->orientation == Orientation::VERTICAL) {
             auto chunk = image->width / numThreads;
             for (i32 i = 0; i < numThreads; i++) {
-                auto last = (i == numThreads - 1) ? image->width : chunk * i + chunk;                
+                auto last = (i == numThreads - 1) ? image->width : chunk * i + chunk;
                 threads.emplace_back(flip_vertically, image, chunk * i, last);
             }
         }

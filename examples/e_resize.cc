@@ -24,8 +24,8 @@ int main() {
 
     // scale image down
     pixl::ResizeTransformation resize;
-    resize.width = 500;
-    resize.height = 500;
+    resize.width = 256;
+    resize.height = 256;
 
     pixl::Timer timer;
 

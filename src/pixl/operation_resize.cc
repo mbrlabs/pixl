@@ -15,10 +15,13 @@
 //
 #include <cstdlib>
 #include <cstring>
+#include <thread>
+#include <vector>
 #include <math.h>
 
 #include "image.h"
 #include "types.h"
+#include "utils.h"
 #include "operation.h"
 
 // Performes a floor by casting to an int.
@@ -29,48 +32,77 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     // Nearest Neighbor scaling.
-    void nearest_neighbor(Image* image, u32 width, u32 height) {
-        // Malloc new pixel data
-        u8* temp = (u8*)malloc(sizeof(u8) * width * height * image->channels);
-
+    void nearest_neighbor(const Image* image,
+                          u8* imageBuffer,
+                          u32 targetWidth,
+                          u32 targetHeight,
+                          u32 startLine,
+                          u32 endLine) {
         // Pre-calc some constants
-        const f64 xRatio = image->width / (f64)width;
-        const f64 yRatio = image->height / (f64)height;
+        const f64 xRatio = image->width / (f64)targetWidth;
+        const f64 yRatio = image->height / (f64)targetHeight;
         const i32 originalLineSize = image->width * image->channels;
-        const i32 newRowSize = width * image->channels;
+        const i32 newRowSize = targetWidth * image->channels;
 
-        const auto data = image->data;
         const auto channels = image->channels;
 
         // Go through each image line
-        i32 tempStart, oldStart;
+        i32 newStart, oldStart;
         i32 scaledOriginalLineSize;
-        for (int y = 0; y < height; y++) {
+        for (u32 y = startLine; y < endLine; y++) {
             scaledOriginalLineSize = FAST_FLOOR(y * yRatio) * originalLineSize;
 
-            for (int x = 0; x < width; x++) {
+            for (u32 x = 0; x < targetWidth; x++) {
                 // calc start index of old and new pixel data
-                tempStart = y * newRowSize + x * channels;
+                newStart = y * newRowSize + x * channels;
                 oldStart = scaledOriginalLineSize + FAST_FLOOR(x * xRatio) * channels;
 
                 // copy values from the old pixel array to the new one
-                std::memcpy(temp + tempStart, data + oldStart, channels);
+                std::memcpy(imageBuffer + newStart, image->data + oldStart, channels);
             }
         }
-
-        // Update dimensions
-        image->width = width;
-        image->height = height;
-
-        // Free old pixels and assign new
-        free(image->data);
-        image->data = temp;
     }
 
     // ----------------------------------------------------------------------------
     void ResizeTransformation::apply(Image* image) {
-        if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
-            nearest_neighbor(image, this->width, this->height);
+        // alloc new data
+        u8* imageBuffer = (u8*)malloc(sizeof(u8) * this->width * this->height * image->channels);
+
+        // Run operation on main thread if numThreads <= 1
+        if (numThreads <= 1) {
+            if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
+                nearest_neighbor(image, imageBuffer, this->width, this->height, 0, this->height);
+            }
+        } else {
+            // create n threads
+            std::vector<std::thread> threads;
+            threads.reserve(this->numThreads);
+
+            // start threads
+            if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
+                auto chunk = this->height / numThreads;
+                for (i32 i = 0; i < numThreads; i++) {
+                    auto last = (i == numThreads - 1) ? this->height : chunk * i + chunk;
+                    threads.push_back(std::thread(nearest_neighbor,
+                                                  image,
+                                                  imageBuffer,
+                                                  this->width,
+                                                  this->height,
+                                                  chunk * i,
+                                                  last));
+                }
+            }
+
+            // wait until everybody is finished
+            for (auto& t : threads) {
+                t.join();
+            }
         }
+
+        // update image
+        free(image->data);
+        image->width = this->width;
+        image->height = this->height;
+        image->data = imageBuffer;
     }
 }
