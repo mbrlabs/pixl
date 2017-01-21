@@ -22,11 +22,13 @@
 
 // A CliArg has the form -x [optional value]
 struct CliArg {
-    CliArg(std::string name, bool hasParam) : name(name), hasParam(hasParam) {}
+    CliArg(std::string name, bool hasParam, bool required = false)
+        : name(name), hasParam(hasParam), required(required) {}
 
     std::string name;
-    bool hasParam;
     std::string param;
+    bool hasParam;
+    bool required;
 };
 
 
@@ -59,13 +61,13 @@ struct CliParserResult {
     CliParserResult() {}
     ~CliParserResult() {}
 
-    // Checks if the result contains a argument with the given name.
-    bool hasArg(CliArg* arg) {
-        for (const auto& a : args) {
-            if (a == arg)
-                return true;
+    // Checks if there is an argument in the specs
+    CliArg* getArgument(std::string name) {
+        for (auto a : this->args) {
+            if (a->name == name)
+                return a;
         }
-        return false;
+        return nullptr;
     }
 
     std::string errorMessage;
@@ -146,6 +148,7 @@ private:
 
     // Parses argument style commands
     bool processArguments(int argc, char** argv, CliParserResult& result) {
+        // Parse arguments
         int i = 0;
         while (i < argc) {
             // flag with value
@@ -193,6 +196,16 @@ private:
                 result.errorMessage = "Weird input";
                 return false;
             }
+        }
+
+        // Check if required parameters are present
+        for(auto arg : this->args) {
+            if(!arg->required) continue;
+
+            if(result.getArgument(arg->name) == nullptr) {
+                result.errorMessage = "Missing required argument: " + arg->name;
+                return false;
+            } 
         }
 
         return true;

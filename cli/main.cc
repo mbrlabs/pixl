@@ -22,22 +22,7 @@
 #include "job.h"
 #include "cli_parser.h"
 
-void process_command(CliParserResult& result) {
-    pixl::ResizeTransformation resize;
-    resize.width = 1024;
-    resize.height = 1024;
-
-    Job job("name", &resize);
-    job.setInfoHandler([&](const std::string& message) { LOG_INFO(message); });
-
-    job.start([&](bool success) {
-        if (success) {
-            LOG_INFO("SUCCESS!!");
-        } else {
-            LOG_ERROR("ERROR!!");
-        }
-    });
-}
+void process_command(CliParserResult& result);
 
 int main(int argc, char** argv) {
     LOG_INFO("pixl")
@@ -52,8 +37,8 @@ int main(int argc, char** argv) {
     parser.addArg(&help);
 
     // Shared subcommand args
-    CliArg input("i", true);
-    CliArg output("o", true);
+    CliArg input("i", true, true);
+    CliArg output("o", true, true);
 
     // Flip subcommand
     CliSubcommand flipCmd("flip");
@@ -76,4 +61,22 @@ int main(int argc, char** argv) {
     }
 
     return 0;
+}
+
+// Executes the command if valid.
+void process_command(CliParserResult& result) {
+    pixl::ResizeTransformation resize;
+    resize.width = 1024;
+    resize.height = 1024;
+
+    Job job("name", &resize);
+    job.setInfoHandler([&](const std::string& message) { LOG_INFO(message); });
+
+    job.start([&](bool success) {
+        if (success) {
+            LOG_INFO("SUCCESS!!");
+        } else {
+            LOG_ERROR("ERROR!!");
+        }
+    });
 }
