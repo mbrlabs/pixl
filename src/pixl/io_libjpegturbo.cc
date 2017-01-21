@@ -20,77 +20,47 @@
 #include "types.h"
 #include "utils.h"
 
-
 namespace pixl {
-
-	// ----------------------------------------------------------------------------
-	u8* read_binary(const char* path, u64* length) {
-	    FILE* file = fopen(path, "rb");
-	    
-	    // read file size
-	    fseek(file, 0, SEEK_END);
-	    *length = ftell(file);
-	    
-	    // setup data
-	    u8* data = new u8[*length + 1];
-
-	    // read file
-	    fseek(file, 0, SEEK_SET);
-	    fread(data, 1, *length, file);
-	    fclose(file);
-
-	    return data;
-	}
 
     Image* JpegTurboReader::read(const char* path) {
         // read file
-        u64 dataSize;
-        u8* dataBuffer = read_binary(path, &dataSize);
+        u64 fileSize;
+        u8* fileBuffer = read_binary(path, &fileSize);
 
-        // jpg meta data
-        int width, height, subsamp;
+        // create decoder
+        auto decoder = tjInitDecompress();
 
         // read meta data
-        auto decoder = tjInitDecompress();
-        auto result = tjDecompressHeader2(decoder, dataBuffer, dataSize, &width, &height, &subsamp);
+        int width, height, subsamp;
+        auto result = tjDecompressHeader2(decoder, fileBuffer, fileSize, &width, &height, &subsamp);
 
-        if(result == -1) {
- 			PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
-        	return nullptr;
+        if (result == -1) {
+            PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
+            tjDestroy(decoder);
+            return nullptr;
         }
 
-		PIXL_DEBUG("header decoding success");
-		PIXL_DEBUG("width: " << width);
-		PIXL_DEBUG("height: " << height);
-		PIXL_DEBUG("subsamp: " << subsamp);
+        // create decoded buffer
+        int pitch = width * tjPixelSize[TJPF_RGB];
+        u8* data = (u8*)malloc(pitch * height);
 
-		// create decoded buffer
-		int pitch = width * tjPixelSize[TJPF_RGB];
-		u8* data = (u8*)malloc(pitch * height); 
+        // decode image
+        result = tjDecompress2(decoder, fileBuffer, fileSize, data, width, pitch, height, TJPF_RGB,
+                               TJFLAG_NOREALLOC);
+        tjDestroy(decoder);
 
-		result = tjDecompress2(
-			decoder,
-			dataBuffer,
-			dataSize,
-			data,
-			width, 
-			pitch,
-			height, 
-			TJPF_RGB,
-			0 // flags
-		);
+        if (result == -1) {
+            PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
+            return nullptr;
+        }
 
-		if(result == -1) {
- 			PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
- 			return nullptr;
-		}
-
-		return new Image(width, height, 3, data);
+        return new Image(width, height, 3, data);
     }
 
     void JpegTurboWriter::write(const char* path, Image* image) {
+    	// TODO use jpegturbo
         StbiWriter writer;
         writer.write(path, image);
     }
-    
+
 }

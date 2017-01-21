@@ -104,8 +104,8 @@ namespace pixl {
         if (is_png(path)) {
             PngReader reader;
             return reader.read(path);
-        // jpg
-        } else if(is_jpg(path)) {
+            // jpg
+        } else if (is_jpg(path)) {
             JpegTurboReader reader;
             return reader.read(path);
         }

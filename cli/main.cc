@@ -74,11 +74,12 @@ int main(int argc, char** argv) {
 }
 
 // ----------------------------------------------------------------------------
-void execute_operation(std::string name, std::string& input, std::string& output, pixl::Operation* operation) {
+void execute_operation(std::string name,
+                       std::string& input,
+                       std::string& output,
+                       pixl::Operation* operation) {
     Job job(name, input, output, operation);
-    job.setInfoHandler([&](const std::string& message) {
-        LOG_INFO(message);
-    });
+    job.setInfoHandler([&](const std::string& message) { LOG_INFO(message); });
 
     job.start([&](bool success) {
         if (success) {

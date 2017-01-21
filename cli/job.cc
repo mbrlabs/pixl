@@ -22,8 +22,7 @@
 
 // ----------------------------------------------------------------------------
 Job::Job(std::string name, std::string input, std::string output, pixl::Operation* operation)
-    : name(name), input(input), output(output), operation(operation) {
-}
+    : name(name), input(input), output(output), operation(operation) {}
 
 // ----------------------------------------------------------------------------
 void Job::setInfoHandler(std::function<void(const std::string&)> handler) {
@@ -37,18 +36,18 @@ void Job::start(std::function<void(bool)> handler) {
 
     // read image
     postInfoMessage("Decoding input image: " + this->input);
-    pixl::Image* image; 
+    pixl::Image* image;
     try {
-    	image = pixl::read(this->input.c_str());
-    	if(image == nullptr) {
-    		postInfoMessage("Failed to read image: " + this->input);
-    		doneHandler(false);
-    		return;
-    	}
-    } catch(pixl::PixlException e) {
-    	postInfoMessage("Error while decoding; " + e.getMessage());
-    	doneHandler(false);
-    	return;
+        image = pixl::read(this->input.c_str());
+        if (image == nullptr) {
+            postInfoMessage("Failed to read image: " + this->input);
+            doneHandler(false);
+            return;
+        }
+    } catch (pixl::PixlException e) {
+        postInfoMessage("Error while decoding; " + e.getMessage());
+        doneHandler(false);
+        return;
     }
 
     // apply operation
@@ -56,16 +55,15 @@ void Job::start(std::function<void(bool)> handler) {
     operation->apply(image);
 
     // write image
-    postInfoMessage("Encoding output image: " + this->output); 
+    postInfoMessage("Encoding output image: " + this->output);
     try {
-    	pixl::write(this->output.c_str(), image);
-    	doneHandler(true);
-    } catch(pixl::PixlException e) {
-    	postInfoMessage("Error while decoding; " + e.getMessage());
-    	doneHandler(false);
-    	return;
+        pixl::write(this->output.c_str(), image);
+        doneHandler(true);
+    } catch (pixl::PixlException e) {
+        postInfoMessage("Error while decoding; " + e.getMessage());
+        doneHandler(false);
+        return;
     }
-    
 }
 
 // ----------------------------------------------------------------------------
