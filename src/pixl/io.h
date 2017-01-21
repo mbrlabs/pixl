@@ -23,7 +23,7 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    inline u8* read_binary(const char* path, u64* length) {
+    static u8* read_binary(const char* path, u64* length) {
         FILE* file = fopen(path, "rb");
 
         // read file size
@@ -39,6 +39,13 @@ namespace pixl {
         fclose(file);
 
         return data;
+    }
+
+    // ----------------------------------------------------------------------------
+    static void write_binary(const char* path, u8* data, u64 length) {
+        FILE* file = fopen(path, "wb");
+        fwrite(data, sizeof(u8), length, file);
+        fclose(file);
     }
 
     // Image Reader interface.
