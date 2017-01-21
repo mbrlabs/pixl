@@ -34,7 +34,9 @@ struct CliArg {
 // 
 // A exmaple would be git, where you have different subcommands for different kind
 // of functionality. E.g. git log, git commit, git diff, etc.
-struct CliSubcommand {
+class CliSubcommand {
+friend class CliParser;
+public:
     // The name of the command. Eg. git log, where 'log' is the name 
     CliSubcommand(std::string name) : name(name) {}
     ~CliSubcommand() {}
@@ -42,17 +44,10 @@ struct CliSubcommand {
     // Adds a new argument to this subcommand.
     void addArg(CliArg* arg) { this->args.push_back(arg); }
 
-    // Returns the argument with the given name if present.
-    CliArg* getArgument(std::string name) {
-        for(auto a : this->args) {
-            if(a->name == name) return a;
-        }
-        return nullptr;
-    }
-
     // The name of the subcommand.
     std::string name;
-
+    
+private:
     // List of arguements of this subcommand.
     std::vector<CliArg*> args;
 };
@@ -137,7 +132,13 @@ private:
     bool processSubcommand(int argc, char** argv, CliParserResult& result) {
         auto cmd = result.subcommand;
         LOG_DEBUG("Processing subcommand " << cmd->name);
-        return true;   
+        
+        // add subcommand arg specs to parser arg specs list
+        // so this actually says args.addAll(cmd->args)
+        args.clear();
+        args.insert(args.end(), cmd->args.begin(), cmd->args.end());
+        
+        return processArguments(argc, argv, result);   
     }
 
     // Parses argument style commands
