@@ -22,10 +22,11 @@
 
 // A CliArg has the form -x [optional value]
 struct CliArg {
-    CliArg(std::string name, bool hasParam, bool required = false)
-        : name(name), hasParam(hasParam), required(required) {}
+    CliArg(std::string name, std::string description, bool hasParam, bool required = false)
+        : name(name), description(description), hasParam(hasParam), required(required) {}
 
     std::string name;
+    std::string description;
     std::string param;
     bool hasParam;
     bool required;
@@ -199,13 +200,14 @@ private:
         }
 
         // Check if required parameters are present
-        for(auto arg : this->args) {
-            if(!arg->required) continue;
+        for (auto arg : this->args) {
+            if (!arg->required)
+                continue;
 
-            if(result.getArgument(arg->name) == nullptr) {
+            if (result.getArgument(arg->name) == nullptr) {
                 result.errorMessage = "Missing required argument: " + arg->name;
                 return false;
-            } 
+            }
         }
 
         return true;
