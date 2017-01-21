@@ -26,8 +26,8 @@ int main() {
     // scale image down
     pixl::ResizeTransformation resize;
     resize.numThreads = std::thread::hardware_concurrency();
-    resize.width = 256;
-    resize.height = 256;
+    resize.width = 500;
+    resize.height = 500;
 
     PIXL_DEBUG(resize.numThreads);
 

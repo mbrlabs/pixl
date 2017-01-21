@@ -42,12 +42,21 @@ int main(int argc, char** argv) {
     // Flip subcommand
     CliSubcommand flipCmd("flip");
     flipCmd.addArg(&input);
+    flipCmd.addArg(&output);
     parser.addSubcommand(&flipCmd);
+
+    // Resize subcommand
+    CliArg resizeSize("s", true);
+    CliSubcommand resizeCmd("resize");
+    resizeCmd.addArg(&input);
+    resizeCmd.addArg(&output);
+    resizeCmd.addArg(&resizeSize);
+    parser.addSubcommand(&resizeCmd);
 
     if (parser.parse(argc, argv, result)) {
         process_command(result);
     } else {
-        LOG_ERROR("Invalid input");
+        LOG_ERROR("Invalid input: " << result.errorMessage);
     }
 
     return 0;
