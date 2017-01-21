@@ -43,7 +43,7 @@ namespace pixl {
     // TODO clean libpng allocated memory
     Image* PngReader::read(const char* path) {
         FILE* file = openAndVerifyHeader(path);
-    
+
         // setup
         png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
         if (!png_ptr)

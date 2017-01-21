@@ -31,13 +31,14 @@ struct CliArg {
 
 
 // A CliSubcommand must follow the application name.
-// 
+//
 // A exmaple would be git, where you have different subcommands for different kind
 // of functionality. E.g. git log, git commit, git diff, etc.
 class CliSubcommand {
-friend class CliParser;
+    friend class CliParser;
+
 public:
-    // The name of the command. Eg. git log, where 'log' is the name 
+    // The name of the command. Eg. git log, where 'log' is the name
     CliSubcommand(std::string name) : name(name) {}
     ~CliSubcommand() {}
 
@@ -46,7 +47,7 @@ public:
 
     // The name of the subcommand.
     std::string name;
-    
+
 private:
     // List of arguements of this subcommand.
     std::vector<CliArg*> args;
@@ -89,23 +90,23 @@ public:
     std::string help() { return "help"; }
 
     // Parses the arguments provided by the main function.
-    // Returns true if parsing suceeded. 
-    // args is the output paramter. 
+    // Returns true if parsing suceeded.
+    // args is the output paramter.
     bool parse(int argc, char** argv, CliParserResult& result) {
-        if(argc < 2) {
+        if (argc < 2) {
             result.errorMessage = "No args";
             return false;
         }
 
         // check wether it's a subcommand-style command or not
         CliSubcommand* subcommand = getSubcommand(argv[1]);
-        if(subcommand != nullptr) {
+        if (subcommand != nullptr) {
             result.subcommand = subcommand;
-            return processSubcommand(argc-2, argv+2, result);
-        }     
+            return processSubcommand(argc - 2, argv + 2, result);
+        }
 
-        // ... otherwise parse it as normal argument style command       
-        return processArguments(argc-1, argv+1, result);
+        // ... otherwise parse it as normal argument style command
+        return processArguments(argc - 1, argv + 1, result);
     }
 
 private:
@@ -114,16 +115,18 @@ private:
 
     // Checks if there is a subcommand in the specs
     CliSubcommand* getSubcommand(std::string name) {
-        for(auto c : this->subcommands) {
-            if(c->name == name) return c;
+        for (auto c : this->subcommands) {
+            if (c->name == name)
+                return c;
         }
         return nullptr;
     }
 
     // Checks if there is an argument in the specs
     CliArg* getArgument(std::string name) {
-        for(auto a : this->args) {
-            if(a->name == name) return a;
+        for (auto a : this->args) {
+            if (a->name == name)
+                return a;
         }
         return nullptr;
     }
@@ -132,28 +135,29 @@ private:
     bool processSubcommand(int argc, char** argv, CliParserResult& result) {
         auto cmd = result.subcommand;
         LOG_DEBUG("Processing subcommand " << cmd->name);
-        
+
         // add subcommand arg specs to parser arg specs list
         // so this actually says args.addAll(cmd->args)
         args.clear();
         args.insert(args.end(), cmd->args.begin(), cmd->args.end());
-        
-        return processArguments(argc, argv, result);   
+
+        return processArguments(argc, argv, result);
     }
 
     // Parses argument style commands
     bool processArguments(int argc, char** argv, CliParserResult& result) {
         int i = 0;
-        while(i < argc) {
+        while (i < argc) {
             // flag with value
-            if(i+2 <= argc && argv[i][0] == '-' && argv[i+1][0] != '-') {
-                auto name = argv[i]+1;
-                auto value = argv[i+1];
+            if (i + 2 <= argc && argv[i][0] == '-' && argv[i + 1][0] != '-') {
+                auto name = argv[i] + 1;
+                auto value = argv[i + 1];
                 auto arg = getArgument(name);
 
-                if(arg != nullptr) {
-                    if(!arg->hasParam) {
-                        result.errorMessage = "Argument " + std::string(name) + " can not have a parameter";
+                if (arg != nullptr) {
+                    if (!arg->hasParam) {
+                        result.errorMessage =
+                            "Argument " + std::string(name) + " can not have a parameter";
                         return false;
                     }
                     arg->param = value;
@@ -165,14 +169,15 @@ private:
 
                 LOG_DEBUG("flag with arg: " << name << ": " << value);
                 i += 2;
-            // simple flag, no value
-            } else if(argv[i][0] == '-') {
-                auto name = argv[i]+1;
+                // simple flag, no value
+            } else if (argv[i][0] == '-') {
+                auto name = argv[i] + 1;
                 auto arg = getArgument(name);
 
-                if(arg != nullptr) {
-                    if(arg->hasParam) {
-                        result.errorMessage = "Argument " + std::string(name) + " must have a parameter";
+                if (arg != nullptr) {
+                    if (arg->hasParam) {
+                        result.errorMessage =
+                            "Argument " + std::string(name) + " must have a parameter";
                         return false;
                     }
                     result.args.push_back(arg);
@@ -183,16 +188,15 @@ private:
 
                 LOG_DEBUG("simple flag: " << argv[i]);
                 i += 1;
-            // some weird input
+                // some weird input
             } else {
                 result.errorMessage = "Weird input";
                 return false;
             }
         }
-        
+
         return true;
     }
-
 };
 
 #endif

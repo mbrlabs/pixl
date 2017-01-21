@@ -16,11 +16,27 @@
 
 #include <vector>
 
+#include <pixl/pixl.h>
+
 #include "log.h"
+#include "job.h"
 #include "cli_parser.h"
 
 void process_command(CliParserResult& result) {
-    // TODO stuff
+    pixl::ResizeTransformation resize;
+    resize.width = 1024;
+    resize.height = 1024;
+
+    Job job("name", &resize);
+    job.setInfoHandler([&](const std::string& message) { LOG_INFO(message); });
+
+    job.start([&](bool success) {
+        if (success) {
+            LOG_INFO("SUCCESS!!");
+        } else {
+            LOG_ERROR("ERROR!!");
+        }
+    });
 }
 
 int main(int argc, char** argv) {
