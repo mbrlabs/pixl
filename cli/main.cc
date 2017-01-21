@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+#define VERSION "0.1.0"
+
 #include <vector>
 
 #include <pixl/pixl.h>
@@ -24,37 +26,42 @@
 
 void process_command(CliParserResult& result);
 
+// ----------------------------------------------------------------------------
+// Statics used for cli parsing.
+static CliParser parser;
+
+static CliSubcommand flipCmd("flip");
+static CliSubcommand resizeCmd("resize");
+
+static CliArg helpArg("h", "Prints the help", false);
+static CliArg versionArg("v", "Prints the version number", false);
+static CliArg inputArg("i", "Path to the source image", true, true);
+static CliArg outputArg("o", "Path to the output image", true, true);
+static CliArg sizeArg("s",
+                      "Specifies the new image dimensions for the output image. Must be in the "
+                      "form 512x512 (width, height) or 1.2 (upscale) / 0.8 (downscale)",
+                      true);
+
+
+// ----------------------------------------------------------------------------
 int main(int argc, char** argv) {
     LOG_INFO("pixl")
 
     CliParserResult result;
-    CliParser parser;
 
     // Basic args
-    CliArg version("v", "Prints the version number", false);
-    CliArg help("h", "Prints the help", false);
-    parser.addArg(&version);
-    parser.addArg(&help);
-
-    // Shared subcommand args
-    CliArg input("i", "Path to the source image", true, true);
-    CliArg output("o", "Path to the output image", true, true);
+    parser.addArg(&versionArg);
+    parser.addArg(&helpArg);
 
     // Flip subcommand
-    CliSubcommand flipCmd("flip");
-    flipCmd.addArg(&input);
-    flipCmd.addArg(&output);
+    flipCmd.addArg(&inputArg);
+    flipCmd.addArg(&outputArg);
     parser.addSubcommand(&flipCmd);
 
     // Resize subcommand
-    CliArg resizeSize("s",
-                      "Specifies the new image dimensions for the output image. Must be in the "
-                      "form 512x512 (width, height) or 1.2 (upscale) / 0.8 (downscale)",
-                      true);
-    CliSubcommand resizeCmd("resize");
-    resizeCmd.addArg(&input);
-    resizeCmd.addArg(&output);
-    resizeCmd.addArg(&resizeSize);
+    resizeCmd.addArg(&inputArg);
+    resizeCmd.addArg(&outputArg);
+    resizeCmd.addArg(&sizeArg);
     parser.addSubcommand(&resizeCmd);
 
     if (parser.parse(argc, argv, result)) {
@@ -66,14 +73,12 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-// Executes the command if valid.
-void process_command(CliParserResult& result) {
-    pixl::ResizeTransformation resize;
-    resize.width = 1024;
-    resize.height = 1024;
-
-    Job job("name", &resize);
-    job.setInfoHandler([&](const std::string& message) { LOG_INFO(message); });
+// ----------------------------------------------------------------------------
+void execute_operation(std::string name, std::string& input, std::string& output, pixl::Operation* operation) {
+    Job job(name, input, output, operation);
+    job.setInfoHandler([&](const std::string& message) {
+        LOG_INFO(message);
+    });
 
     job.start([&](bool success) {
         if (success) {
@@ -82,4 +87,38 @@ void process_command(CliParserResult& result) {
             LOG_ERROR("ERROR!!");
         }
     });
+}
+
+// ----------------------------------------------------------------------------
+void process_command(CliParserResult& result) {
+    // Printing basic info
+    if (result.subcommand == nullptr) {
+        // Print help
+        if (result.getArgument(helpArg.name) != nullptr) {
+            parser.help();
+        }
+
+        // Print version
+        if (result.getArgument(versionArg.name) != nullptr) {
+            LOG_INFO(VERSION);
+        }
+        return;
+    }
+
+    pixl::Operation* operation;
+    auto cmd = result.subcommand;
+
+    // Resize
+    if (cmd == &resizeCmd) {
+        pixl::ResizeTransformation resize;
+        // TODO parse width, height from cli result
+        resize.width = 1024;
+        resize.height = 1024;
+        execute_operation("resize", inputArg.param, outputArg.param, &resize);
+        // Flip
+    } else if (cmd == &flipCmd) {
+        pixl::FlipTransformation flip;
+        // TODO parse orientation from cli result
+        execute_operation("flip", inputArg.param, outputArg.param, &flip);
+    }
 }

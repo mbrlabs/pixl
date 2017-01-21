@@ -16,10 +16,13 @@
 
 #include <functional>
 
+#include <pixl/errors.h>
+#include <pixl/io.h>
 #include "job.h"
 
 // ----------------------------------------------------------------------------
-Job::Job(std::string name, pixl::Operation* operation) : name(name), operation(operation) {
+Job::Job(std::string name, std::string input, std::string output, pixl::Operation* operation)
+    : name(name), input(input), output(output), operation(operation) {
 }
 
 // ----------------------------------------------------------------------------
@@ -27,15 +30,42 @@ void Job::setInfoHandler(std::function<void(const std::string&)> handler) {
     this->infoHandler = handler;
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// TODO in case of an exception. Will the image be destructed ???
 void Job::start(std::function<void(bool)> handler) {
     this->doneHandler = handler;
 
-    postInfoMessage("Starting job: " + this->name);
-    // TODO do work
-    postInfoMessage("Job done");
+    // read image
+    postInfoMessage("Decoding input image: " + this->input);
+    pixl::Image* image; 
+    try {
+    	image = pixl::read(this->input.c_str());
+    	if(image == nullptr) {
+    		postInfoMessage("Failed to read image: " + this->input);
+    		doneHandler(false);
+    		return;
+    	}
+    } catch(pixl::PixlException e) {
+    	postInfoMessage("Error while decoding; " + e.getMessage());
+    	doneHandler(false);
+    	return;
+    }
 
-    doneHandler(true);
+    // apply operation
+    postInfoMessage("Applying operation");
+    operation->apply(image);
+
+    // write image
+    postInfoMessage("Encoding output image: " + this->output); 
+    try {
+    	pixl::write(this->output.c_str(), image);
+    	doneHandler(true);
+    } catch(pixl::PixlException e) {
+    	postInfoMessage("Error while decoding; " + e.getMessage());
+    	doneHandler(false);
+    	return;
+    }
+    
 }
 
 // ----------------------------------------------------------------------------

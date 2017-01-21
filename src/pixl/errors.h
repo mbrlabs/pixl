@@ -17,7 +17,6 @@
 #ifndef PIXL_ERRORS_H
 #define PIXL_ERRORS_H
 
-#include <exception>
 #include <iostream>
 #include <string>
 

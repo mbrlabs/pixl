@@ -25,13 +25,15 @@
 
 class Job {
 public:
-    Job(std::string name, pixl::Operation* operation);
+    Job(std::string name, std::string input, std::string output, pixl::Operation* operation);
 
     void setInfoHandler(std::function<void(const std::string&)> handler);
     void start(std::function<void(bool)> handler);
 
 private:
     std::string name;
+    std::string input;
+    std::string output;
     pixl::Operation* operation;
     std::function<void(const std::string&)> infoHandler;
     std::function<void(bool)> doneHandler;

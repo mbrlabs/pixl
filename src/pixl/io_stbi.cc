@@ -36,7 +36,7 @@ namespace pixl {
         if (data == 0) {
             // FATAL("Failed to load Pixmap: " << path)
             // FATAL("Failure Reason: " << stbi_failure_reason())
-            return 0;
+            return nullptr;
         }
 
         return new Image(width, height, channels, data);
