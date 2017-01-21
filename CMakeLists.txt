@@ -18,7 +18,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pthread")
 # └──────────────────────────────────────────────────────────────────┘
 find_package(PNG REQUIRED)
 include(FindJPEGTURBO)
-message(${JPEGTURBO_PREFIX})
+
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build static library libpixl.a                                  │
 # └──────────────────────────────────────────────────────────────────┘
@@ -57,6 +57,12 @@ target_link_libraries(e_flip pixl)
 add_executable(e_libpng examples/e_libpng.cc)
 target_include_directories(e_libpng PUBLIC src/)
 target_link_libraries(e_libpng pixl)
+
+# --------------------------------------------------------------------------
+# examples/e_libpng.cc
+add_executable(e_libjpegturbo examples/e_libjpegturbo.cc)
+target_include_directories(e_libjpegturbo PUBLIC src/)
+target_link_libraries(e_libjpegturbo pixl)
 
 # --------------------------------------------------------------------------
 # examples/e_chain.cc

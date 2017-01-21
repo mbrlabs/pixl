@@ -41,7 +41,7 @@ namespace pixl {
     };
 
 
-    // Simple image reader.
+    // Simple image reader; uses stb_image.
     //
     // This reader uses the stb_image library to decode various image formats.
     // The libraries goal is ease of use, not performance and saftey. So this
@@ -51,7 +51,7 @@ namespace pixl {
         Image* read(const char* path);
     };
 
-    // Simple image writer.
+    // Simple image writer; uses stb_image_write.
     //
     // This writer uses the stb_image_write library to encode data to png, bmp, tga & hdr.
     // The libraries goal is ease of use, not performance and saftey. Images encoded with this
@@ -63,7 +63,7 @@ namespace pixl {
     };
 
 
-    // libpng writer
+    // libpng reader.
     //
     // This reader uses the official libpng library to decode png images.
     class PngReader : public ImageReader {
@@ -71,7 +71,7 @@ namespace pixl {
         Image* read(const char* path);
     };
 
-    // libpng writer
+    // libpng writer.
     //
     // This writer uses the official libpng library to encode png images.
     class PngWriter : public ImageWriter {
@@ -79,12 +79,17 @@ namespace pixl {
         void write(const char* path, Image* image);
     };
 
-    // libjpegturbo writer
+    // libjpegturbo reader.
     //
     // This reader uses the official libpng library to decode png images.
     class JpegTurboReader : public ImageReader {
     public:
+        JpegTurboReader();
+        ~JpegTurboReader();
         Image* read(const char* path);
+
+    private:
+        void* turboDecompressor;
     };
 
     // libjpegturbo writer

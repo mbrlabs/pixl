@@ -22,21 +22,31 @@
 
 namespace pixl {
 
+    // ----------------------------------------------------------------------------
+    JpegTurboReader::JpegTurboReader() {
+        // create decompressor
+        this->turboDecompressor = tjInitDecompress();
+    }
+
+    // ----------------------------------------------------------------------------
+    JpegTurboReader::~JpegTurboReader() {
+        // destroy decompressor
+        tjDestroy(this->turboDecompressor);
+    }
+
+    // ----------------------------------------------------------------------------
     Image* JpegTurboReader::read(const char* path) {
         // read file
         u64 fileSize;
         u8* fileBuffer = read_binary(path, &fileSize);
 
-        // create decoder
-        auto decoder = tjInitDecompress();
-
         // read meta data
         int width, height, subsamp;
-        auto result = tjDecompressHeader2(decoder, fileBuffer, fileSize, &width, &height, &subsamp);
+        auto result =
+            tjDecompressHeader2(turboDecompressor, fileBuffer, fileSize, &width, &height, &subsamp);
 
         if (result == -1) {
             PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
-            tjDestroy(decoder);
             return nullptr;
         }
 
@@ -45,9 +55,8 @@ namespace pixl {
         u8* data = (u8*)malloc(pitch * height);
 
         // decode image
-        result = tjDecompress2(decoder, fileBuffer, fileSize, data, width, pitch, height, TJPF_RGB,
-                               TJFLAG_NOREALLOC);
-        tjDestroy(decoder);
+        result = tjDecompress2(turboDecompressor, fileBuffer, fileSize, data, width, pitch, height,
+                               TJPF_RGB, TJFLAG_NOREALLOC);
 
         if (result == -1) {
             PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
@@ -57,10 +66,10 @@ namespace pixl {
         return new Image(width, height, 3, data);
     }
 
+    // ----------------------------------------------------------------------------
     void JpegTurboWriter::write(const char* path, Image* image) {
-    	// TODO use jpegturbo
+        // TODO use jpegturbo
         StbiWriter writer;
         writer.write(path, image);
     }
-
 }
