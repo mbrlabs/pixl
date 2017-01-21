@@ -123,7 +123,13 @@ namespace pixl {
     // This writer uses the libjpegturbo library to encode png images.
     class JpegTurboWriter : public ImageWriter {
     public:
+        JpegTurboWriter();
+        ~JpegTurboWriter();
         void write(const char* path, Image* image);
+        i32 quality = 75;
+
+    private:
+        void* turboCompressor;
     };
 
 
@@ -131,12 +137,10 @@ namespace pixl {
     //
     // This function internally picks an appropriate image decoder.
     static Image* read(const char* path) {
-        // png
-        if (is_png(path)) {
+        if (is_png(path)) { // png
             PngReader reader;
             return reader.read(path);
-            // jpg
-        } else if (is_jpg(path)) {
+        } else if (is_jpg(path)) { // jpg
             JpegTurboReader reader;
             return reader.read(path);
         }
@@ -149,14 +153,15 @@ namespace pixl {
     // Convenience function for encoding an image.
     //
     // This function internally picks an appropriate image encoder.
-    // Currently that's only StbiWriter.
     // The file extension of the path parameter determines wich image encoder
     // should be used.
     static void write(const char* path, Image* image) {
-        // png
-        if (is_png(path)) {
+        if (is_png(path)) { // png
             PngWriter writer;
             return writer.write(path, image);
+        } else if (is_jpg(path)) { // jpg
+            JpegTurboWriter writer;
+            writer.write(path, image);
         }
 
         // other

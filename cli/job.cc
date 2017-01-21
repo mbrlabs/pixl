@@ -22,7 +22,8 @@
 
 // ----------------------------------------------------------------------------
 Job::Job(std::string name, std::string input, std::string output, pixl::Operation* operation)
-    : name(name), input(input), output(output), operation(operation) {}
+    : name(name), input(input), output(output), operation(operation) {
+}
 
 // ----------------------------------------------------------------------------
 void Job::setInfoHandler(std::function<void(const std::string&)> handler) {

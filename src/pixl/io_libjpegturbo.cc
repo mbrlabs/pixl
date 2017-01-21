@@ -54,8 +54,15 @@ namespace pixl {
         u8* data = (u8*)malloc(pitch * height);
 
         // decode image
-        result = tjDecompress2(turboDecompressor, fileBuffer, fileSize, data, width, pitch, height,
-                               TJPF_RGB, TJFLAG_NOREALLOC);
+        result = tjDecompress2(turboDecompressor,
+                               fileBuffer,
+                               fileSize,
+                               data,
+                               width,
+                               pitch,
+                               height,
+                               TJPF_RGB,
+                               TJFLAG_NOREALLOC);
 
         if (result == -1) {
             PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
@@ -66,9 +73,37 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
+    JpegTurboWriter::JpegTurboWriter() { this->turboCompressor = tjInitCompress(); }
+
+    // ----------------------------------------------------------------------------
+    JpegTurboWriter::~JpegTurboWriter() { tjDestroy(this->turboCompressor); }
+
+    // ----------------------------------------------------------------------------
     void JpegTurboWriter::write(const char* path, Image* image) {
-        // TODO use jpegturbo
-        StbiWriter writer;
-        writer.write(path, image);
+        int pitch = image->width * tjPixelSize[TJPF_RGB];
+
+        // malloc output buffer for the compressed image
+        u64 maxBufferSize = tjBufSize(image->width, image->height, TJSAMP_444);
+        u8* buffer = tjAlloc(maxBufferSize);
+        u64 compressedSize;
+
+        // encode jpg
+        tjCompress2(turboCompressor,
+                    image->data,
+                    image->width,
+                    pitch,
+                    image->height,
+                    TJPF_RGB,
+                    &buffer,
+                    &compressedSize,
+                    TJSAMP_444,
+                    this->quality,
+                    0);
+
+        // write to disk
+        write_binary(path, buffer, compressedSize);
+
+        // free buffer allocated by tjAlloc
+        tjFree(buffer);
     }
 }

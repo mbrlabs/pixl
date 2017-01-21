@@ -26,5 +26,9 @@ int main() {
     std::cout << "height: " << image->height << std::endl;
     std::cout << "channels: " << image->channels << std::endl;
 
+    pixl::JpegTurboWriter writer;
+    writer.quality = 75;
+    writer.write("bird.jpg", image);
+
     return 0;
 }
