@@ -151,8 +151,7 @@ private:
     bool processArguments(int argc, char** argv, CliParserResult& result) {
         // Parse arguments
         int i = 0;
-        while (i < argc) {
-            // flag with value
+        while (i < argc) { // flag with value
             if (i + 2 <= argc && argv[i][0] == '-' && argv[i + 1][0] != '-') {
                 auto name = argv[i] + 1;
                 auto value = argv[i + 1];
@@ -173,8 +172,7 @@ private:
 
                 LOG_DEBUG("flag with arg: " << name << ": " << value);
                 i += 2;
-                // simple flag, no value
-            } else if (argv[i][0] == '-') {
+            } else if (argv[i][0] == '-') { // simple flag, no value
                 auto name = argv[i] + 1;
                 auto arg = getArgument(name);
 
@@ -192,8 +190,7 @@ private:
 
                 LOG_DEBUG("simple flag: " << argv[i]);
                 i += 1;
-                // some weird input
-            } else {
+            } else { // some weird input
                 result.errorMessage = "Weird input";
                 return false;
             }

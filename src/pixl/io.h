@@ -22,6 +22,25 @@
 
 namespace pixl {
 
+    // ----------------------------------------------------------------------------
+    inline u8* read_binary(const char* path, u64* length) {
+        FILE* file = fopen(path, "rb");
+
+        // read file size
+        fseek(file, 0, SEEK_END);
+        *length = ftell(file);
+
+        // setup data
+        u8* data = new u8[*length + 1];
+
+        // read file
+        fseek(file, 0, SEEK_SET);
+        fread(data, 1, *length, file);
+        fclose(file);
+
+        return data;
+    }
+
     // Image Reader interface.
     class ImageReader {
     public:

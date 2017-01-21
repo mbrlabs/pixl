@@ -18,7 +18,6 @@
 
 #include "io.h"
 #include "types.h"
-#include "utils.h"
 
 namespace pixl {
 

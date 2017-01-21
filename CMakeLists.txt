@@ -59,7 +59,7 @@ target_include_directories(e_libpng PUBLIC src/)
 target_link_libraries(e_libpng pixl)
 
 # --------------------------------------------------------------------------
-# examples/e_libpng.cc
+# examples/e_libjpegturbo.cc
 add_executable(e_libjpegturbo examples/e_libjpegturbo.cc)
 target_include_directories(e_libjpegturbo PUBLIC src/)
 target_link_libraries(e_libjpegturbo pixl)
