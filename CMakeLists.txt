@@ -4,6 +4,8 @@
 cmake_minimum_required(VERSION 2.8)
 set(EXECUTABLE_OUTPUT_PATH "bin")
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
 project(pixl)
 
 # ┌──────────────────────────────────────────────────────────────────┐
@@ -15,6 +17,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pthread")
 # │  libs 							                                 │
 # └──────────────────────────────────────────────────────────────────┘
 find_package(PNG REQUIRED)
+include(FindJPEGTURBO)
+message(${JPEGTURBO_PREFIX})
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build static library libpixl.a                                  │
 # └──────────────────────────────────────────────────────────────────┘
@@ -25,8 +29,8 @@ set(STB_IMAGE libs/stb_image-2.13)
 set(STB_IMAGE_WRITE libs/stb_image_write-1.02)
 
 add_library(pixl STATIC ${PIXL_SOURCES})
-target_link_libraries(pixl ${PNG_LIBRARY})
-target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE} ${PNG_INCLUDE_DIR})
+target_link_libraries(pixl ${PNG_LIBRARY} ${TURBOJPEG_LIBRARY})
+target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE} ${PNG_INCLUDE_DIR} ${JPEGTURBO_INCLUDE_DIR})
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build cli tool                                                  │

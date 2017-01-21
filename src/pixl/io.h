@@ -79,6 +79,22 @@ namespace pixl {
         void write(const char* path, Image* image);
     };
 
+    // libjpegturbo writer
+    //
+    // This reader uses the official libpng library to decode png images.
+    class JpegTurboReader : public ImageReader {
+    public:
+        Image* read(const char* path);
+    };
+
+    // libjpegturbo writer
+    //
+    // This writer uses the libjpegturbo library to encode png images.
+    class JpegTurboWriter : public ImageWriter {
+    public:
+        void write(const char* path, Image* image);
+    };
+
 
     // Convenience function for decoding an image.
     //
@@ -87,6 +103,10 @@ namespace pixl {
         // png
         if (is_png(path)) {
             PngReader reader;
+            return reader.read(path);
+        // jpg
+        } else if(is_jpg(path)) {
+            JpegTurboReader reader;
             return reader.read(path);
         }
 

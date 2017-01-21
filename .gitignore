@@ -12,4 +12,3 @@ bin/
 CMakeFiles/
 CMakeCache.txt
 Makefile
-*cmake
