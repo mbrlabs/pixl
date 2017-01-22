@@ -32,8 +32,17 @@
 extern "C" {
 #endif
 
+static const int PIXL_ORIENTATION_VERTICAL = 0;
+static const int PIXL_ORIENTATION_HORIZONTAL = 1;
+
 void pixl_say_hello();
-int pixl_sum(int a, int b);
+
+void* pixl_load_image(const char* path);
+void pixl_destroy_image(void* image);
+void pixl_save_image(const char* path, void* image);
+
+void pixl_resize(void* image, unsigned int width, unsigned int height, unsigned int num_threads);
+void pixl_flip(void* image, int orientation, unsigned int num_threads);
 
 #ifdef __cplusplus
 }

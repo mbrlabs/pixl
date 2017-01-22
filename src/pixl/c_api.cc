@@ -20,12 +20,50 @@
 
 extern "C" {
 
+	// ----------------------------------------------------------------------------
 	void pixl_say_hello() {
 		std::cout << "Hello from std::cout" << std::endl;
 	}
 
-	int pixl_sum(int a, int b) {
-		return a+b;
+	// ----------------------------------------------------------------------------
+	void* pixl_load_image(const char* path) {
+		return pixl::read(path);
+	}
+
+	// ----------------------------------------------------------------------------
+	void pixl_destroy_image(void* image) {
+		delete static_cast<pixl::Image*>(image);
+	}
+
+	// ----------------------------------------------------------------------------
+	void pixl_save_image(const char* path, void* image) {
+		pixl::write(path, static_cast<pixl::Image*>(image));
+	}
+
+	// ----------------------------------------------------------------------------
+	void pixl_resize(void* image, unsigned int width, unsigned int height, unsigned int num_threads) {
+		auto img = static_cast<pixl::Image*>(image);
+		pixl::ResizeTransformation resize(width, height);
+		resize.numThreads = num_threads;
+		resize.apply(img);
+	}
+
+	// ----------------------------------------------------------------------------
+	void pixl_flip(void* image, int orientation, unsigned int num_threads) {
+		auto img = static_cast<pixl::Image*>(image);
+		
+		pixl::Orientation orient;
+		if(orientation == PIXL_ORIENTATION_VERTICAL) {
+			orient = pixl::Orientation::VERTICAL;
+		} else if(orientation == PIXL_ORIENTATION_HORIZONTAL) {
+			orient = pixl::Orientation::HORIZONTAL;
+		} else {
+			return;
+		}
+
+		pixl::FlipTransformation flip(orient);
+		flip.numThreads = num_threads;
+		flip.apply(img);
 	}
 
 }
