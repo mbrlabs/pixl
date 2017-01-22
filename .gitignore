@@ -14,3 +14,8 @@ Makefile
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
+
+# Python
+__pycache__/
+*.pyc
+pixl.egg-info/
