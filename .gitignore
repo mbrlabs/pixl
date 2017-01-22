@@ -2,6 +2,7 @@
 *.out
 *.gch
 *ppm
+*.o
 
 # Binaries
 bin/
@@ -9,6 +10,7 @@ bin/
 *.a
 
 # CMake
+Makefile
 CMakeFiles/
 CMakeCache.txt
-Makefile
+cmake_install.cmake
