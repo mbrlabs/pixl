@@ -17,10 +17,28 @@
 #ifndef PIXL_PIXL_H
 #define PIXL_PIXL_H
 
-#include "types.h"
-#include "errors.h"
-#include "image.h"
-#include "io.h"
-#include "operation.h"
+#ifdef __cplusplus
+	#include "types.h"
+	#include "errors.h"
+	#include "image.h"
+	#include "io.h"
+	#include "operation.h"
+#endif
+
+// ----------------------------------------------------------------------------
+// 					C API BELOW (implementation in c_api.cc)
+// ----------------------------------------------------------------------------
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void pixl_say_hello();
+int pixl_sum(int a, int b);
+
+#ifdef __cplusplus
+}
+#endif
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 #endif
