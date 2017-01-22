@@ -16,10 +16,8 @@ int main() {
 	auto image = pixl::read("path/to/image.png");
 
 	// scale the image using the Nearest Neighbor method as default 
-	pixl::ResizeTransformation resize;
+	pixl::ResizeTransformation resize(256, 256);
 	resize.numThreads = 4;
-	resize.width = 256;
-    resize.height = 256;
 	resize.apply(image);
 
 	// write scaled image

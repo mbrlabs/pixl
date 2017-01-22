@@ -90,11 +90,14 @@ namespace pixl {
     class ResizeTransformation : public Operation {
     public:
         ResizeTransformation(ResizeMethod method = ResizeMethod::NEARSET_NEIGHBOR)
-            : method(method), preserveAspectRatio(true) {}
+            : method(method) {}
+        ResizeTransformation(u32 width,
+                             u32 height,
+                             ResizeMethod method = ResizeMethod::NEARSET_NEIGHBOR)
+            : width(width), height(height), method(method) {}
         void apply(Image* image);
 
         ResizeMethod method;
-        bool preserveAspectRatio;
         u32 width;
         u32 height;
     };

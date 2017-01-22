@@ -147,48 +147,28 @@ private:
         return processArguments(argc, argv, result);
     }
 
-    // Parses argument style commands
+    // Parses arguments both with and without values (like this: -l, -l value)
+    // Returns false if something went wrong.
     bool processArguments(int argc, char** argv, CliParserResult& result) {
         // Parse arguments
         int i = 0;
         while (i < argc) { // flag with value
             if (i + 2 <= argc && argv[i][0] == '-' && argv[i + 1][0] != '-') {
-                auto name = argv[i] + 1;
-                auto value = argv[i + 1];
-                auto arg = getArgument(name);
-
-                if (arg != nullptr) {
-                    if (!arg->hasParam) {
-                        result.errorMessage =
-                            "Argument " + std::string(name) + " can not have a parameter";
-                        return false;
-                    }
-                    arg->param = value;
-                    result.args.push_back(arg);
-                } else {
-                    result.errorMessage = "Unkown argument " + std::string(name);
+                auto name = argv[i]+1;
+                auto value = argv[i+1];
+                LOG_DEBUG("flag with arg: " << name << ": " << value);
+                if(!processArgument(name, value, result)) {
                     return false;
                 }
 
-                LOG_DEBUG("flag with arg: " << name << ": " << value);
                 i += 2;
             } else if (argv[i][0] == '-') { // simple flag, no value
                 auto name = argv[i] + 1;
-                auto arg = getArgument(name);
-
-                if (arg != nullptr) {
-                    if (arg->hasParam) {
-                        result.errorMessage =
-                            "Argument " + std::string(name) + " must have a parameter";
-                        return false;
-                    }
-                    result.args.push_back(arg);
-                } else {
-                    result.errorMessage = "Unkown argument " + std::string(name);
+                LOG_DEBUG("simple flag: " << argv[i]);
+                if(!processFlag(name, result)) {
                     return false;
                 }
 
-                LOG_DEBUG("simple flag: " << argv[i]);
                 i += 1;
             } else { // some weird input
                 result.errorMessage = "Weird input";
@@ -205,6 +185,45 @@ private:
                 result.errorMessage = "Missing required argument: " + arg->name;
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    // Processes an argument without value, like this: -f
+    // Returns false if prcocessing failed.
+    bool processFlag(char* name, CliParserResult& result) {
+        auto arg = getArgument(name);
+        if (arg != nullptr) {
+            if (arg->hasParam) {
+                result.errorMessage =
+                    "Argument " + std::string(name) + " must have a parameter";
+                return false;
+            }
+            result.args.push_back(arg);
+        } else {
+            result.errorMessage = "Unkown argument " + std::string(name);
+            return false;
+        }
+
+        return true;
+    }
+
+    // Processes an argument with a parameter value, like this: -l value
+    // Returns false if prcocessing failed.
+    bool processArgument(char* name, char* value, CliParserResult& result) {
+        auto arg = getArgument(name);
+        if (arg != nullptr) {
+            if (!arg->hasParam) {
+                result.errorMessage =
+                    "Argument " + std::string(name) + " can not have a parameter";
+                return false;
+            }
+            arg->param = value;
+            result.args.push_back(arg);
+        } else {
+            result.errorMessage = "Unkown argument " + std::string(name);
+            return false;
         }
 
         return true;

@@ -111,10 +111,8 @@ void process_command(CliParserResult& result) {
 
     // Resize
     if (cmd == &resizeCmd) {
-        pixl::ResizeTransformation resize;
         // TODO parse width, height from cli result
-        resize.width = 1024;
-        resize.height = 1024;
+        pixl::ResizeTransformation resize(512, 512);
         execute_operation("resize", inputArg.param, outputArg.param, &resize);
         // Flip
     } else if (cmd == &flipCmd) {

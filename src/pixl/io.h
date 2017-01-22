@@ -161,7 +161,7 @@ namespace pixl {
             return writer.write(path, image);
         } else if (is_jpg(path)) { // jpg
             JpegTurboWriter writer;
-            writer.write(path, image);
+            return writer.write(path, image);
         }
 
         // other

@@ -24,10 +24,8 @@ int main() {
     auto image = pixl::read("../images/lena.png");
 
     // scale image down
-    pixl::ResizeTransformation resize;
+    pixl::ResizeTransformation resize(500, 500);
     resize.numThreads = std::thread::hardware_concurrency();
-    resize.width = 500;
-    resize.height = 500;
 
     PIXL_DEBUG(resize.numThreads);
 
