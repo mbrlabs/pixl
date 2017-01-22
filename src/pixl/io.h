@@ -76,18 +76,7 @@ namespace pixl {
     public:
         Image* read(const char* path);
     };
-
-    // Simple image writer; uses stb_image_write.
-    //
-    // This writer uses the stb_image_write library to encode data to png, bmp, tga & hdr.
-    // The libraries goal is ease of use, not performance and saftey. Images encoded with this
-    // writer
-    // will result in 20-50% bigger images.
-    class StbiWriter : public ImageWriter {
-    public:
-        void write(const char* path, Image* image);
-    };
-
+    
 
     // libpng reader.
     //
@@ -164,9 +153,7 @@ namespace pixl {
             return writer.write(path, image);
         }
 
-        // other
-        StbiWriter writer;
-        writer.write(path, image);
+        // TODO throw error or smt
     }
 }
 

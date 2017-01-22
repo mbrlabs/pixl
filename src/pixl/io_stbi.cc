@@ -14,15 +14,10 @@
 // limitations under the License.
 //
 
-// Decoding
 #define STBI_NO_HDR
 #define STBI_FAILURE_USERMSG
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
-// Encoding
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb_image_write.h>
 
 #include "io.h"
 #include "image.h"
@@ -42,8 +37,4 @@ namespace pixl {
         return new Image(width, height, channels, data);
     }
 
-    // ----------------------------------------------------------------------------
-    void StbiWriter::write(const char* path, Image* image) {
-        stbi_write_png(path, image->width, image->height, image->channels, image->data, 0);
-    }
 }
