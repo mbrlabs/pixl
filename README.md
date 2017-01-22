@@ -4,7 +4,7 @@ pixl is a lightweight image processing library, written in C++11.
 The main goals of this project are ease of use and performance. All operations can optionally be run on multiple threads.
 
 Image decoding/encoding is done by third party libraries. Pixl uses [libpng](http://www.libpng.org/pub/png/libpng.html) for png images, [libjpeg-turbo](http://libjpeg-turbo.virtualgl.org/) for jpeg and [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)/[stb_image_write](https://github.com/nothings/stb/blob/master/stb_image_write.h) for everything else.
-While the stb libraries are both very convenient to use, they not very performant or secure. 
+While the stb libraries are both very convenient to use, they are not very performant or secure. 
 In the future i am going to add more decoding/encoding options, but until then do NOT use this library in a production environment.
 
 ## Usage
@@ -61,7 +61,7 @@ You also need a C++11 compatible compiler.
 While the code should work on all major platforms, the only supported OS so far is Linux.
 Pixl compiles successfully on:
 
-- Linux Mint Mint 17.3
+- Linux Mint 17.3
 - Arch Linux
 
 ### Building on Linux
