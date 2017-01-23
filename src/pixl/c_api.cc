@@ -40,7 +40,7 @@ extern "C" {
 	// ----------------------------------------------------------------------------
 	void pixl_destroy_image(PixlImage* image) {
 		auto handle = static_cast<pixl::Image*>(image->__handle);
-		free(handle);
+		delete handle;
 		free(image);
 	}
 

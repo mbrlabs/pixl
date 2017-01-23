@@ -18,6 +18,7 @@
 
 #include "image.h"
 #include "types.h"
+#include "utils.h"
 
 #define GET_DATA_POINTER_AT(x, y) data + (y * channels * width) + (x * channels)
 
