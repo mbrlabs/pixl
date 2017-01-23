@@ -26,31 +26,44 @@ extern "C" {
 	}
 
 	// ----------------------------------------------------------------------------
-	void* pixl_load_image(const char* path) {
-		return pixl::read(path);
+	PixlImage* pixl_load_image(const char* path) {
+		auto handle = pixl::read(path);
+		
+		auto cimg = (PixlImage*) malloc(sizeof(PixlImage));
+		cimg->width = handle->width;
+		cimg->height = handle->height;
+		cimg->__handle = handle;
+
+		return cimg;
 	}
 
 	// ----------------------------------------------------------------------------
-	void pixl_destroy_image(void* image) {
-		delete static_cast<pixl::Image*>(image);
+	void pixl_destroy_image(PixlImage* image) {
+		auto handle = static_cast<pixl::Image*>(image->__handle);
+		free(handle);
+		free(image);
 	}
 
 	// ----------------------------------------------------------------------------
-	void pixl_save_image(const char* path, void* image) {
-		pixl::write(path, static_cast<pixl::Image*>(image));
+	void pixl_save_image(const char* path, PixlImage* image) {
+		pixl::write(path, static_cast<pixl::Image*>(image->__handle));
 	}
 
 	// ----------------------------------------------------------------------------
-	void pixl_resize(void* image, unsigned int width, unsigned int height, unsigned int num_threads) {
-		auto img = static_cast<pixl::Image*>(image);
+	void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, unsigned int num_threads) {
+		auto handle = static_cast<pixl::Image*>(image->__handle);
+
 		pixl::ResizeTransformation resize(width, height);
 		resize.numThreads = num_threads;
-		resize.apply(img);
+		resize.apply(handle);
+
+		image->width = width;
+		image->height = height;
 	}
 
 	// ----------------------------------------------------------------------------
-	void pixl_flip(void* image, int orientation, unsigned int num_threads) {
-		auto img = static_cast<pixl::Image*>(image);
+	void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads) {
+		auto handle = static_cast<pixl::Image*>(image->__handle);
 		
 		pixl::Orientation orient;
 		if(orientation == PIXL_ORIENTATION_VERTICAL) {
@@ -63,7 +76,7 @@ extern "C" {
 
 		pixl::FlipTransformation flip(orient);
 		flip.numThreads = num_threads;
-		flip.apply(img);
+		flip.apply(handle);
 	}
 
 }

@@ -14,5 +14,39 @@
 # limitations under the License.
 #
 
-def pixl():
-	print("It works!")
+import enum
+import ctypes
+
+libpixl = ctypes.cdll.LoadLibrary('libpixl.so')
+
+PIXL_THREADS = 1
+
+class Orientation(enum.Enum):
+	VERTICAL = 0
+	HORIZONTAL = 1
+
+
+class Image:
+	def __init__(self, path):
+		self.width = 0
+		self.height = 0
+		self.__handle = 0
+
+	def destroy():
+		pass
+
+
+def resize(image, width, height, num_threads = PIXL_THREADS):
+	# do some bound checks
+	if width <= 0 or height <= 0:
+		return false
+
+	return true
+
+
+def flip(image, orientation, num_threads = PIXL_THREADS):
+	pass
+
+
+def test():
+	libpixl.pixl_say_hello()

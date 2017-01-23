@@ -35,14 +35,21 @@ extern "C" {
 static const int PIXL_ORIENTATION_VERTICAL = 0;
 static const int PIXL_ORIENTATION_HORIZONTAL = 1;
 
+struct PixlImage {
+	unsigned int width;
+	unsigned int height;
+	void* __handle;
+};
+typedef struct PixlImage PixlImage;
+
 void pixl_say_hello();
 
-void* pixl_load_image(const char* path);
-void pixl_destroy_image(void* image);
-void pixl_save_image(const char* path, void* image);
+PixlImage* pixl_load_image(const char* path);
+void pixl_destroy_image(PixlImage* image);
+void pixl_save_image(const char* path, PixlImage* image);
 
-void pixl_resize(void* image, unsigned int width, unsigned int height, unsigned int num_threads);
-void pixl_flip(void* image, int orientation, unsigned int num_threads);
+void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, unsigned int num_threads);
+void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads);
 
 #ifdef __cplusplus
 }
