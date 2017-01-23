@@ -33,7 +33,6 @@ int main() {
     PIXL_DEBUG("flip horiz ms: " << timer.time_ms() << " ms");
     PIXL_DEBUG("flip horiz s: " << timer.time_s() << " s");
 
-
     // flip image vertically
     flip.orientation = pixl::Orientation::VERTICAL;
     timer.begin();
