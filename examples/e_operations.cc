@@ -24,7 +24,7 @@ void resize() {
     auto ratio = ((float)image->width) / ((float)image->height);
     ratio /= 2.0;
 
-    pixl::ResizeTransformation resize(image->width*ratio, image->height*ratio);
+    pixl::ResizeTransformation resize(image->width * ratio, image->height * ratio);
     pixl::Timer timer;
 
     timer.begin();
@@ -37,7 +37,7 @@ void resize() {
 }
 
 int main() {
-	flip();
-	resize();
-	return 0;
+    flip();
+    resize();
+    return 0;
 }

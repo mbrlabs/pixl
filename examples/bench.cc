@@ -18,28 +18,22 @@
 #include <pixl/debug.h>
 
 #include <thread>
+#include <chrono>
+
+#define IMAGE_BIRD "../images/bird.jpg"
 
 int main() {
-    // load image
-    auto image = pixl::read("../images/lena.png");
+    auto image = pixl::read(IMAGE_BIRD);
+    pixl::ResizeTransformation resize(26, 16);
 
-    // scale image down
-    pixl::ResizeTransformation resize(500, 500);
-    resize.numThreads = std::thread::hardware_concurrency();
+    pixl::benchmark("test", 20, [&](pixl::Timer& timer) {
+        // create new image. Stop measurment for now.
+        timer.pause();
+        pixl::Image tmpImage(image);
+        timer.resume();
 
-    PIXL_DEBUG(resize.numThreads);
+        resize.apply(&tmpImage);
+    });
 
-    pixl::Timer timer;
-
-    timer.begin();
-    resize.apply(image);
-    timer.end();
-
-    PIXL_DEBUG("resize ns: " << timer.time_ns() << " ns");
-    PIXL_DEBUG("resize ms: " << timer.time_ms() << " ms");
-    PIXL_DEBUG("resize s: " << timer.time_s() << " s");
-
-    // write flipped image
-    pixl::write("lena_resized.png", image);
     return 0;
 }

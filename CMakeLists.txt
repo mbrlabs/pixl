@@ -64,6 +64,11 @@ add_executable(e_chain examples/e_chain.cc)
 target_include_directories(e_chain PUBLIC src/)
 target_link_libraries(e_chain apixl)
 
+# --------------------------------------------------------------------------
+# examples/bench.cc
+add_executable(bench examples/bench.cc)
+target_include_directories(bench PUBLIC src/)
+target_link_libraries(bench apixl)
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build test suite                                                │
 # └──────────────────────────────────────────────────────────────────┘

@@ -76,7 +76,7 @@ namespace pixl {
     public:
         Image* read(const char* path);
     };
-    
+
 
     // libpng reader.
     //

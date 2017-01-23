@@ -83,13 +83,8 @@ namespace pixl {
                 auto chunk = this->height / numThreads;
                 for (u32 i = 0; i < numThreads; i++) {
                     auto last = (i == numThreads - 1) ? this->height : chunk * i + chunk;
-                    threads.push_back(std::thread(nearest_neighbor,
-                                                  image,
-                                                  imageBuffer,
-                                                  this->width,
-                                                  this->height,
-                                                  chunk * i,
-                                                  last));
+                    threads.push_back(std::thread(nearest_neighbor, image, imageBuffer, this->width,
+                                                  this->height, chunk * i, last));
                 }
             }
 

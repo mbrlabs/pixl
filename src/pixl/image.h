@@ -31,6 +31,7 @@ namespace pixl {
 
     struct Image {
         Image(i32 width, i32 height, i32 channels, u8* data);
+        Image(Image* image);
         ~Image();
         void setPixel(i32 x, i32 y, const Pixel<u8>& pixel);
         void getPixel(i32 x, i32 y, Pixel<u8>& pixel);

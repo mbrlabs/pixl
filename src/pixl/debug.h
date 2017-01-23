@@ -17,29 +17,82 @@
 #ifndef PIXL_DEBUG_H
 #define PIXL_DEBUG_H
 
-#include "types.h"
 #include <chrono>
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <functional>
+#include <limits>
+
+
+#include "types.h"
 
 namespace pixl {
 
+    // Timer with nanosecond precision.
+    //
+    // This can be used for benchmarks.
     class Timer {
     public:
-        void begin() { start = std::chrono::high_resolution_clock::now(); }
-
-        void end() { finish = std::chrono::high_resolution_clock::now(); }
-
-        i64 time_ns() {
-            return std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count();
+        // Resets the timer and starts new measurement
+        void begin() {
+            executionTimeInNs = 0;
+            start = std::chrono::high_resolution_clock::now();
         }
 
+        // Stops measurement. Must be called after begin().
+        void end() { pause(); }
+
+        void pause() {
+            finish = std::chrono::high_resolution_clock::now();
+            executionTimeInNs +=
+                std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count();
+        }
+
+        void resume() { start = std::chrono::high_resolution_clock::now(); }
+
+        // Returns the execution time in nanoseconds.
+        i64 time_ns() { return this->executionTimeInNs; }
+
+        // Returns the exectution time in milliseconds
         f64 time_ms() { return time_ns() / 1000000.0; }
 
+        // Returns the execution time in seconds
         f64 time_s() { return time_ns() / 1000000000.0; }
 
     private:
+        i64 executionTimeInNs = 0;
+        bool running = false;
         std::chrono::time_point<std::chrono::high_resolution_clock> start;
         std::chrono::time_point<std::chrono::high_resolution_clock> finish;
     };
+
+
+    void benchmark(std::string name, u32 loops, std::function<void(Timer&)> func) {
+        Timer timer;
+
+        f64 avg = 0;
+        f64 min = std::numeric_limits<f64>::max();
+        f64 max = std::numeric_limits<f64>::min();
+        for (int i = 0; i < loops; i++) {
+            timer.begin();
+            func(timer);
+            timer.end();
+
+            auto time = timer.time_ms();
+            min = std::min(min, time);
+            max = std::max(max, time);
+            avg += timer.time_ms();
+        }
+        avg /= (float)loops;
+
+        std::cout << "------------------------------------------------------" << std::endl;
+        std::cout << "Benchmark results for: " << name << std::endl;
+        std::cout << "[" << loops << " runs] -> "
+                                     "min: "
+                  << min << " ms, max: " << max << " ms, avg: " << avg << " ms" << std::endl;
+        std::cout << "------------------------------------------------------" << std::endl;
+    }
 }
 
 #endif

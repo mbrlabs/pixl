@@ -20,63 +20,65 @@
 
 extern "C" {
 
-	// ----------------------------------------------------------------------------
-	void pixl_say_hello() {
-		std::cout << "Hello from std::cout" << std::endl;
-	}
+// ----------------------------------------------------------------------------
+void pixl_say_hello() {
+    std::cout << "Hello from std::cout" << std::endl;
+}
 
-	// ----------------------------------------------------------------------------
-	PixlImage* pixl_load_image(const char* path) {
-		auto handle = pixl::read(path);
-		
-		auto cimg = (PixlImage*) malloc(sizeof(PixlImage));
-		cimg->width = handle->width;
-		cimg->height = handle->height;
-		cimg->__handle = handle;
+// ----------------------------------------------------------------------------
+PixlImage* pixl_load_image(const char* path) {
+    auto handle = pixl::read(path);
 
-		return cimg;
-	}
+    auto cimg = (PixlImage*)malloc(sizeof(PixlImage));
+    cimg->width = handle->width;
+    cimg->height = handle->height;
+    cimg->__handle = handle;
 
-	// ----------------------------------------------------------------------------
-	void pixl_destroy_image(PixlImage* image) {
-		auto handle = static_cast<pixl::Image*>(image->__handle);
-		delete handle;
-		free(image);
-	}
+    return cimg;
+}
 
-	// ----------------------------------------------------------------------------
-	void pixl_save_image(const char* path, PixlImage* image) {
-		pixl::write(path, static_cast<pixl::Image*>(image->__handle));
-	}
+// ----------------------------------------------------------------------------
+void pixl_destroy_image(PixlImage* image) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    delete handle;
+    free(image);
+}
 
-	// ----------------------------------------------------------------------------
-	void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, unsigned int num_threads) {
-		auto handle = static_cast<pixl::Image*>(image->__handle);
+// ----------------------------------------------------------------------------
+void pixl_save_image(const char* path, PixlImage* image) {
+    pixl::write(path, static_cast<pixl::Image*>(image->__handle));
+}
 
-		pixl::ResizeTransformation resize(width, height);
-		resize.numThreads = num_threads;
-		resize.apply(handle);
+// ----------------------------------------------------------------------------
+void pixl_resize(PixlImage* image,
+                 unsigned int width,
+                 unsigned int height,
+                 unsigned int num_threads) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
 
-		image->width = width;
-		image->height = height;
-	}
+    pixl::ResizeTransformation resize(width, height);
+    resize.numThreads = num_threads;
+    resize.apply(handle);
 
-	// ----------------------------------------------------------------------------
-	void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads) {
-		auto handle = static_cast<pixl::Image*>(image->__handle);
-		
-		pixl::Orientation orient;
-		if(orientation == PIXL_ORIENTATION_VERTICAL) {
-			orient = pixl::Orientation::VERTICAL;
-		} else if(orientation == PIXL_ORIENTATION_HORIZONTAL) {
-			orient = pixl::Orientation::HORIZONTAL;
-		} else {
-			return;
-		}
+    image->width = width;
+    image->height = height;
+}
 
-		pixl::FlipTransformation flip(orient);
-		flip.numThreads = num_threads;
-		flip.apply(handle);
-	}
+// ----------------------------------------------------------------------------
+void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
 
+    pixl::Orientation orient;
+    if (orientation == PIXL_ORIENTATION_VERTICAL) {
+        orient = pixl::Orientation::VERTICAL;
+    } else if (orientation == PIXL_ORIENTATION_HORIZONTAL) {
+        orient = pixl::Orientation::HORIZONTAL;
+    } else {
+        return;
+    }
+
+    pixl::FlipTransformation flip(orient);
+    flip.numThreads = num_threads;
+    flip.apply(handle);
+}
 }

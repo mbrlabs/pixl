@@ -36,5 +36,4 @@ namespace pixl {
 
         return new Image(width, height, channels, data);
     }
-
 }

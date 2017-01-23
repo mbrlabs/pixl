@@ -154,10 +154,10 @@ private:
         int i = 0;
         while (i < argc) { // flag with value
             if (i + 2 <= argc && argv[i][0] == '-' && argv[i + 1][0] != '-') {
-                auto name = argv[i]+1;
-                auto value = argv[i+1];
+                auto name = argv[i] + 1;
+                auto value = argv[i + 1];
                 LOG_DEBUG("flag with arg: " << name << ": " << value);
-                if(!processArgument(name, value, result)) {
+                if (!processArgument(name, value, result)) {
                     return false;
                 }
 
@@ -165,7 +165,7 @@ private:
             } else if (argv[i][0] == '-') { // simple flag, no value
                 auto name = argv[i] + 1;
                 LOG_DEBUG("simple flag: " << argv[i]);
-                if(!processFlag(name, result)) {
+                if (!processFlag(name, result)) {
                     return false;
                 }
 
@@ -196,8 +196,7 @@ private:
         auto arg = getArgument(name);
         if (arg != nullptr) {
             if (arg->hasParam) {
-                result.errorMessage =
-                    "Argument " + std::string(name) + " must have a parameter";
+                result.errorMessage = "Argument " + std::string(name) + " must have a parameter";
                 return false;
             }
             result.args.push_back(arg);
@@ -215,8 +214,7 @@ private:
         auto arg = getArgument(name);
         if (arg != nullptr) {
             if (!arg->hasParam) {
-                result.errorMessage =
-                    "Argument " + std::string(name) + " can not have a parameter";
+                result.errorMessage = "Argument " + std::string(name) + " can not have a parameter";
                 return false;
             }
             arg->param = value;

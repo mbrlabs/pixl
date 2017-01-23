@@ -29,6 +29,12 @@ namespace pixl {
         : width(width), height(height), channels(channels), data(data) {}
 
     // ----------------------------------------------------------------------------
+    Image::Image(Image* image)
+        : width(image->width), height(image->height), channels(image->channels) {
+        this->data = (u8*)malloc(height * width * channels);
+    }
+
+    // ----------------------------------------------------------------------------
     Image::~Image() { free(data); }
 
     // ----------------------------------------------------------------------------

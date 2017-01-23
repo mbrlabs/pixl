@@ -18,11 +18,11 @@
 #define PIXL_PIXL_H
 
 #ifdef __cplusplus
-	#include "types.h"
-	#include "errors.h"
-	#include "image.h"
-	#include "io.h"
-	#include "operation.h"
+#include "types.h"
+#include "errors.h"
+#include "image.h"
+#include "io.h"
+#include "operation.h"
 #endif
 
 // ----------------------------------------------------------------------------
@@ -36,9 +36,9 @@ static const int PIXL_ORIENTATION_VERTICAL = 0;
 static const int PIXL_ORIENTATION_HORIZONTAL = 1;
 
 struct PixlImage {
-	unsigned int width;
-	unsigned int height;
-	void* __handle;
+    unsigned int width;
+    unsigned int height;
+    void* __handle;
 };
 typedef struct PixlImage PixlImage;
 
@@ -48,7 +48,10 @@ PixlImage* pixl_load_image(const char* path);
 void pixl_destroy_image(PixlImage* image);
 void pixl_save_image(const char* path, PixlImage* image);
 
-void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, unsigned int num_threads);
+void pixl_resize(PixlImage* image,
+                 unsigned int width,
+                 unsigned int height,
+                 unsigned int num_threads);
 void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads);
 
 #ifdef __cplusplus
