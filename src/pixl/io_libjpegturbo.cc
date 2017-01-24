@@ -46,6 +46,7 @@ namespace pixl {
 
         if (result == -1) {
             PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
+            free(fileBuffer);
             return nullptr;
         }
 
@@ -59,9 +60,11 @@ namespace pixl {
 
         if (result == -1) {
             PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
+            free(fileBuffer);
             return nullptr;
         }
-
+        
+        free(fileBuffer);
         return new Image(width, height, 3, data);
     }
 
