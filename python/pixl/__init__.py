@@ -57,7 +57,7 @@ class Image():
 		self._IMAGE = _LIBPIXL.pixl_load_image(c_char_p(path.encode()))
 
 	def destroy(self):
-		libpixl.pixl_destroy_image(self._IMAGE)
+		_LIBPIXL.pixl_destroy_image(self._IMAGE)
 
 	def width(self):
 		return self._IMAGE.contents.width
