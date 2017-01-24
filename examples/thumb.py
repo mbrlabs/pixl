@@ -16,15 +16,30 @@
 # limitations under the License.
 #
 
+
+
+# This script uses the python bindings of pixl to create a series of thumbnails.
+#
+# In order for this to work, the pixl library as well as the python bindings must be installed
+# on your sytem. See the Github Wiki for more info.
+#  
+# Usage: ./thumb.py folder
+# Where folder is the folder containing the images. The scipt creates a new directory called
+# thmbs/ and stores the thumbnails there.
+# 
+
 import pixl
 import sys
 import os
 from os import path
 
+# Checks if file_name has a valied image extension.
 def is_image(file_name):
 	lower = file_name.lower()
 	return lower.endswith('.jpg') or lower.endswith('.jpeg') or lower.endswith('png')
 
+
+# Loads, resizes, saves & destroys the image.
 def resize_image(file, output):
 	output_path = file.split('/')[-1:][0]
 	output_path = path.join(output, output_path)
@@ -38,6 +53,7 @@ def resize_image(file, output):
 	image.destroy()
 
 
+# Creates thumnails for all image files in that directory
 def create_thumbnails(folder):
 	# create output folder
 	thumb_dir = path.join(folder, 'thumbs/')
@@ -51,6 +67,7 @@ def create_thumbnails(folder):
 			print('Created thumbnail for', file)
 
 
+# -----------------------------------------------------------------------------
 if __name__ == "__main__":
 	if len(sys.argv) == 2:
 		create_thumbnails(sys.argv[1])
