@@ -62,7 +62,6 @@ namespace pixl {
 
     private:
         i64 executionTimeInNs = 0;
-        bool running = false;
         std::chrono::time_point<std::chrono::high_resolution_clock> start;
         std::chrono::time_point<std::chrono::high_resolution_clock> finish;
     };

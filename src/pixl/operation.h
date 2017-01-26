@@ -97,9 +97,9 @@ namespace pixl {
             : width(width), height(height), method(method) {}
         void apply(Image* image);
 
-        ResizeMethod method;
         u32 width;
         u32 height;
+        ResizeMethod method;
     };
 }
 

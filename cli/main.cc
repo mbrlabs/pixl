@@ -106,7 +106,6 @@ void process_command(CliParserResult& result) {
         return;
     }
 
-    pixl::Operation* operation;
     auto cmd = result.subcommand;
 
     // Resize

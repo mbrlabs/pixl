@@ -22,32 +22,6 @@
 
 namespace pixl {
 
-    // ----------------------------------------------------------------------------
-    static u8* read_binary(const char* path, u64* length) {
-        FILE* file = fopen(path, "rb");
-
-        // read file size
-        fseek(file, 0, SEEK_END);
-        *length = ftell(file);
-
-        // setup data
-        u8* data = new u8[*length + 1];
-
-        // read file
-        fseek(file, 0, SEEK_SET);
-        fread(data, 1, *length, file);
-        fclose(file);
-
-        return data;
-    }
-
-    // ----------------------------------------------------------------------------
-    static void write_binary(const char* path, u8* data, u64 length) {
-        FILE* file = fopen(path, "wb");
-        fwrite(data, sizeof(u8), length, file);
-        fclose(file);
-    }
-
     // Image Reader interface.
     class ImageReader {
     public:
@@ -111,37 +85,28 @@ namespace pixl {
     };
 
 
+    // Reads a file in binary mode.
+    //
+    // If successuful it returns a newly allocated byte array and stores it's length in
+    // the provided length pointer. Otherwise it returns a nullptr.
+    // The user of this function is reponsible for freeing the memory.
+    u8* read_binary(const char* path, u64* length);
+
+    // Writes a byte array to specified path.
+    void write_binary(const char* path, u8* data, u64 length);
+
     // Convenience function for decoding an image.
     //
     // This function internally picks an appropriate image decoder.
-    static Image* read(const char* path) {
-        if (is_png(path)) { // png
-            PngReader reader;
-            return reader.read(path);
-        } else if (is_jpg(path)) { // jpg
-            JpegTurboReader reader;
-            return reader.read(path);
-        }
-
-        return nullptr;
-    }
+    Image* read(const char* path);
 
     // Convenience function for encoding an image.
     //
     // This function internally picks an appropriate image encoder.
     // The file extension of the path parameter determines wich image encoder
     // should be used.
-    static void write(const char* path, Image* image) {
-        if (is_png(path)) { // png
-            PngWriter writer;
-            return writer.write(path, image);
-        } else if (is_jpg(path)) { // jpg
-            JpegTurboWriter writer;
-            return writer.write(path, image);
-        }
+    void write(const char* path, Image* image);
 
-        // TODO throw error or smt
-    }
 }
 
 #endif
