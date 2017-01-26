@@ -80,7 +80,7 @@ namespace pixl {
 
     enum ResizeMethod {
         NEARSET_NEIGHBOR,
-        // BILINEAR,
+        BILINEAR,
         // BICUBIC,
         // LANCZOS_2,
         // LANCZOS_3,

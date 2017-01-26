@@ -78,7 +78,7 @@ namespace pixl {
         JpegTurboWriter();
         ~JpegTurboWriter();
         void write(const char* path, Image* image);
-        i32 quality = 75;
+        i32 quality = 100;
 
     private:
         void* turboCompressor;

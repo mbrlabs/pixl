@@ -28,6 +28,11 @@
 // Should only be used with values > 0
 #define FAST_FLOOR(x) ((int)(x))
 
+#define LERP(start, end, x) (start + (end-start) * x)
+static inline float blerp(float c00, float c10, float c01, float c11, float x, float y) {
+    return LERP(LERP(c00, c10, x), LERP(c01, c11, x), y);
+}
+
 namespace pixl {
 
     // ----------------------------------------------------------------------------
@@ -41,8 +46,8 @@ namespace pixl {
         // Pre-calc some constants
         const f64 xRatio = image->width / (f64)targetWidth;
         const f64 yRatio = image->height / (f64)targetHeight;
-        const i32 originalLineSize = image->width * image->channels;
-        const i32 newRowSize = targetWidth * image->channels;
+        const u32 originalLineSize = image->width * image->channels;
+        const u32 newRowSize = targetWidth * image->channels;
 
         const auto channels = image->channels;
 
@@ -64,6 +69,52 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
+    // Bilinear scaling.
+    void bilinear(const Image* image, u8* imageBuffer, u32 targetWidth, u32 targetHeight, u32 startLine, u32 endLine) {
+        // Pre-calc some constants
+        const f64 xRatio = image->width / (f64)targetWidth;
+        const f64 yRatio = image->height / (f64)targetHeight;
+        const u32 originalLineSize = image->width * image->channels;
+        const u32 newRowSize = targetWidth * image->channels;
+
+        const auto channels = image->channels;
+        const auto data = image->data;
+
+        // Go through each image line
+        u32 newStart, oldStart;
+        u32 scaledOriginalLineSize;
+        for (u32 y = startLine; y < endLine; y++) {
+            scaledOriginalLineSize = FAST_FLOOR(y * yRatio) * originalLineSize;
+
+            for (u32 x = 0; x < targetWidth - 1; x++) {
+                // calc start index of old and new pixel data
+                newStart = y * newRowSize + x * channels;
+                oldStart = scaledOriginalLineSize + FAST_FLOOR(x * xRatio) * channels;
+
+                u32 c00 = oldStart;
+                u32 c10 = oldStart + channels;
+                u32 c01 = oldStart;
+                u32 c11 = c10;
+
+                // increment one line if not last line
+                if(y < endLine-1) {
+                    c01 += originalLineSize;
+                    c11 += originalLineSize;
+                }
+
+                for(u32 i = 0; i < channels; i++) {
+                    auto lerp = blerp(data[c00+i], data[c10+i], data[c01+i], data[c11+i], (float)x/targetWidth, (float)y/targetHeight);
+                    imageBuffer[newStart + i] = (u8)lerp;
+                }
+
+            }
+            
+            // last pixl of line must be copied from the original image
+            std::memcpy(imageBuffer + newStart + channels, data + oldStart + channels, channels);
+        }
+    }
+
+    // ----------------------------------------------------------------------------
     void ResizeTransformation::apply(Image* image) {
         // alloc new data
         u8* imageBuffer = (u8*)malloc(sizeof(u8) * this->width * this->height * image->channels);
@@ -71,7 +122,9 @@ namespace pixl {
         // Run operation on main thread if numThreads <= 1
         if (numThreads <= 1) {
             if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
-                nearest_neighbor(image, imageBuffer, this->width, this->height, 0, this->height);
+                nearest_neighbor(image, imageBuffer, width, height, 0, height);
+            } else if(this->method == ResizeMethod::BILINEAR) {
+                bilinear(image, imageBuffer, width, height, 0, height);
             }
         } else {
             // create n threads
@@ -87,6 +140,7 @@ namespace pixl {
                                                   this->height, chunk * i, last));
                 }
             }
+            // TODO bilinear for multi threads
 
             // wait until everybody is finished
             for (auto& t : threads) {

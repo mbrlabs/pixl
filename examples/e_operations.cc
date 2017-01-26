@@ -35,25 +35,34 @@ void flip() {
 }
 
 void resize() {
-    auto image = pixl::read("../images/bird.jpg");
+    auto image = pixl::read("/home/marcus/Desktop/rms.jpg");
 
     auto ratio = ((float)image->width) / ((float)image->height);
-    ratio /= 2.0;
+    ratio /= 10.0;
 
     pixl::ResizeTransformation resize(image->width * ratio, image->height * ratio);
     pixl::Timer timer;
 
+    // nearest neighbor
     timer.begin();
     resize.apply(image);
     timer.end();
-    PIXL_DEBUG("resize ms: " << timer.time_ms() << " ms");
+    PIXL_DEBUG("nearest neighbor resize ms: " << timer.time_ms() << " ms");
+    pixl::write("rms_resize_nearest_neighbor.jpg", image);
 
-    pixl::write("bird_resize.jpg", image);
+    // bilinear 
+    timer.begin();
+    resize.method = pixl::ResizeMethod::BILINEAR;
+    resize.apply(image);
+    timer.end();
+    PIXL_DEBUG("bilinear resize ms: " << timer.time_ms() << " ms");
+    pixl::write("rms_resize_bilinear.jpg", image);
+
     delete image;
 }
 
 int main() {
-    flip();
+    //flip();
     resize();
     return 0;
 }
