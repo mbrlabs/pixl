@@ -67,17 +67,6 @@ namespace pixl {
     };
 
 
-    // Simple image reader; uses stb_image.
-    //
-    // This reader uses the stb_image library to decode various image formats.
-    // The libraries goal is ease of use, not performance and saftey. So this
-    // reader should only be used in a development enviroment.
-    class StbiReader : public ImageReader {
-    public:
-        Image* read(const char* path);
-    };
-
-
     // libpng reader.
     //
     // This reader uses the official libpng library to decode png images.
@@ -134,9 +123,7 @@ namespace pixl {
             return reader.read(path);
         }
 
-        // other
-        StbiReader reader;
-        return reader.read(path);
+        return nullptr;
     }
 
     // Convenience function for encoding an image.
