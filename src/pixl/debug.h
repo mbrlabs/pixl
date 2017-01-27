@@ -73,7 +73,7 @@ namespace pixl {
         f64 avg = 0;
         f64 min = std::numeric_limits<f64>::max();
         f64 max = std::numeric_limits<f64>::min();
-        for (int i = 0; i < loops; i++) {
+        for (u32 i = 0; i < loops; i++) {
             timer.begin();
             func(timer);
             timer.end();
