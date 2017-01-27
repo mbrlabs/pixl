@@ -18,23 +18,32 @@
 
 
 # This script installs libpixl and various other things.
-# Usage: ./install [lib|tool] 
+# Usage: ./install [lib|py|tool] 
 # 
-# It installs all headers and the shared library to common paths on a unix system.
-# Therefor it must be run as sudo.
+# lib:
+# Installs all headers and the shared library to common paths on a unix system.
+# Must be run as sudo.
 # 
-# Note, that this script does not build the library. This has to be done by hand before 
+# py:
+# Installs the python bindings for the current user using pip
+#
+# tool:
+# TODO
+# 
+# Note, that this script does not build anything. This has to be done by hand before 
 # executing this script.
 
 import os
 import sys
 import shutil
 import platform
+import subprocess
 
-INSTALL_LIBRARY_DIR = "/usr/lib"
-INSTALL_INCLUDE_DIR = "/usr/include/pixl/"
-PIXL_SHARED_LIB = "libpixl.so"
-PIXL_SOURCES = "src/pixl"
+INSTALL_LIBRARY_DIR = '/usr/lib'
+INSTALL_INCLUDE_DIR = '/usr/include/pixl/'
+PIXL_SHARED_LIB = 'libpixl.so'
+PIXL_SOURCES = 'src/pixl'
+PYTHON_PACKAGE = 'python/'
 
 # -----------------------------------------------------------------------------
 def install_lib():
@@ -44,29 +53,34 @@ def install_lib():
 
 	# install header files
 	for file in os.listdir(PIXL_SOURCES):
-		if file.endswith(".h"):
+		if file.endswith('.h'):
 			header = os.path.join(PIXL_SOURCES, file)
-			print("Installing header:", header, "->", INSTALL_INCLUDE_DIR + file)
+			print('Installing header:', header, '->', INSTALL_INCLUDE_DIR + file)
 			shutil.copy(header, INSTALL_INCLUDE_DIR)
 
 	# install shared library
-	print("Installing library", PIXL_SHARED_LIB)
+	print('Installing library', PIXL_SHARED_LIB)
 	shutil.copy(PIXL_SHARED_LIB, INSTALL_LIBRARY_DIR)
 
 # -----------------------------------------------------------------------------
 def install_tool():
-	print("not implemented yet")
+	print('not implemented yet')
+
+# -----------------------------------------------------------------------------
+def install_py_lib():
+	subprocess.call(['pip3', 'install', '--user', '--upgrade', PYTHON_PACKAGE])
 
 # -----------------------------------------------------------------------------
 def print_help():
-	print("Usage: install.py [lib|tool]")
+	print('Usage: install.py [lib|py|tool]')
+
 
 # =============================================================================
 # =============================================================================
 if __name__ == '__main__':
 	# check if linux
-	if not "linux" in platform.platform().lower():
-		print("Ooops, this works only for Linux for now.")
+	if not 'linux' in platform.platform().lower():
+		print('Ooops, this works only for Linux for now.')
 		exit()
 
 	# check args
@@ -76,9 +90,11 @@ if __name__ == '__main__':
 		exit()
 
 	target = args[0]
-	if target == "lib":
+	if target == 'lib':
 		install_lib()
-	elif target == "tool":
+	elif target == 'tool':
 		install_tool()
+	elif target == 'py':
+		install_py_lib()
 	else:
 		print_help()
