@@ -89,7 +89,7 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void PngWriter::write(const char* path, Image* image) {
+    void PngWriter::write(Image* image, const char* path) {
         // create file
         FILE* file = fopen(path, "wb");
         if (!file)

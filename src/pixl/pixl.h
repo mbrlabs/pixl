@@ -49,7 +49,7 @@ void pixl_say_hello();
 
 PixlImage* pixl_load_image(const char* path);
 void pixl_destroy_image(PixlImage* image);
-void pixl_save_image(const char* path, PixlImage* image);
+void pixl_save_image(PixlImage* image, const char* path, int quality);
 
 void pixl_resize(PixlImage* image,
                  unsigned int width,

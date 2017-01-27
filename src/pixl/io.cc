@@ -32,13 +32,14 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    void write(const char* path, Image* image) {
+    void write(Image* image, const char* path, i32 quality) {
         if (is_png(path)) { // png
             PngWriter writer;
-            return writer.write(path, image);
+            return writer.write(image, path);
         } else if (is_jpg(path)) { // jpg
             JpegTurboWriter writer;
-            return writer.write(path, image);
+            writer.quality = quality;
+            return writer.write(image, path);
         }
 
         // TODO throw error or smt

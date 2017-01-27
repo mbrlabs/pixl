@@ -45,8 +45,8 @@ void pixl_destroy_image(PixlImage* image) {
 }
 
 // ----------------------------------------------------------------------------
-void pixl_save_image(const char* path, PixlImage* image) {
-    pixl::write(path, static_cast<pixl::Image*>(image->__handle));
+void pixl_save_image(PixlImage* image, const char* path, int quality) {
+    pixl::write(static_cast<pixl::Image*>(image->__handle), path, quality);
 }
 
 // ----------------------------------------------------------------------------

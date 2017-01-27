@@ -39,7 +39,7 @@ _LIBPIXL.pixl_load_image.argtypes = [c_char_p]
 _LIBPIXL.pixl_load_image.restype = POINTER(IMAGE)
 
 # extern c: pixl_save_image
-_LIBPIXL.pixl_save_image.argtypes = [c_char_p, POINTER(IMAGE)]
+_LIBPIXL.pixl_save_image.argtypes = [POINTER(IMAGE), c_char_p, c_int]
 
 #extern c: pixl_flip
 _LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int, c_uint]
@@ -75,5 +75,5 @@ def flip(image, orientation = Orientation.HORIZONTAL):
 def resize(image, width, height, method):
 	_LIBPIXL.pixl_resize(image._IMAGE, int(width), int(height), method.value, PIXL_THREADS)
 
-def save_image(path, image):
-	_LIBPIXL.pixl_save_image(c_char_p(path.encode()), image._IMAGE)
+def save_image(path, image, quality=75):
+	_LIBPIXL.pixl_save_image(image._IMAGE, c_char_p(path.encode()), quality)

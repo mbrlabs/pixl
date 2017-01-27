@@ -82,7 +82,7 @@ namespace pixl {
     JpegTurboWriter::~JpegTurboWriter() { tjDestroy(this->turboCompressor); }
 
     // ----------------------------------------------------------------------------
-    void JpegTurboWriter::write(const char* path, Image* image) {
+    void JpegTurboWriter::write(Image* image, const char* path) {
         int pitch = image->width * tjPixelSize[TJPF_RGB];
 
         // malloc output buffer for the compressed image

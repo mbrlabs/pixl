@@ -26,7 +26,7 @@ int main() {
 ## Transformations & Filters
 - [ ] Resize
 	- [x] Nearest Neighbor
-	- [ ] Bilinear
+	- [x] Bilinear
 	- [ ] Bicubic
 	- [ ] Lanczos2
 	- [ ] Lanczos3

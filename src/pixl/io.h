@@ -37,7 +37,7 @@ namespace pixl {
         // Encodes an image and writes the file to the specified path.
         // The file extension of the path parameter determines wich image encoder
         // should be used.
-        virtual void write(const char* path, Image* image) = 0;
+        virtual void write(Image* image, const char* path) = 0;
     };
 
 
@@ -54,7 +54,7 @@ namespace pixl {
     // This writer uses the official libpng library to encode png images.
     class PngWriter : public ImageWriter {
     public:
-        void write(const char* path, Image* image);
+        void write(Image* image, const char* path);
     };
 
     // libjpegturbo reader.
@@ -77,8 +77,8 @@ namespace pixl {
     public:
         JpegTurboWriter();
         ~JpegTurboWriter();
-        void write(const char* path, Image* image);
-        i32 quality = 100;
+        void write(Image* image, const char* path);
+        i32 quality = 75;
 
     private:
         void* turboCompressor;
@@ -105,7 +105,7 @@ namespace pixl {
     // This function internally picks an appropriate image encoder.
     // The file extension of the path parameter determines wich image encoder
     // should be used.
-    void write(const char* path, Image* image);
+    void write(Image* image, const char* path, i32 quality = 75);
 }
 
 #endif

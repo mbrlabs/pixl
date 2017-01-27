@@ -34,6 +34,6 @@ int main() {
     chain.apply(image);
 
     // write flipped image
-    pixl::write("lena_chain.png", image);
+    pixl::write(image, "lena_chain.png");
     return 0;
 }

@@ -58,7 +58,7 @@ void Job::start(std::function<void(bool)> handler) {
     // write image
     postInfoMessage("Encoding output image: " + this->output);
     try {
-        pixl::write(this->output.c_str(), image);
+        pixl::write(image, this->output.c_str());
         doneHandler(true);
     } catch (pixl::PixlException e) {
         postInfoMessage("Error while decoding; " + e.getMessage());

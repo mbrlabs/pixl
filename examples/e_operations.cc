@@ -30,7 +30,7 @@ void flip() {
     timer.end();
     PIXL_DEBUG("filp ms: " << timer.time_ms() << " ms");
 
-    pixl::write("lena_flip.png", image);
+    pixl::write(image, "lena_flip.png");
     delete image;
 }
 
@@ -48,7 +48,7 @@ void resize() {
     resize.apply(image);
     timer.end();
     PIXL_DEBUG("nearest neighbor resize ms: " << timer.time_ms() << " ms");
-    pixl::write("rms_resize_nearest_neighbor.jpg", image);
+    pixl::write(image, "rms_resize_nearest_neighbor.jpg");
     delete image;
 
     image = pixl::read("/home/marcus/Desktop/rms.jpg");
@@ -59,7 +59,7 @@ void resize() {
 
     timer.end();
     PIXL_DEBUG("bilinear resize ms: " << timer.time_ms() << " ms");
-    pixl::write("rms_resize_bilinear.jpg", image);
+    pixl::write(image, "rms_resize_bilinear.jpg");
 
     delete image;
 }
