@@ -53,10 +53,16 @@ void pixl_save_image(const char* path, PixlImage* image) {
 void pixl_resize(PixlImage* image,
                  unsigned int width,
                  unsigned int height,
+                 int method,
                  unsigned int num_threads) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
 
-    pixl::ResizeTransformation resize(width, height);
+    pixl::ResizeMethod algo = pixl::ResizeMethod::NEARSET_NEIGHBOR;
+    if (method == PIXL_RESIZE_METHOD_BILINEAR) {
+        algo = pixl::ResizeMethod::BILINEAR;
+    }
+
+    pixl::ResizeTransformation resize(width, height, algo);
     resize.numThreads = num_threads;
     resize.apply(handle);
 

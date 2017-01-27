@@ -45,12 +45,15 @@ _LIBPIXL.pixl_save_image.argtypes = [c_char_p, POINTER(IMAGE)]
 _LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int, c_uint]
 
 #extern c: pixl_resize
-_LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_uint]
+_LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int, c_uint]
 
 class Orientation(enum.Enum):
 	VERTICAL = 0
 	HORIZONTAL = 1
 
+class ResizeMethod(enum.Enum):
+	NEAREST = 0
+	BILINEAR = 1
 
 class Image():
 	def __init__(self, path):
@@ -69,8 +72,8 @@ class Image():
 def flip(image, orientation = Orientation.HORIZONTAL):
 	_LIBPIXL.pixl_flip(image._IMAGE, orientation.value, PIXL_THREADS)
 
-def resize(image, width, height):
-	_LIBPIXL.pixl_resize(image._IMAGE, int(width), int(height), PIXL_THREADS)
+def resize(image, width, height, method):
+	_LIBPIXL.pixl_resize(image._IMAGE, int(width), int(height), method.value, PIXL_THREADS)
 
 def save_image(path, image):
 	_LIBPIXL.pixl_save_image(c_char_p(path.encode()), image._IMAGE)

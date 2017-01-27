@@ -49,11 +49,14 @@ void resize() {
     timer.end();
     PIXL_DEBUG("nearest neighbor resize ms: " << timer.time_ms() << " ms");
     pixl::write("rms_resize_nearest_neighbor.jpg", image);
+    delete image;
 
-    // bilinear 
+    image = pixl::read("/home/marcus/Desktop/rms.jpg");
+    // bilinear
     timer.begin();
     resize.method = pixl::ResizeMethod::BILINEAR;
     resize.apply(image);
+
     timer.end();
     PIXL_DEBUG("bilinear resize ms: " << timer.time_ms() << " ms");
     pixl::write("rms_resize_bilinear.jpg", image);
@@ -62,7 +65,7 @@ void resize() {
 }
 
 int main() {
-    //flip();
+    // flip();
     resize();
     return 0;
 }

@@ -106,7 +106,6 @@ namespace pixl {
     // The file extension of the path parameter determines wich image encoder
     // should be used.
     void write(const char* path, Image* image);
-
 }
 
 #endif

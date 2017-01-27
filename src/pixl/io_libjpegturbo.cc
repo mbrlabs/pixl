@@ -55,15 +55,22 @@ namespace pixl {
         u8* data = (u8*)malloc(pitch * height);
 
         // decode image
-        result = tjDecompress2(turboDecompressor, fileBuffer, fileSize, data, width, pitch, height,
-                               TJPF_RGB, TJFLAG_NOREALLOC);
+        result = tjDecompress2(turboDecompressor,
+                               fileBuffer,
+                               fileSize,
+                               data,
+                               width,
+                               pitch,
+                               height,
+                               TJPF_RGB,
+                               TJFLAG_NOREALLOC);
 
         if (result == -1) {
             PIXL_ERROR("Error: " + std::string(tjGetErrorStr()));
             free(fileBuffer);
             return nullptr;
         }
-        
+
         free(fileBuffer);
         return new Image(width, height, 3, data);
     }
@@ -84,8 +91,17 @@ namespace pixl {
         u64 compressedSize;
 
         // encode jpg
-        tjCompress2(turboCompressor, image->data, image->width, pitch, image->height, TJPF_RGB,
-                    &buffer, &compressedSize, TJSAMP_444, this->quality, 0);
+        tjCompress2(turboCompressor,
+                    image->data,
+                    image->width,
+                    pitch,
+                    image->height,
+                    TJPF_RGB,
+                    &buffer,
+                    &compressedSize,
+                    TJSAMP_444,
+                    this->quality,
+                    0);
 
         // write to disk
         write_binary(path, buffer, compressedSize);

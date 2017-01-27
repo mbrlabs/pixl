@@ -35,6 +35,9 @@ extern "C" {
 static const int PIXL_ORIENTATION_VERTICAL = 0;
 static const int PIXL_ORIENTATION_HORIZONTAL = 1;
 
+static const int PIXL_RESIZE_METHOD_NEAREST = 0;
+static const int PIXL_RESIZE_METHOD_BILINEAR = 1;
+
 struct PixlImage {
     unsigned int width;
     unsigned int height;
@@ -51,6 +54,7 @@ void pixl_save_image(const char* path, PixlImage* image);
 void pixl_resize(PixlImage* image,
                  unsigned int width,
                  unsigned int height,
+                 int method,
                  unsigned int num_threads);
 void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads);
 
