@@ -129,22 +129,18 @@ namespace pixl {
             // create n threads
             std::vector<std::thread> threads;
             threads.reserve(this->numThreads);
+            auto chunk = this->height / numThreads;
+
+            auto func = (method == ResizeMethod::NEARSET_NEIGHBOR) ? nearest_neighbor : bilinear;
 
             // start threads
             if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
-                auto chunk = this->height / numThreads;
                 for (u32 i = 0; i < numThreads; i++) {
                     auto last = (i == numThreads - 1) ? this->height : chunk * i + chunk;
-                    threads.push_back(std::thread(nearest_neighbor,
-                                                  image,
-                                                  imageBuffer,
-                                                  this->width,
-                                                  this->height,
-                                                  chunk * i,
-                                                  last));
+                    threads.push_back(std::thread(
+                        func, image, imageBuffer, this->width, this->height, chunk * i, last));
                 }
             }
-            // TODO bilinear for multi threads
 
             // wait until everybody is finished
             for (auto& t : threads) {

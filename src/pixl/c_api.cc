@@ -21,11 +21,6 @@
 extern "C" {
 
 // ----------------------------------------------------------------------------
-void pixl_say_hello() {
-    std::cout << "Hello from std::cout" << std::endl;
-}
-
-// ----------------------------------------------------------------------------
 PixlImage* pixl_load_image(const char* path) {
     auto handle = pixl::read(path);
 
