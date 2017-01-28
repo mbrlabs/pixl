@@ -20,60 +20,27 @@
 #include "types.h"
 #include "utils.h"
 
-#define GET_DATA_POINTER_AT(x, y) data + (y * channels * width) + (x * channels)
-
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    Image::Image(i32 width, i32 height, i32 channels, u8* data)
-        : width(width), height(height), channels(channels), data(data) {}
+    Image::Image(u32 width, u32 height, u32 channels, u8* data)
+        : width(width),
+          height(height),
+          channels(channels),
+          data(data),
+          size(height * width * channels),
+          lineSize(size * height) {}
 
     // ----------------------------------------------------------------------------
     Image::Image(Image* image)
-        : width(image->width), height(image->height), channels(image->channels) {
-        this->data = (u8*)malloc(height * width * channels);
+        : width(image->width),
+          height(image->height),
+          channels(image->channels),
+          size(height * width * channels),
+          lineSize(size * height) {
+        this->data = (u8*)malloc(size);
     }
 
     // ----------------------------------------------------------------------------
     Image::~Image() { free(data); }
-
-    // ----------------------------------------------------------------------------
-    void Image::setPixel(i32 x, i32 y, const Pixel<u8>& pixel) {
-        u8* start = GET_DATA_POINTER_AT(x, y);
-        if (channels == 4) {
-            *start = pixel.r;
-            *(++start) = pixel.g;
-            *(++start) = pixel.b;
-            *(++start) = pixel.a;
-        } else if (channels == 3) {
-            *start = pixel.r;
-            *(++start) = pixel.g;
-            *(++start) = pixel.b;
-        } else if (channels == 2) {
-            *start = pixel.r;
-            *(++start) = pixel.g;
-        } else {
-            *start = pixel.r;
-        }
-    }
-
-    // ----------------------------------------------------------------------------
-    void Image::getPixel(i32 x, i32 y, Pixel<u8>& pixel) {
-        u8* start = GET_DATA_POINTER_AT(x, y);
-        if (channels == 4) {
-            pixel.r = *start;
-            pixel.g = *(++start);
-            pixel.b = *(++start);
-            pixel.a = *(++start);
-        } else if (channels == 3) {
-            pixel.r = *start;
-            pixel.g = *(++start);
-            pixel.b = *(++start);
-        } else if (channels == 2) {
-            pixel.r = *start;
-            pixel.g = *(++start);
-        } else {
-            pixel.r = *start;
-        }
-    }
 }

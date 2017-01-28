@@ -21,24 +21,30 @@
 
 namespace pixl {
 
-    template <typename T>
-    struct Pixel {
-        T r;
-        T g;
-        T b;
-        T a;
-    };
-
-    struct Image {
-        Image(i32 width, i32 height, i32 channels, u8* data);
+    class Image {
+    public:
+        Image(u32 width, u32 height, u32 channels, u8* data);
         Image(Image* image);
         ~Image();
-        void setPixel(i32 x, i32 y, const Pixel<u8>& pixel);
-        void getPixel(i32 x, i32 y, Pixel<u8>& pixel);
+
+        inline u8* getPixelOrNull(const u32 x, const u32 y) const {
+            auto offset = y * lineSize + x * channels;
+            if (offset >= size)
+                return nullptr;
+            return data + offset;
+        }
+
+        inline u8* getPixel(const u32 x, const u32 y) const {
+            return data + (y * lineSize + x * channels);
+        }
+
+    public:
         i32 width;
         i32 height;
         i32 channels;
         u8* data;
+        u64 size;
+        u64 lineSize;
     };
 }
 

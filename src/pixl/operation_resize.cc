@@ -156,6 +156,8 @@ namespace pixl {
         free(image->data);
         image->width = this->width;
         image->height = this->height;
+        image->lineSize = image->width * image->channels;
+        image->size = image->lineSize * image->height;
         image->data = imageBuffer;
     }
 }

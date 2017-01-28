@@ -28,26 +28,24 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void flip_vertically(Image* img, i32 startColumn, i32 endColumn) {
-        const auto lineSizeInBytes = img->width * img->channels;
-        const auto lastLine = (img->height - 1) * lineSizeInBytes;
+        const auto lastLine = (img->height - 1) * img->lineSize;
         for (i32 column = startColumn; column < endColumn; column++) {
             u8* start = img->data + (column * img->channels);
             u8* end = start + lastLine;
 
             while (start <= end) {
                 aswap(start, end, img->channels);
-                start += lineSizeInBytes;
-                end -= lineSizeInBytes;
+                start += img->lineSize;
+                end -= img->lineSize;
             }
         }
     }
 
     // ----------------------------------------------------------------------------
     void flip_horizontally(Image* img, i32 startLine, i32 endLine) {
-        const auto lineSizeInBytes = img->width * img->channels;
         for (i32 line = startLine; line < endLine; line++) {
-            u8* start = img->data + (line * lineSizeInBytes);
-            u8* end = start + lineSizeInBytes - img->channels;
+            u8* start = img->data + (line * img->lineSize);
+            u8* end = start + img->lineSize - img->channels;
 
             while (start <= end) {
                 aswap(start, end, img->channels);

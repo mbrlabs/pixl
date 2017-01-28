@@ -4,6 +4,8 @@ pixl is a lightweight image processing library, written in C++11.
 The main goals of this project are ease of use and performance. All operations can optionally be run on multiple threads.
 Image decoding/encoding is done by third party libraries. Currently supported image formats are: png and jpeg.
 
+There are also APIs for C and Python.
+
 ## Usage
 ```cpp
 #include <pixl/pixl.h>
