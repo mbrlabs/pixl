@@ -72,7 +72,7 @@ class Image():
 def flip(image, orientation = Orientation.HORIZONTAL):
 	_LIBPIXL.pixl_flip(image._IMAGE, orientation.value, PIXL_THREADS)
 
-def resize(image, width, height, method):
+def resize(image, width, height, method=ResizeMethod.NEAREST):
 	_LIBPIXL.pixl_resize(image._IMAGE, int(width), int(height), method.value, PIXL_THREADS)
 
 def save_image(path, image, quality=75):

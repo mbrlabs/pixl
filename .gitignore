@@ -19,5 +19,3 @@ cmake_install.cmake
 __pycache__/
 *.pyc
 pixl.egg-info/
-
-tester.py

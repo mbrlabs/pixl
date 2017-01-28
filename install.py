@@ -80,7 +80,7 @@ def print_help():
 if __name__ == '__main__':
 	# check if linux
 	if not 'linux' in platform.platform().lower():
-		print('Ooops, this works only for Linux for now.')
+		print('Ooops, this works only for Linux.')
 		exit()
 
 	# check args
