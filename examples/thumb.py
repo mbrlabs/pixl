@@ -47,8 +47,8 @@ def resize_image(file, output):
 	image = pixl.Image(file)
 	width = image.width() * 0.2
 	height = image.height() * 0.2
-	pixl.resize(image, width, height, pixl.ResizeMethod.BILINEAR)
-	pixl.save_image(output_path, image)
+	image.resize(width, height, pixl.ResizeMethod.BILINEAR)
+	image.save(output_path)
 
 	image.destroy()
 

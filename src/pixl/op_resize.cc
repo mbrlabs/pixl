@@ -20,23 +20,10 @@
 #include "utils.h"
 #include "operations.h"
 
-// Performes a floor by casting to an int.
-// Should only be used with values > 0
-#define FAST_FLOOR(x) ((int)(x))
-
-// linear interpolates x between start and end
-#define LERP(start, end, x) (start + (end - start) * x)
-
-namespace pixl { namespace op {
-
-    // bilinear interpolation
-    static inline float blerp(float c00, float c10, float c01, float c11, float x, float y) {
-        return LERP(LERP(c00, c10, x), LERP(c01, c11, x), y);
-    }
+namespace pixl {
 
     // ----------------------------------------------------------------------------
-    // Nearest Neighbor scaling.
-    void resize_nearest(Image* image, u8* out, u32 targetWidth, u32 targetHeight) {
+    void op::resize_nearest(const Image* image, u8* out, u32 targetWidth, u32 targetHeight) {
         // Pre-calc some constants
         const f64 xRatio = image->width / (f64)targetWidth;
         const f64 yRatio = image->height / (f64)targetHeight;
@@ -63,8 +50,7 @@ namespace pixl { namespace op {
     }
 
     // ----------------------------------------------------------------------------
-    // Bilinear scaling.
-    void resize_bilinear(Image* image, u8* out, u32 targetWidth, u32 targetHeight) {
+    void op::resize_bilinear(const Image* image, u8* out, u32 targetWidth, u32 targetHeight) {
         const auto data = image->data;
         const auto channels = image->channels;
 
@@ -75,7 +61,6 @@ namespace pixl { namespace op {
             u32 oldY = y / (float)(targetHeight) * (image->height - 1);
             f32 newYScale = (f32)y / targetHeight;
             u32 currentLineOffset = y * newLineSize;
-
 
             for (u32 x = 0; x < targetWidth; x++) {
                 u32 oldX = x / (float)(targetWidth) * (image->width - 1);
@@ -98,5 +83,4 @@ namespace pixl { namespace op {
             }
         }
     }
-
-}}
+}

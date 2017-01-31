@@ -11,6 +11,7 @@ There are also APIs for C and Python.
 #include <pixl/pixl.h>
 
 int main() {
+	// Resize image
 	auto image = pixl::read("path/to/image.png"); 
 	image->resize(256, 256);
 	pixl::write("path/to/small_image.png", image);

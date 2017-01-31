@@ -22,13 +22,37 @@
 #include "image.h"
 #include "types.h"
 
-namespace pixl { namespace op {
+// Performes a floor by casting to an int. Should only be used with values > 0.
+#define FAST_FLOOR(x) ((int)(x))
 
-    void flip_vertically(Image* img);
-    void flip_horizontally(Image* img);
-    void resize_nearest(Image* img, u8* out, u32 width, u32 height);
-    void resize_bilinear(Image* img, u8* out, u32 width, u32 height);
+// Linear interpolates x between start and end.
+#define LERP(start, end, x) (start + (end - start) * x)
 
-}}
+namespace pixl {
+    namespace op {
+
+        // Bilinear interpolation.
+        inline float blerp(float c00, float c10, float c01, float c11, float x, float y) {
+            return LERP(LERP(c00, c10, x), LERP(c01, c11, x), y);
+        }
+
+
+        // Flips the image vertically.
+        void flip_vertically(Image* img);
+
+        // Flips the image horizontally.
+        void flip_horizontally(Image* img);
+
+        // Resizes the image using the nearest neighbor method.
+        // The original image is not changed. The newly scaled image is stored in
+        // the provided 'out' buffer.
+        void resize_nearest(const Image* img, u8* out, u32 width, u32 height);
+
+        // Resizes the image using the bilinear method.
+        // The original image is not changed. The newly scaled image is stored in
+        // the provided 'out' buffer.
+        void resize_bilinear(const Image* img, u8* out, u32 width, u32 height);
+    }
+}
 
 #endif

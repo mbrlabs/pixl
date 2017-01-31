@@ -36,8 +36,8 @@ def pillow():
 	# pixl
 	start = time.time()
 	image = pixl.Image(IN)
-	pixl.resize(image, TARGET_WIDTH, TARGET_HEIGHT, pixl.ResizeMethod.BILINEAR)
-	pixl.save_image(PIXL_OUT, image)
+	image.resize(TARGET_WIDTH, TARGET_HEIGHT, pixl.ResizeMethod.BILINEAR)
+	image.save(PIXL_OUT)
 	print('pixl:', time.time()-start, "s")
 
 	# pillow

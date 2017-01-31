@@ -56,7 +56,6 @@ namespace pixl {
             return data + (y * lineSize + x * channels);
         }
 
-
         Image* resize(u32 width, u32 height, ResizeMethod method = ResizeMethod::BILINEAR);
         Image* flip(Orientation orientation = Orientation::HORIZONTAL);
 
