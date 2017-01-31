@@ -52,9 +52,9 @@ namespace pixl {
 
         // perform operation
         if (method == ResizeMethod::NEARSET_NEIGHBOR) {
-            resize_nearest(this, imageBuffer, width, height);
+            op::resize_nearest(this, imageBuffer, width, height);
         } else if (method == ResizeMethod::BILINEAR) {
-            resize_bilinear(this, imageBuffer, width, height);
+            op::resize_bilinear(this, imageBuffer, width, height);
         }
 
         // update image
@@ -71,9 +71,9 @@ namespace pixl {
     // ----------------------------------------------------------------------------
     Image* Image::flip(Orientation orientation) {
         if (orientation == Orientation::HORIZONTAL) {
-            flip_horizontally(this);
+            op::flip_horizontally(this);
         } else if (orientation == Orientation::VERTICAL) {
-            flip_vertically(this);
+            op::flip_vertically(this);
         }
 
         return this;

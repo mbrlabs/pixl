@@ -14,17 +14,12 @@
 // limitations under the License.
 //
 
-#include <vector>
-#include <thread>
-
-#include "iostream"
-
 #include "operations.h"
 #include "image.h"
 #include "types.h"
 #include "utils.h"
 
-namespace pixl {
+namespace pixl { namespace op {
 
     // ----------------------------------------------------------------------------
     void flip_vertically(Image* img) {
@@ -54,4 +49,5 @@ namespace pixl {
             }
         }
     }
-}
+
+}}

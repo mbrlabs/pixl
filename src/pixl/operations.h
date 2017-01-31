@@ -22,12 +22,13 @@
 #include "image.h"
 #include "types.h"
 
-namespace pixl {
+namespace pixl { namespace op {
 
     void flip_vertically(Image* img);
     void flip_horizontally(Image* img);
     void resize_nearest(Image* img, u8* out, u32 width, u32 height);
     void resize_bilinear(Image* img, u8* out, u32 width, u32 height);
-}
+
+}}
 
 #endif

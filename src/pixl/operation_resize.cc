@@ -13,11 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#include <cstdlib>
 #include <cstring>
-#include <thread>
-#include <vector>
-#include <math.h>
 
 #include "image.h"
 #include "types.h"
@@ -31,7 +27,7 @@
 // linear interpolates x between start and end
 #define LERP(start, end, x) (start + (end - start) * x)
 
-namespace pixl {
+namespace pixl { namespace op {
 
     // bilinear interpolation
     static inline float blerp(float c00, float c10, float c01, float c11, float x, float y) {
@@ -102,4 +98,5 @@ namespace pixl {
             }
         }
     }
-}
+
+}}

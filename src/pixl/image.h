@@ -19,7 +19,6 @@
 
 #include "types.h"
 
-
 namespace pixl {
 
     enum class Orientation {
