@@ -23,36 +23,39 @@ Python3 bindings for the pixl image processing library.
 import enum
 from ctypes import *
 
-# load the shared library
+# -----------------------------------------------------------------------------
+# Setup bindings
+
+# load shared lib
 _LIBPIXL = cdll.LoadLibrary('libpixl.so')
 
+# native image struct
 class IMAGE(Structure):
 	_fields_ = [('width', c_uint),
 				('height', c_uint),
 				('__handle', c_void_p)]
 
-# extern c: pixl_load_image
 _LIBPIXL.pixl_load_image.argtypes = [c_char_p]
 _LIBPIXL.pixl_load_image.restype = POINTER(IMAGE)
-
-# extern c: pixl_save_image
 _LIBPIXL.pixl_save_image.argtypes = [POINTER(IMAGE), c_char_p, c_int]
-
-#extern c: pixl_flip
 _LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int]
-
-#extern c: pixl_resize
 _LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int]
 
+
+# -----------------------------------------------------------------------------
 class Orientation(enum.Enum):
+	"""Used for some transformation operations."""
 	VERTICAL = 0
 	HORIZONTAL = 1
 
+# -----------------------------------------------------------------------------
 class ResizeMethod(enum.Enum):
+	"""Resize algorithms used in the resize method."""
 	NEAREST = 0
 	BILINEAR = 1
 
-class Image():
+# -----------------------------------------------------------------------------
+class Image:
 	def __init__(self, path):
 		"""Loads the image, located at path."""
 		self._IMAGE = _LIBPIXL.pixl_load_image(c_char_p(path.encode()))

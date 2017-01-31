@@ -22,7 +22,6 @@
 #include "errors.h"
 #include "image.h"
 #include "io.h"
-#include "operations.h"
 #endif
 
 // ----------------------------------------------------------------------------

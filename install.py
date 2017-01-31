@@ -63,6 +63,17 @@ def install_lib():
 	shutil.copy(PIXL_SHARED_LIB, INSTALL_LIBRARY_DIR)
 
 # -----------------------------------------------------------------------------
+def uninstall_lib():
+	# delete headers
+	if os.path.exists(INSTALL_INCLUDE_DIR):
+		shutil.rmtree(INSTALL_INCLUDE_DIR)
+
+	# delete lib
+	lib = os.path.join(INSTALL_LIBRARY_DIR, PIXL_SHARED_LIB)
+	if os.path.exists(lib):
+		os.remove(lib)
+
+# -----------------------------------------------------------------------------
 def install_tool():
 	print('not implemented yet')
 
