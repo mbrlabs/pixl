@@ -24,7 +24,6 @@
 
 int main() {
     auto image = pixl::read(IMAGE_BIRD);
-    pixl::ResizeTransformation resize(26, 16);
 
     pixl::benchmark("test", 20, [&](pixl::Timer& timer) {
         // create new image. Stop measurment for now.
@@ -32,7 +31,7 @@ int main() {
         pixl::Image tmpImage(image);
         timer.resume();
 
-        resize.apply(&tmpImage);
+        tmpImage.resize(26, 16);
     });
 
     return 0;

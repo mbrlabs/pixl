@@ -45,11 +45,7 @@ void pixl_save_image(PixlImage* image, const char* path, int quality) {
 }
 
 // ----------------------------------------------------------------------------
-void pixl_resize(PixlImage* image,
-                 unsigned int width,
-                 unsigned int height,
-                 int method,
-                 unsigned int num_threads) {
+void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, int method) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
 
     pixl::ResizeMethod algo = pixl::ResizeMethod::NEARSET_NEIGHBOR;
@@ -57,16 +53,13 @@ void pixl_resize(PixlImage* image,
         algo = pixl::ResizeMethod::BILINEAR;
     }
 
-    pixl::ResizeTransformation resize(width, height, algo);
-    resize.numThreads = num_threads;
-    resize.apply(handle);
-
+    handle->resize(width, height, algo);
     image->width = width;
     image->height = height;
 }
 
 // ----------------------------------------------------------------------------
-void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads) {
+void pixl_flip(PixlImage* image, int orientation) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
 
     pixl::Orientation orient;
@@ -78,8 +71,6 @@ void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads) {
         return;
     }
 
-    pixl::FlipTransformation flip(orient);
-    flip.numThreads = num_threads;
-    flip.apply(handle);
+    handle->flip(orient);
 }
 }

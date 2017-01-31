@@ -22,7 +22,7 @@
 #include "errors.h"
 #include "image.h"
 #include "io.h"
-#include "operation.h"
+#include "operations.h"
 #endif
 
 // ----------------------------------------------------------------------------
@@ -49,12 +49,8 @@ PixlImage* pixl_load_image(const char* path);
 void pixl_destroy_image(PixlImage* image);
 void pixl_save_image(PixlImage* image, const char* path, int quality);
 
-void pixl_resize(PixlImage* image,
-                 unsigned int width,
-                 unsigned int height,
-                 int method,
-                 unsigned int num_threads);
-void pixl_flip(PixlImage* image, int orientation, unsigned int num_threads);
+void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, int method);
+void pixl_flip(PixlImage* image, int orientation);
 
 #ifdef __cplusplus
 }

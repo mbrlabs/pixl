@@ -19,7 +19,21 @@
 
 #include "types.h"
 
+
 namespace pixl {
+
+    enum class Orientation {
+        HORIZONTAL,
+        VERTICAL,
+    };
+
+    enum class ResizeMethod {
+        NEARSET_NEIGHBOR,
+        BILINEAR,
+        // BICUBIC,
+        // LANCZOS_2,
+        // LANCZOS_3,
+    };
 
     class Image {
     public:
@@ -27,6 +41,8 @@ namespace pixl {
         Image(Image* image);
         ~Image();
 
+        // Returns a pointer to the start of the pixel at x,y.
+        // This method performes a bounds check and returns a nullptr if x,y is out of bounds.
         inline u8* getPixelOrNull(const u32 x, const u32 y) const {
             auto offset = y * lineSize + x * channels;
             if (offset >= size)
@@ -34,9 +50,16 @@ namespace pixl {
             return data + offset;
         }
 
+        // Returns a pointer to the start of the pixel at x,y.
+        // This method performes no bound checks and results in undefined behaviour if x,y is out of
+        // bounds.
         inline u8* getPixel(const u32 x, const u32 y) const {
             return data + (y * lineSize + x * channels);
         }
+
+
+        Image* resize(u32 width, u32 height, ResizeMethod method = ResizeMethod::BILINEAR);
+        Image* flip(Orientation orientation = Orientation::HORIZONTAL);
 
     public:
         i32 width;

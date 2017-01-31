@@ -21,7 +21,10 @@
 #include "job.h"
 
 // ----------------------------------------------------------------------------
-Job::Job(std::string name, std::string input, std::string output, pixl::Operation* operation)
+Job::Job(std::string name,
+         std::string input,
+         std::string output,
+         std::function<void(pixl::Image*)> operation)
     : name(name), input(input), output(output), operation(operation) {
 }
 
@@ -53,7 +56,7 @@ void Job::start(std::function<void(bool)> handler) {
 
     // apply operation
     postInfoMessage("Applying operation");
-    operation->apply(image);
+    operation(image);
 
     // write image
     postInfoMessage("Encoding output image: " + this->output);

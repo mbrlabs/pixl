@@ -14,26 +14,20 @@
 // limitations under the License.
 //
 
-#include <pixl/pixl.h>
+#ifndef PIXL_TRANSFORM_H
+#define PIXL_TRANSFORM_H
 
-int main() {
-    // load image
-    auto image = pixl::read("../images/lena.png");
+#include <vector>
 
-    // create operations
-    pixl::FlipTransformation flipH;
-    pixl::FlipTransformation flipV;
-    flipV.orientation = pixl::Orientation::VERTICAL;
+#include "image.h"
+#include "types.h"
 
-    // add them to the chain
-    pixl::OperationChain chain;
-    chain.add(&flipH);
-    chain.add(&flipV);
+namespace pixl {
 
-    // apply chain
-    chain.apply(image);
-
-    // write flipped image
-    pixl::write(image, "lena_chain.png");
-    return 0;
+    void flip_vertically(Image* img);
+    void flip_horizontally(Image* img);
+    void resize_nearest(Image* img, u8* out, u32 width, u32 height);
+    void resize_bilinear(Image* img, u8* out, u32 width, u32 height);
 }
+
+#endif

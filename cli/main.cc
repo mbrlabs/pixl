@@ -74,6 +74,7 @@ int main(int argc, char** argv) {
 }
 
 // ----------------------------------------------------------------------------
+/*
 void execute_operation(std::string name,
                        std::string& input,
                        std::string& output,
@@ -89,6 +90,7 @@ void execute_operation(std::string name,
         }
     });
 }
+*/
 
 // ----------------------------------------------------------------------------
 void process_command(CliParserResult& result) {
@@ -111,12 +113,10 @@ void process_command(CliParserResult& result) {
     // Resize
     if (cmd == &resizeCmd) {
         // TODO parse width, height from cli result
-        pixl::ResizeTransformation resize(512, 512);
-        execute_operation("resize", inputArg.param, outputArg.param, &resize);
+        // execute_operation("resize", inputArg.param, outputArg.param, &resize);
         // Flip
     } else if (cmd == &flipCmd) {
-        pixl::FlipTransformation flip;
         // TODO parse orientation from cli result
-        execute_operation("flip", inputArg.param, outputArg.param, &flip);
+        // execute_operation("flip", inputArg.param, outputArg.param, &flip);
     }
 }

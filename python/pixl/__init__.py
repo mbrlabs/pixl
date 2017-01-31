@@ -23,9 +23,6 @@ TODO package docstring
 import enum
 from ctypes import *
 
-# default values
-PIXL_THREADS = 1
-
 # load the shared library
 _LIBPIXL = cdll.LoadLibrary('libpixl.so')
 
@@ -42,10 +39,10 @@ _LIBPIXL.pixl_load_image.restype = POINTER(IMAGE)
 _LIBPIXL.pixl_save_image.argtypes = [POINTER(IMAGE), c_char_p, c_int]
 
 #extern c: pixl_flip
-_LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int, c_uint]
+_LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int]
 
 #extern c: pixl_resize
-_LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int, c_uint]
+_LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int]
 
 class Orientation(enum.Enum):
 	VERTICAL = 0
@@ -70,10 +67,10 @@ class Image():
 
 
 def flip(image, orientation = Orientation.HORIZONTAL):
-	_LIBPIXL.pixl_flip(image._IMAGE, orientation.value, PIXL_THREADS)
+	_LIBPIXL.pixl_flip(image._IMAGE, orientation.value)
 
 def resize(image, width, height, method=ResizeMethod.NEAREST):
-	_LIBPIXL.pixl_resize(image._IMAGE, int(width), int(height), method.value, PIXL_THREADS)
+	_LIBPIXL.pixl_resize(image._IMAGE, int(width), int(height), method.value)
 
 def save_image(path, image, quality=75):
 	_LIBPIXL.pixl_save_image(image._IMAGE, c_char_p(path.encode()), quality)

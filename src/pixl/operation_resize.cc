@@ -22,7 +22,7 @@
 #include "image.h"
 #include "types.h"
 #include "utils.h"
-#include "operation.h"
+#include "operations.h"
 
 // Performes a floor by casting to an int.
 // Should only be used with values > 0
@@ -31,21 +31,16 @@
 // linear interpolates x between start and end
 #define LERP(start, end, x) (start + (end - start) * x)
 
-// bilinear interpolation
-static inline float blerp(float c00, float c10, float c01, float c11, float x, float y) {
-    return LERP(LERP(c00, c10, x), LERP(c01, c11, x), y);
-}
-
 namespace pixl {
+
+    // bilinear interpolation
+    static inline float blerp(float c00, float c10, float c01, float c11, float x, float y) {
+        return LERP(LERP(c00, c10, x), LERP(c01, c11, x), y);
+    }
 
     // ----------------------------------------------------------------------------
     // Nearest Neighbor scaling.
-    void nearest_neighbor(const Image* image,
-                          u8* imageBuffer,
-                          u32 targetWidth,
-                          u32 targetHeight,
-                          u32 startLine,
-                          u32 endLine) {
+    void resize_nearest(Image* image, u8* out, u32 targetWidth, u32 targetHeight) {
         // Pre-calc some constants
         const f64 xRatio = image->width / (f64)targetWidth;
         const f64 yRatio = image->height / (f64)targetHeight;
@@ -57,7 +52,7 @@ namespace pixl {
         // Go through each image line
         i32 newStart, oldStart;
         i32 scaledOriginalLineSize;
-        for (u32 y = startLine; y < endLine; y++) {
+        for (u32 y = 0; y < targetHeight; y++) {
             scaledOriginalLineSize = FAST_FLOOR(y * yRatio) * originalLineSize;
 
             for (u32 x = 0; x < targetWidth; x++) {
@@ -66,19 +61,14 @@ namespace pixl {
                 oldStart = scaledOriginalLineSize + FAST_FLOOR(x * xRatio) * channels;
 
                 // copy values from the old pixel array to the new one
-                std::memcpy(imageBuffer + newStart, image->data + oldStart, channels);
+                std::memcpy(out + newStart, image->data + oldStart, channels);
             }
         }
     }
 
     // ----------------------------------------------------------------------------
     // Bilinear scaling.
-    void bilinear(const Image* image,
-                  u8* imageBuffer,
-                  u32 targetWidth,
-                  u32 targetHeight,
-                  u32 startLine,
-                  u32 endLine) {
+    void resize_bilinear(Image* image, u8* out, u32 targetWidth, u32 targetHeight) {
         const auto data = image->data;
         const auto channels = image->channels;
 
@@ -102,58 +92,14 @@ namespace pixl {
                 u32 newStart = currentLineOffset + x * channels;
                 f32 newXScale = (f32)x / targetWidth;
                 for (auto i = 0; i < channels; i++) {
-                    imageBuffer[newStart + i] = blerp(data[c00 + i],
-                                                      data[c10 + i],
-                                                      data[c01 + i],
-                                                      data[c11 + i],
-                                                      newXScale,
-                                                      newYScale);
+                    out[newStart + i] = blerp(data[c00 + i],
+                                              data[c10 + i],
+                                              data[c01 + i],
+                                              data[c11 + i],
+                                              newXScale,
+                                              newYScale);
                 }
             }
         }
-    }
-
-    // ----------------------------------------------------------------------------
-    void ResizeTransformation::apply(Image* image) {
-        // alloc new data
-        u8* imageBuffer = (u8*)malloc(sizeof(u8) * this->width * this->height * image->channels);
-
-        // Run operation on main thread if numThreads <= 1
-        if (numThreads <= 1) {
-            if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
-                nearest_neighbor(image, imageBuffer, width, height, 0, height);
-            } else if (this->method == ResizeMethod::BILINEAR) {
-                bilinear(image, imageBuffer, width, height, 0, height);
-            }
-        } else {
-            // create n threads
-            std::vector<std::thread> threads;
-            threads.reserve(this->numThreads);
-            auto chunk = this->height / numThreads;
-
-            auto func = (method == ResizeMethod::NEARSET_NEIGHBOR) ? nearest_neighbor : bilinear;
-
-            // start threads
-            if (this->method == ResizeMethod::NEARSET_NEIGHBOR) {
-                for (u32 i = 0; i < numThreads; i++) {
-                    auto last = (i == numThreads - 1) ? this->height : chunk * i + chunk;
-                    threads.push_back(std::thread(
-                        func, image, imageBuffer, this->width, this->height, chunk * i, last));
-                }
-            }
-
-            // wait until everybody is finished
-            for (auto& t : threads) {
-                t.join();
-            }
-        }
-
-        // update image
-        free(image->data);
-        image->width = this->width;
-        image->height = this->height;
-        image->lineSize = image->width * image->channels;
-        image->size = image->lineSize * image->height;
-        image->data = imageBuffer;
     }
 }

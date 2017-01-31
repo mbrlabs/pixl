@@ -19,6 +19,7 @@
 #include "image.h"
 #include "types.h"
 #include "utils.h"
+#include "operations.h"
 
 namespace pixl {
 
@@ -43,4 +44,38 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     Image::~Image() { free(data); }
+
+    // ----------------------------------------------------------------------------
+    Image* Image::resize(u32 width, u32 height, ResizeMethod method) {
+        // malloc new data
+        u8* imageBuffer = (u8*)malloc(sizeof(u8) * width * height * this->channels);
+
+        // perform operation
+        if (method == ResizeMethod::NEARSET_NEIGHBOR) {
+            resize_nearest(this, imageBuffer, width, height);
+        } else if (method == ResizeMethod::BILINEAR) {
+            resize_bilinear(this, imageBuffer, width, height);
+        }
+
+        // update image
+        free(this->data);
+        this->data = imageBuffer;
+        this->width = width;
+        this->height = height;
+        this->lineSize = width * this->channels;
+        this->size = height * this->lineSize;
+
+        return this;
+    }
+
+    // ----------------------------------------------------------------------------
+    Image* Image::flip(Orientation orientation) {
+        if (orientation == Orientation::HORIZONTAL) {
+            flip_horizontally(this);
+        } else if (orientation == Orientation::VERTICAL) {
+            flip_vertically(this);
+        }
+
+        return this;
+    }
 }
