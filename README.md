@@ -32,6 +32,7 @@ int main() {
 	- [x] Vertically
 - [ ] Crop
 - [ ] Rotate
+- [x] Grayscale
 
 ## Dependencies
 The following libraries must be on the system:

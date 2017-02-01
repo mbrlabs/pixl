@@ -50,6 +50,7 @@ void pixl_save_image(PixlImage* image, const char* path, int quality);
 
 void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, int method);
 void pixl_flip(PixlImage* image, int orientation);
+void pixl_grayscale(PixlImage* image);
 
 #ifdef __cplusplus
 }

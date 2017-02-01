@@ -40,6 +40,7 @@ _LIBPIXL.pixl_load_image.restype = POINTER(IMAGE)
 _LIBPIXL.pixl_save_image.argtypes = [POINTER(IMAGE), c_char_p, c_int]
 _LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int]
 _LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int]
+_LIBPIXL.pixl_grayscale.argtypes = [POINTER(IMAGE)]
 
 
 # -----------------------------------------------------------------------------
@@ -91,6 +92,14 @@ class Image:
 		"""
 		_LIBPIXL.pixl_resize(self._IMAGE, int(width), int(height), method.value)
 		return self
+
+	def grayscale(self):
+		"""
+		Grayscales the image.
+		"""
+		_LIBPIXL.pixl_grayscale(self._IMAGE)
+		return self
+
 
 	def save(self, path, quality=75):
 		"""

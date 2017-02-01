@@ -30,7 +30,7 @@ namespace pixl {
           channels(channels),
           data(data),
           size(height * width * channels),
-          lineSize(size * height) {}
+          lineSize(channels * width) {}
 
     // ----------------------------------------------------------------------------
     Image::Image(Image* image)
@@ -38,7 +38,7 @@ namespace pixl {
           height(image->height),
           channels(image->channels),
           size(height * width * channels),
-          lineSize(size * height) {
+          lineSize(channels * width) {
         this->data = (u8*)malloc(size);
     }
 
@@ -78,4 +78,11 @@ namespace pixl {
 
         return this;
     }
+
+    // ----------------------------------------------------------------------------
+    Image* Image::grayscale() {
+        op::grayscale(this);
+        return this;
+    }
+
 }

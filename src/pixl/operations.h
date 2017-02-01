@@ -36,7 +36,6 @@ namespace pixl {
             return LERP(LERP(c00, c10, x), LERP(c01, c11, x), y);
         }
 
-
         // Flips the image vertically.
         void flip_vertically(Image* img);
 
@@ -52,6 +51,8 @@ namespace pixl {
         // The original image is not changed. The newly scaled image is stored in
         // the provided 'out' buffer.
         void resize_bilinear(const Image* img, u8* out, u32 width, u32 height);
+
+        void grayscale(Image* img);
     }
 }
 

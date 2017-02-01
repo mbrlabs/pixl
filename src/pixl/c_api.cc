@@ -73,4 +73,11 @@ void pixl_flip(PixlImage* image, int orientation) {
 
     handle->flip(orient);
 }
+
+// ----------------------------------------------------------------------------
+void pixl_grayscale(PixlImage* image) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    handle->grayscale();
+}
+
 }

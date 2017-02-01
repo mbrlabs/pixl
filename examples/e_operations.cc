@@ -34,7 +34,7 @@ void flip() {
 }
 
 void resize() {
-    auto image = pixl::read("/home/marcus/Desktop/rms.jpg");
+    auto image = pixl::read(IMAGE_BIRD);
 
     auto ratio = ((float)image->width) / ((float)image->height);
     ratio /= 10.0;
@@ -49,22 +49,30 @@ void resize() {
     image->resize(newWidth, newHeight, pixl::ResizeMethod::NEARSET_NEIGHBOR);
     timer.end();
     PIXL_DEBUG("nearest neighbor resize ms: " << timer.time_ms() << " ms");
-    pixl::write(image, "rms_resize_nearest_neighbor.jpg");
+    pixl::write(image, "bird_resize_nearest_neighbor.jpg");
     delete image;
 
     // bilinear
-    image = pixl::read("/home/marcus/Desktop/rms.jpg");
+    image = pixl::read(IMAGE_BIRD);
     timer.begin();
     image->resize(newWidth, newHeight, pixl::ResizeMethod::BILINEAR);
     timer.end();
     PIXL_DEBUG("bilinear resize ms: " << timer.time_ms() << " ms");
-    pixl::write(image, "rms_resize_bilinear.jpg");
+    pixl::write(image, "bird_resize_bilinear.jpg");
 
+    delete image;
+}
+
+void grayscale() {
+    auto image = pixl::read(IMAGE_LENA);
+    image->grayscale();
+    pixl::write(image, "lena_gray.jpg");
     delete image;
 }
 
 int main() {
     // flip();
-    resize();
+    //resize();
+    grayscale();
     return 0;
 }
