@@ -18,7 +18,6 @@
 #define PIXL_TRANSFORM_H
 
 #include <vector>
-#include <array>
 
 #include "image.h"
 #include "types.h"
@@ -55,7 +54,7 @@ namespace pixl {
 
         void grayscale(Image* img);
 
-        void convolution(Image* img, const std::array<f32, 9> kernel, const f32 scale);
+        void convolution(Image* img, const Kernel kernel, const f32 scale);
     }
 }
 

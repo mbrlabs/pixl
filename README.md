@@ -33,6 +33,7 @@ int main() {
 - [ ] Crop
 - [ ] Rotate
 - [x] Grayscale
+- [x] Convolution Matrix
 
 ## Dependencies
 The following libraries must be on the system:

@@ -36,6 +36,8 @@ namespace pixl {
         // LANCZOS_3,
     };
 
+    typedef std::array<f32, 9> Kernel;
+
     class Image {
     public:
         Image(u32 width, u32 height, u32 channels, u8* data);
@@ -61,7 +63,7 @@ namespace pixl {
         Image* resize(u32 width, u32 height, ResizeMethod method = ResizeMethod::BILINEAR);
         Image* flip(Orientation orientation = Orientation::HORIZONTAL);
         Image* grayscale();
-        Image* convolution(const std::array<f32, 9> kernel, f32 scale = 1);
+        Image* convolution(const Kernel kernel, f32 scale = 1);
 
     public:
         u8* data;

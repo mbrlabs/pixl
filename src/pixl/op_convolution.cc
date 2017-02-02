@@ -26,7 +26,7 @@
 namespace pixl {
 
     // ----------------------------------------------------------------------------
-    void op::convolution(Image* img, const std::array<f32, 9> kernel, const f32 scale) {
+    void op::convolution(Image* img, const Kernel kernel, const f32 scale) {
         // TODO throw error
         if (img->width < 3 || img->height < 3) {
             PIXL_DEBUG("For a convolution the image must be at least 3x3");
@@ -39,9 +39,9 @@ namespace pixl {
         u8* buffer = (u8*)malloc(img->size);
         std::memcpy(buffer, img->data, img->size);
 
-        for (u32 y = 1; y < img->height - 1; y++) {
+        for (i32 y = 1; y < img->height - 1; y++) {
             const auto yOffset = y * img->lineSize;
-            for (u32 x = 1; x < img->width - 1; x++) {
+            for (i32 x = 1; x < img->width - 1; x++) {
                 const auto xOffset = x * channels;
 
                 // apply kernel

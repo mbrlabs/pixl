@@ -87,7 +87,7 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
-    Image* Image::convolution(const std::array<f32, 9> kernel, f32 scale) {
+    Image* Image::convolution(const Kernel kernel, f32 scale) {
         op::convolution(this, kernel, scale);
         return this;
     }
