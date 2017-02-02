@@ -26,7 +26,7 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     Image::Image(u32 width, u32 height, u32 channels, u8* data)
-        : data(data), 
+        : data(data),
           width(width),
           height(height),
           channels(channels),

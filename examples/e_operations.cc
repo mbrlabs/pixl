@@ -76,12 +76,8 @@ void convolution() {
     auto image = pixl::read(IMAGE_BIRD);
 
     // edge detect
-    /* std::array<float, 9> edge = {
-         0,1,0,
-         1,-4,1,
-         0,1,0
-     };
-     image->convolution(edge); */
+    // std::array<float, 9> edge = {0,1,0,1,-4,1,0,1,0};
+    // image->convolution(edge); 
 
     // emboss detect
     std::array<float, 9> emboss = {-2, -1, 0, -1, 1, 1, 0, 1, 2};

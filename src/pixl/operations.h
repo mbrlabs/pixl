@@ -52,8 +52,10 @@ namespace pixl {
         // the provided 'out' buffer.
         void resize_bilinear(const Image* img, u8* out, u32 width, u32 height);
 
+        // Grayscales the image while keeping all channels.
         void grayscale(Image* img);
 
+        // Applies a 3x3 convolution matrix to the image.
         void convolution(Image* img, const Kernel kernel, const f32 scale);
     }
 }

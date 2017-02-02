@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include "pixl.h"
+#include "debug.h"
 
 extern "C" {
 
@@ -79,4 +80,20 @@ void pixl_grayscale(PixlImage* image) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     handle->grayscale();
 }
+
+// ----------------------------------------------------------------------------
+void pixl_convolution(PixlImage* image, float kernel[9], float scale) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    pixl::Kernel k = {kernel[0],
+                       kernel[1],
+                       kernel[2],
+                       kernel[3],
+                       kernel[4],
+                       kernel[5],
+                       kernel[6],
+                       kernel[7],
+                       kernel[8]};
+    handle->convolution(k, scale);
+}
+
 }
