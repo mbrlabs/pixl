@@ -82,6 +82,12 @@ void pixl_grayscale(PixlImage* image) {
 }
 
 // ----------------------------------------------------------------------------
+void pixl_invert(PixlImage* image) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    handle->invert();
+}
+
+// ----------------------------------------------------------------------------
 void pixl_convolution(PixlImage* image, float kernel[9], float scale) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     pixl::Kernel k = {kernel[0],

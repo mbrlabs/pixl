@@ -62,8 +62,9 @@ namespace pixl {
 
         Image* resize(u32 width, u32 height, ResizeMethod method = ResizeMethod::BILINEAR);
         Image* flip(Orientation orientation = Orientation::HORIZONTAL);
-        Image* grayscale();
         Image* convolution(const Kernel kernel, f32 scale = 1);
+        Image* grayscale();
+        Image* invert();
 
     public:
         u8* data;

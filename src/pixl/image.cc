@@ -87,6 +87,12 @@ namespace pixl {
     }
 
     // ----------------------------------------------------------------------------
+    Image* Image::invert() {
+        op::invert(this);
+        return this;
+    }
+
+    // ----------------------------------------------------------------------------
     Image* Image::convolution(const Kernel kernel, f32 scale) {
         op::convolution(this, kernel, scale);
         return this;

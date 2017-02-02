@@ -41,6 +41,7 @@ _LIBPIXL.pixl_save_image.argtypes = [POINTER(IMAGE), c_char_p, c_int]
 _LIBPIXL.pixl_flip.argtypes = [POINTER(IMAGE), c_int]
 _LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int]
 _LIBPIXL.pixl_grayscale.argtypes = [POINTER(IMAGE)]
+_LIBPIXL.pixl_invert.argtypes = [POINTER(IMAGE)]
 _LIBPIXL.pixl_convolution.argtypes = [POINTER(IMAGE), c_float*9, c_float]
 
 
@@ -99,6 +100,13 @@ class Image:
 		Grayscales the image.
 		"""
 		_LIBPIXL.pixl_grayscale(self._IMAGE)
+		return self
+
+	def invert(self):
+		"""
+		Inverts all color values of the image.
+		"""
+		_LIBPIXL.pixl_invert(self._IMAGE)
 		return self
 
 	def convolution(self, kernel, scale):

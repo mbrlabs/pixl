@@ -55,8 +55,12 @@ namespace pixl {
         // Grayscales the image while keeping all channels.
         void grayscale(Image* img);
 
+        // Inverts all color values of the image.
+        void invert(Image* img);
+
         // Applies a 3x3 convolution matrix to the image.
         void convolution(Image* img, const Kernel kernel, const f32 scale);
+
     }
 }
 
