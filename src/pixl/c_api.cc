@@ -79,5 +79,4 @@ void pixl_grayscale(PixlImage* image) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     handle->grayscale();
 }
-
 }

@@ -24,17 +24,17 @@
 
 
 namespace pixl {
-    
+
     // ----------------------------------------------------------------------------
-    void op::grayscale(Image* img) {       
-        for(auto y = 0; y < img->height; y++) {
-            for(auto x = 0; x < img->width; x++) {
+    void op::grayscale(Image* img) {
+        for (auto y = 0; y < img->height; y++) {
+            for (auto x = 0; x < img->width; x++) {
                 auto pixel = img->getPixel(x, y);
 
                 // calc mean
                 f32 mean = 0;
-                for(u8 c = 0; c < img->channels; c++) {
-                    mean += (f32) *(pixel+c);
+                for (u8 c = 0; c < img->channels; c++) {
+                    mean += (f32) * (pixel + c);
                 }
                 mean /= img->channels;
 
@@ -43,5 +43,4 @@ namespace pixl {
             }
         }
     }
-
 }

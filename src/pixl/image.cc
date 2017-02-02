@@ -26,10 +26,10 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     Image::Image(u32 width, u32 height, u32 channels, u8* data)
-        : width(width),
+        : data(data), 
+          width(width),
           height(height),
           channels(channels),
-          data(data),
           size(height * width * channels),
           lineSize(channels * width) {}
 
@@ -91,6 +91,4 @@ namespace pixl {
         op::convolution(this, kernel, scale);
         return this;
     }
-
-
 }

@@ -26,11 +26,7 @@
 int main() {
     auto image = pixl::read(IMAGE_BIRD);
 
-    std::array<float, 9> edge = {
-        0,1,0,
-        1,-4,1,
-        0,1,0
-    };
+    std::array<float, 9> edge = {0, 1, 0, 1, -4, 1, 0, 1, 0};
 
     pixl::benchmark("test", 20, [&](pixl::Timer& timer) {
         // create new image. Stop measurment for now.

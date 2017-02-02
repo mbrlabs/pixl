@@ -64,10 +64,10 @@ namespace pixl {
         Image* convolution(const std::array<f32, 9> kernel, f32 scale = 1);
 
     public:
+        u8* data;
         i32 width;
         i32 height;
         i32 channels;
-        u8* data;
         u64 size;
         u64 lineSize;
     };
