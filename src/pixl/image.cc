@@ -15,6 +15,7 @@
 //
 
 #include <cstdlib>
+#include <array>
 
 #include "image.h"
 #include "types.h"
@@ -84,5 +85,12 @@ namespace pixl {
         op::grayscale(this);
         return this;
     }
+
+    // ----------------------------------------------------------------------------
+    Image* Image::convolution(const std::array<f32, 9> kernel, f32 scale) {
+        op::convolution(this, kernel, scale);
+        return this;
+    }
+
 
 }

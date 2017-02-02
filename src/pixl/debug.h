@@ -87,9 +87,8 @@ namespace pixl {
 
         std::cout << "------------------------------------------------------" << std::endl;
         std::cout << "Benchmark results for: " << name << std::endl;
-        std::cout << "[" << loops << " runs] -> "
-                                     "min: " << min << " ms, max: " << max << " ms, avg: " << avg
-                  << " ms" << std::endl;
+        std::cout << "[" << loops << " runs] -> " << "avg: " << avg << ", max: " 
+                    << max << " ms, min: " << min << " ms" << std::endl;
         std::cout << "------------------------------------------------------" << std::endl;
     }
 }

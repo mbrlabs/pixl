@@ -18,6 +18,7 @@
 #define PIXL_TRANSFORM_H
 
 #include <vector>
+#include <array>
 
 #include "image.h"
 #include "types.h"
@@ -53,6 +54,8 @@ namespace pixl {
         void resize_bilinear(const Image* img, u8* out, u32 width, u32 height);
 
         void grayscale(Image* img);
+
+        void convolution(Image* img, const std::array<f32, 9> kernel, const f32 scale);
     }
 }
 

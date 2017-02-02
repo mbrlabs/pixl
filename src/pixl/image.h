@@ -17,6 +17,8 @@
 #ifndef PIXL_IMAGE_H
 #define PIXL_IMAGE_H
 
+#include <array>
+
 #include "types.h"
 
 namespace pixl {
@@ -59,6 +61,7 @@ namespace pixl {
         Image* resize(u32 width, u32 height, ResizeMethod method = ResizeMethod::BILINEAR);
         Image* flip(Orientation orientation = Orientation::HORIZONTAL);
         Image* grayscale();
+        Image* convolution(const std::array<f32, 9> kernel, f32 scale = 1);
 
     public:
         i32 width;
