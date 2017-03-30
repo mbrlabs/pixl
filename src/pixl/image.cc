@@ -34,17 +34,30 @@ namespace pixl {
           lineSize(channels * width) {}
 
     // ----------------------------------------------------------------------------
+    Image::Image(u32 width, u32 height, u32 channels)
+        : data(data),
+          width(width),
+          height(height),
+          channels(channels),
+          size(height * width * channels),
+          lineSize(channels * width) 
+    {
+        this->data = (u8*)malloc(this->size);
+    }
+
+    // ----------------------------------------------------------------------------
     Image::Image(Image* image)
         : width(image->width),
           height(image->height),
           channels(image->channels),
           size(height * width * channels),
-          lineSize(channels * width) {
-        this->data = (u8*)malloc(size);
+          lineSize(channels * width) 
+    {
+        this->data = (u8*)malloc(this->size);
     }
 
     // ----------------------------------------------------------------------------
-    Image::~Image() { free(data); }
+    Image::~Image() { free(this->data); }
 
     // ----------------------------------------------------------------------------
     Image* Image::resize(u32 width, u32 height, ResizeMethod method) {

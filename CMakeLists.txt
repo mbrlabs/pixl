@@ -59,6 +59,12 @@ target_include_directories(e_operations PUBLIC src/)
 target_link_libraries(e_operations apixl)
 
 # --------------------------------------------------------------------------
+# examples/mandelbrot.cc
+add_executable(e_mandelbrot examples/e_mandelbrot.cc)
+target_include_directories(e_mandelbrot PUBLIC src/)
+target_link_libraries(e_mandelbrot apixl)
+
+# --------------------------------------------------------------------------
 # examples/bench.cc
 add_executable(bench examples/bench.cc)
 target_include_directories(bench PUBLIC src/)

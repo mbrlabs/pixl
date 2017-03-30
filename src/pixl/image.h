@@ -41,6 +41,7 @@ namespace pixl {
     class Image {
     public:
         Image(u32 width, u32 height, u32 channels, u8* data);
+        Image(u32 width, u32 height, u32 channels);        
         Image(Image* image);
         ~Image();
 
