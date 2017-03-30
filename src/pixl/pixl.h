@@ -37,22 +37,22 @@ static const int PIXL_ORIENTATION_HORIZONTAL = 1;
 static const int PIXL_RESIZE_METHOD_NEAREST = 0;
 static const int PIXL_RESIZE_METHOD_BILINEAR = 1;
 
-struct PixlImage {
+struct CPixlImage {
     unsigned int width;
     unsigned int height;
     void* __handle;
 };
-typedef struct PixlImage PixlImage;
+typedef struct CPixlImage CPixlImage;
 
-PixlImage* pixl_load_image(const char* path);
-void pixl_destroy_image(PixlImage* image);
-void pixl_save_image(PixlImage* image, const char* path, int quality);
+CPixlImage* pixl_load_image(const char* path);
+void pixl_destroy_image(CPixlImage* image);
+void pixl_save_image(CPixlImage* image, const char* path, int quality);
 
-void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, int method);
-void pixl_flip(PixlImage* image, int orientation);
-void pixl_grayscale(PixlImage* image);
-void pixl_invert(PixlImage* image);
-void pixl_convolution(PixlImage* image, float kernel[9], float scale);
+void pixl_resize(CPixlImage* image, unsigned int width, unsigned int height, int method);
+void pixl_flip(CPixlImage* image, int orientation);
+void pixl_grayscale(CPixlImage* image);
+void pixl_invert(CPixlImage* image);
+void pixl_convolution(CPixlImage* image, float kernel[9], float scale);
 
 #ifdef __cplusplus
 }

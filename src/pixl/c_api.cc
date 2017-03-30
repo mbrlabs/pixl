@@ -22,10 +22,10 @@
 extern "C" {
 
 // ----------------------------------------------------------------------------
-PixlImage* pixl_load_image(const char* path) {
+CPixlImage* pixl_load_image(const char* path) {
     auto handle = pixl::read(path);
 
-    auto cimg = (PixlImage*)malloc(sizeof(PixlImage));
+    auto cimg = (CPixlImage*)malloc(sizeof(CPixlImage));
     cimg->width = handle->width;
     cimg->height = handle->height;
     cimg->__handle = handle;
@@ -34,19 +34,19 @@ PixlImage* pixl_load_image(const char* path) {
 }
 
 // ----------------------------------------------------------------------------
-void pixl_destroy_image(PixlImage* image) {
+void pixl_destroy_image(CPixlImage* image) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     delete handle;
     free(image);
 }
 
 // ----------------------------------------------------------------------------
-void pixl_save_image(PixlImage* image, const char* path, int quality) {
+void pixl_save_image(CPixlImage* image, const char* path, int quality) {
     pixl::write(static_cast<pixl::Image*>(image->__handle), path, quality);
 }
 
 // ----------------------------------------------------------------------------
-void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, int method) {
+void pixl_resize(CPixlImage* image, unsigned int width, unsigned int height, int method) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
 
     pixl::ResizeMethod algo = pixl::ResizeMethod::NEARSET_NEIGHBOR;
@@ -60,7 +60,7 @@ void pixl_resize(PixlImage* image, unsigned int width, unsigned int height, int 
 }
 
 // ----------------------------------------------------------------------------
-void pixl_flip(PixlImage* image, int orientation) {
+void pixl_flip(CPixlImage* image, int orientation) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
 
     pixl::Orientation orient;
@@ -76,19 +76,19 @@ void pixl_flip(PixlImage* image, int orientation) {
 }
 
 // ----------------------------------------------------------------------------
-void pixl_grayscale(PixlImage* image) {
+void pixl_grayscale(CPixlImage* image) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     handle->grayscale();
 }
 
 // ----------------------------------------------------------------------------
-void pixl_invert(PixlImage* image) {
+void pixl_invert(CPixlImage* image) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     handle->invert();
 }
 
 // ----------------------------------------------------------------------------
-void pixl_convolution(PixlImage* image, float kernel[9], float scale) {
+void pixl_convolution(CPixlImage* image, float kernel[9], float scale) {
     auto handle = static_cast<pixl::Image*>(image->__handle);
     pixl::Kernel k = {kernel[0],
                        kernel[1],

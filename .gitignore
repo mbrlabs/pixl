@@ -19,3 +19,6 @@ cmake_install.cmake
 __pycache__/
 *.pyc
 pixl.egg-info/
+
+# KDE
+.directory
