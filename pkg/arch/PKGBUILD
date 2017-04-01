@@ -42,6 +42,6 @@ package() {
 	install libpixl.so $pkgdir/usr/lib
 
 	# install cli tool
-	mkdir -p $pkdir/usr/bin
+	mkdir -p $pkgdir/usr/bin
 	install bin/pixl-cli $pkgdir/usr/bin/pixl
 }
