@@ -9,6 +9,9 @@ bin/
 *.so
 *.a
 
+# Package files
+*.deb
+
 # CMake
 Makefile
 CMakeFiles/

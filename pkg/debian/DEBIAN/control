@@ -1,0 +1,7 @@
+Package: pixl
+Version: 0.1.0a
+Section: image
+Priority: optional
+Architecture: all
+Maintainer: Marcus Brummer 
+Description: Lightweight image processing library & tool in C++11
