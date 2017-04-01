@@ -66,7 +66,9 @@ namespace pixl {
         Image* convolution(const Kernel kernel, f32 scale = 1);
         Image* grayscale();
         Image* invert();
-
+        Image* addAlphaChannel(u8 defaultValue = 255);
+        Image* removeAlphaChannel();        
+                
     public:
         u8* data;
         i32 width;

@@ -22,3 +22,6 @@ pixl.egg-info/
 
 # KDE
 .directory
+
+# Editos/IDEs
+.vscode/

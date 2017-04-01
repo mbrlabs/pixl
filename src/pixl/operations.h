@@ -61,6 +61,12 @@ namespace pixl {
         // Applies a 3x3 convolution matrix to the image.
         void convolution(Image* img, const Kernel kernel, const f32 scale);
 
+        // Adds an alpha channel to the image if not already there.
+        void add_alpha_channel(Image* img, u8 defaultValue);
+
+        // Removes the alphe channel of an image if available.
+        void remove_alpha_channel(Image* img);
+
     }
 }
 

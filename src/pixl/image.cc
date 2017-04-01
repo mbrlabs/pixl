@@ -110,4 +110,17 @@ namespace pixl {
         op::convolution(this, kernel, scale);
         return this;
     }
+
+    // ----------------------------------------------------------------------------
+    Image* Image::addAlphaChannel(u8 defaultValue) {
+        op::add_alpha_channel(this, defaultValue);
+        return this;
+    }
+
+    // ----------------------------------------------------------------------------    
+    Image* Image::removeAlphaChannel() {
+        op::remove_alpha_channel(this);
+        return this;
+    }
+
 }

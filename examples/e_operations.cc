@@ -20,6 +20,7 @@
 #include <pixl/debug.h>
 
 #define IMAGE_LENA "../images/lena.png"
+#define IMAGE_LENA_ALPHA "../images/lena_rgba.png"
 #define IMAGE_BIRD "../images/bird.jpg"
 
 void flip() {
@@ -94,10 +95,24 @@ void convolution() {
     delete image;
 }
 
+void add_alpha() {
+    auto image = pixl::read(IMAGE_LENA);
+    image->addAlphaChannel(200);
+    pixl::write(image, "lena_with_alpha.png");
+}
+
+void remove_alpha() {
+    auto image = pixl::read(IMAGE_LENA_ALPHA);
+    image->removeAlphaChannel();
+    pixl::write(image, "lena_removed_alpha.png");
+}
+
 int main() {
     // flip();
     // resize();
-    invert();
-    convolution();
+    // invert();
+    // convolution();
+    add_alpha();
+    remove_alpha();
     return 0;
 }
