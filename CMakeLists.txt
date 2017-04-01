@@ -44,9 +44,9 @@ target_include_directories(pixl PUBLIC ${STB_IMAGE} ${STB_IMAGE_WRITE} ${PNG_INC
 file(GLOB PIXL_TOOL_SOURCES
     cli/*
 )
-add_executable(pixl-tool ${PIXL_TOOL_SOURCES})
-target_include_directories(pixl-tool PUBLIC src/ libs/rang/)
-target_link_libraries(pixl-tool apixl)
+add_executable(pixl-cli ${PIXL_TOOL_SOURCES})
+target_include_directories(pixl-cli PUBLIC src/ libs/rang/)
+target_link_libraries(pixl-cli apixl)
 
 # ┌──────────────────────────────────────────────────────────────────┐
 # │  Build examples                                                  │

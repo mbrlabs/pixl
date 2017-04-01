@@ -5,7 +5,7 @@
 # 
 # Maintainer: Marcus Brummer <mbrlabs7@gmail7.com>
 pkgname=pixl
-pkgver=0.1.0alpha
+pkgver=0.1.0a
 pkgrel=1
 pkgdesc="Lightweight image processing library and tool in C++11"
 arch=('i686' 'x86_64')
@@ -15,12 +15,12 @@ depends=('libpng' 'libjpeg-turbo')
 makedepends=('git' 'cmake')
 
 source=("https://github.com/mbrlabs/pixl/archive/v${pkgver}.tar.gz")
-# md5sums=('c968ee01b1ba621ff33aa2f5e78f5d75')
+md5sums=('SKIP')
 
 build() {
 	cd "$pkgname-$pkgver"
 	cmake -DCMAKE_BUILD_TYPE=Release
-	make pixl
+	make pixl pixl-cli
 }
 
 package() {
@@ -42,5 +42,6 @@ package() {
 	install libpixl.so $pkgdir/usr/lib
 
 	# install cli tool
-	# TODO
+	mkdir -p $pkdir/usr/bin
+	install bin/pixl-cli $pkgdir/usr/bin/pixl
 }
