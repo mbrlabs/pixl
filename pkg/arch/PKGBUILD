@@ -1,0 +1,46 @@
+# This is the PKGBUILD used to package pixl for the AUR.
+#
+# NOTE: before deployment calculate the md5sum of the tarball hoasted on Github
+# and paste it in here.
+# 
+# Maintainer: Marcus Brummer <mbrlabs7@gmail7.com>
+pkgname=pixl
+pkgver=0.1.0alpha
+pkgrel=1
+pkgdesc="Lightweight image processing library and tool in C++11"
+arch=('i686' 'x86_64')
+url="https://github.com/mbrlabs/pixl"
+license=('Apache 2')
+depends=('libpng' 'libjpeg-turbo')
+makedepends=('git' 'cmake')
+
+source=("https://github.com/mbrlabs/pixl/archive/v${pkgver}.tar.gz")
+# md5sums=('c968ee01b1ba621ff33aa2f5e78f5d75')
+
+build() {
+	cd "$pkgname-$pkgver"
+	cmake -DCMAKE_BUILD_TYPE=Release
+	make pixl
+}
+
+package() {
+	cd "$pkgname-$pkgver"
+
+	# install header files
+	mkdir -p $pkgdir/usr/include/pixl/
+	install src/pixl/pixl.h $pkgdir/usr/include/pixl
+	install src/pixl/debug.h $pkgdir/usr/include/pixl
+	install src/pixl/errors.h $pkgdir/usr/include/pixl
+	install src/pixl/image.h $pkgdir/usr/include/pixl
+	install src/pixl/io.h $pkgdir/usr/include/pixl
+	install src/pixl/operations.h $pkgdir/usr/include/pixl
+	install src/pixl/types.h $pkgdir/usr/include/pixl
+	install src/pixl/utils.h $pkgdir/usr/include/pixl
+
+	# install shared library
+	mkdir -p $pkgdir/usr/lib
+	install libpixl.so $pkgdir/usr/lib
+
+	# install cli tool
+	# TODO
+}

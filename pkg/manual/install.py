@@ -41,71 +41,71 @@ import subprocess
 
 INSTALL_LIBRARY_DIR = '/usr/lib'
 INSTALL_INCLUDE_DIR = '/usr/include/pixl/'
-PIXL_SHARED_LIB = 'libpixl.so'
-PIXL_SOURCES = 'src/pixl'
-PYTHON_PACKAGE = 'python/'
+PIXL_SHARED_LIB = '../../libpixl.so'
+PIXL_SOURCES = '../../src/pixl'
+PYTHON_PACKAGE = '../../python/'
 
 # -----------------------------------------------------------------------------
 def install_lib():
-	# check if include dir exsists
-	if not os.path.exists(INSTALL_INCLUDE_DIR):
-		os.mkdir(INSTALL_INCLUDE_DIR)
+    # check if include dir exsists
+    if not os.path.exists(INSTALL_INCLUDE_DIR):
+        os.mkdir(INSTALL_INCLUDE_DIR)
 
-	# install header files
-	for file in os.listdir(PIXL_SOURCES):
-		if file.endswith('.h'):
-			header = os.path.join(PIXL_SOURCES, file)
-			print('Installing header:', header, '->', INSTALL_INCLUDE_DIR + file)
-			shutil.copy(header, INSTALL_INCLUDE_DIR)
+    # install header files
+    for file in os.listdir(PIXL_SOURCES):
+        if file.endswith('.h'):
+            header = os.path.join(PIXL_SOURCES, file)
+            print('Installing header:', header, '->', INSTALL_INCLUDE_DIR + file)
+            shutil.copy(header, INSTALL_INCLUDE_DIR)
 
-	# install shared library
-	print('Installing library', PIXL_SHARED_LIB)
-	shutil.copy(PIXL_SHARED_LIB, INSTALL_LIBRARY_DIR)
+    # install shared library
+    print('Installing library', PIXL_SHARED_LIB)
+    shutil.copy(PIXL_SHARED_LIB, INSTALL_LIBRARY_DIR)
 
 # -----------------------------------------------------------------------------
 def uninstall_lib():
-	# delete headers
-	if os.path.exists(INSTALL_INCLUDE_DIR):
-		shutil.rmtree(INSTALL_INCLUDE_DIR)
+    # delete headers
+    if os.path.exists(INSTALL_INCLUDE_DIR):
+        shutil.rmtree(INSTALL_INCLUDE_DIR)
 
-	# delete lib
-	lib = os.path.join(INSTALL_LIBRARY_DIR, PIXL_SHARED_LIB)
-	if os.path.exists(lib):
-		os.remove(lib)
+    # delete lib
+    lib = os.path.join(INSTALL_LIBRARY_DIR, PIXL_SHARED_LIB)
+    if os.path.exists(lib):
+        os.remove(lib)
 
 # -----------------------------------------------------------------------------
 def install_tool():
-	print('not implemented yet')
+    print('not implemented yet')
 
 # -----------------------------------------------------------------------------
 def install_py_lib():
-	subprocess.call(['pip3', 'install', '--user', '--upgrade', PYTHON_PACKAGE])
+    subprocess.call(['pip3', 'install', '--user', '--upgrade', PYTHON_PACKAGE])
 
 # -----------------------------------------------------------------------------
 def print_help():
-	print('Usage: install.py [lib|py|tool]')
+    print('Usage: install.py [lib|py|tool]')
 
 
 # =============================================================================
 # =============================================================================
 if __name__ == '__main__':
-	# check if linux
-	if not 'linux' in platform.platform().lower():
-		print('Ooops, this works only for Linux.')
-		exit()
+    # check if linux
+    if not 'linux' in platform.platform().lower():
+        print('Ooops, this works only for Linux.')
+        exit()
 
-	# check args
-	args = sys.argv[1:]
-	if len(args) != 1:
-		print_help()
-		exit()
+    # check args
+    args = sys.argv[1:]
+    if len(args) != 1:
+        print_help()
+        exit()
 
-	target = args[0]
-	if target == 'lib':
-		install_lib()
-	elif target == 'tool':
-		install_tool()
-	elif target == 'py':
-		install_py_lib()
-	else:
-		print_help()
+    target = args[0]
+    if target == 'lib':
+        install_lib()
+    elif target == 'tool':
+        install_tool()
+    elif target == 'py':
+        install_py_lib()
+    else:
+        print_help()
