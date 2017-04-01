@@ -124,3 +124,4 @@ class Image:
         Saves the image at the provided path.
         You can also specify the output quality of the image (1-100).
         """
+        _LIBPIXL.pixl_save_image(self._IMAGE, c_char_p(path.encode()), quality)

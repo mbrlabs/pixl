@@ -59,3 +59,12 @@ Pixl compiles successfully on:
 cmake .
 make
 ```
+
+## Packaging
+
+### Arch Linux
+There is a working PKGBUILD in pkg/arch.
+Once this project leaves the alpha stage i will submit it to the AUR.
+
+### Debian/Ubuntu
+TBD
