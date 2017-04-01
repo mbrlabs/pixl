@@ -40,9 +40,19 @@ namespace pixl {
 
     class Image {
     public:
+        // Creates a new image with prefilled data.
+        // This constructor should be used when the image data is already available, e.g. when
+        // decoding from an image file.
         Image(u32 width, u32 height, u32 channels, u8* data);
+
+        // Creates a new image with the given dimensions and allocates enough memory
+        // to store the image data.
         Image(u32 width, u32 height, u32 channels);        
+        
+        // Image copy constructor. 
         Image(Image* image);
+
+        // Releases all resources accociated with this image.
         ~Image();
 
         // Returns a pointer to the start of the pixel at x,y.
@@ -61,12 +71,31 @@ namespace pixl {
             return data + (y * lineSize + x * channels);
         }
 
+        // Resizes the image.
+        // The resize method specifies whick algorithm should be used to resize the image.
+        // The defualt - bilinear - is a good compromise between performance and quality.
+        //
+        // NOTE: Currently, the aspect ration won't be reserved.
         Image* resize(u32 width, u32 height, ResizeMethod method = ResizeMethod::BILINEAR);
+
+        // Filps the image horizontlly or vertically.
+        // Default ist horizontal.
         Image* flip(Orientation orientation = Orientation::HORIZONTAL);
+
+        // Applies a 3x3 convolution matrix to the image.
         Image* convolution(const Kernel kernel, f32 scale = 1);
+
+        // Grayscales the image while preserving all color channels.
         Image* grayscale();
+
+        // Inverts all color channels of the image.
         Image* invert();
+
+        // Adds a alpha channel to the image if not already available.
+        // You can also specify the default value of all alpha values.
         Image* addAlphaChannel(u8 defaultValue = 255);
+
+        // Removes the alpha channel if present.
         Image* removeAlphaChannel();        
                 
     public:
