@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include <algorithm>
 
 #include "operations.h"
 #include "image.h"

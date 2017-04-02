@@ -14,6 +14,7 @@
 // limitations under the License.
 //
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 
@@ -27,8 +28,13 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void op::invert(Image* img) {
-        for(auto i = 0; i < img->size; i++) {
-            img->data[i] = 255 - img->data[i];
+        const int channels = std::min(img->channels, 3);
+
+        for(auto offset = 0; offset < img->size; offset += img->channels) {
+            auto pixel = img->data + offset;
+            for(auto c = 0; c < channels; c++) {
+                pixel[c] = 255 - pixel[c];
+            }
         }
     }
 

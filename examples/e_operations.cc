@@ -74,9 +74,9 @@ void grayscale() {
 }
 
 void invert() {
-    auto image = pixl::read(IMAGE_LENA);
+    auto image = pixl::read(IMAGE_LENA_ALPHA);
     image->invert();
-    pixl::write(image, "lena_invert.jpg");
+    pixl::write(image, "lena_invert.png");
     delete image;
 }
 
@@ -114,6 +114,6 @@ int main() {
     // convolution();
     //add_alpha();
     //remove_alpha();
-    grayscale();
+    invert();
     return 0;
 }

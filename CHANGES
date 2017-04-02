@@ -1,3 +1,12 @@
 
-v0.1.0-alpha ~ 01/04/2017
-TODO
+v0.1.0a ~ 
+- Added: Load/Save png files using libpng
+- Added: Load/Save jpg files using libjpeg-turbo
+- Added: 2 resize algorithms: Nearset-Neighbour, Bilinear
+- Added: Invert image colors
+- Added: Adding/Removing alpha channel
+- Added: Grayscale images
+- Added: 3x3 convolution maztrix
+- Added: Image fliping (horizontally & vertically)
+- Added: C-Api 
+- Added: Simple Python3 bindings
