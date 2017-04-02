@@ -15,6 +15,7 @@
 //
 
 #include <cstdlib>
+#include <cstring>
 #include <array>
 
 #include "image.h"
@@ -50,10 +51,11 @@ namespace pixl {
         : width(image->width),
           height(image->height),
           channels(image->channels),
-          size(height * width * channels),
-          lineSize(channels * width) 
+          size(image->size),
+          lineSize(image->lineSize) 
     {
-        this->data = (u8*)malloc(this->size);
+        this->data = (u8*)malloc(image->size);
+        memcpy(this->data, image->data, image->size);
     }
 
     // ----------------------------------------------------------------------------

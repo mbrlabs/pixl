@@ -84,19 +84,28 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void JpegTurboWriter::write(Image* image, const char* path) {
-        int pitch = image->width * tjPixelSize[TJPF_RGB];
+        // create copy of image and remove alpha channel if available
+        Image* img = nullptr;
+        if(image->channels > 3) {
+            img = new Image(image);
+            img->removeAlphaChannel();
+        } else {
+            img = image;
+        }
+
+        int pitch = img->width * tjPixelSize[TJPF_RGB];
 
         // malloc output buffer for the compressed image
-        u64 maxBufferSize = tjBufSize(image->width, image->height, TJSAMP_444);
+        u64 maxBufferSize = tjBufSize(img->width, img->height, TJSAMP_444);
         u8* buffer = tjAlloc(maxBufferSize);
         u64 compressedSize;
 
         // encode jpg
         tjCompress2(turboCompressor,
-                    image->data,
-                    image->width,
+                    img->data,
+                    img->width,
                     pitch,
-                    image->height,
+                    img->height,
                     TJPF_RGB,
                     &buffer,
                     &compressedSize,
@@ -109,5 +118,10 @@ namespace pixl {
 
         // free buffer allocated by tjAlloc
         tjFree(buffer);
+
+        // delete allocated image copy if created
+        if(img != image) {
+            delete img;
+        }
     }
 }

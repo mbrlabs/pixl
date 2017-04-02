@@ -16,6 +16,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <algorithm>
 
 #include "operations.h"
 #include "image.h"
@@ -27,20 +28,20 @@ namespace pixl {
 
     // ----------------------------------------------------------------------------
     void op::grayscale(Image* img) {
-        for (auto y = 0; y < img->height; y++) {
-            for (auto x = 0; x < img->width; x++) {
-                auto pixel = img->getPixel(x, y);
+        const int channels = std::min(img->channels, 3);
 
-                // calc mean
-                f32 mean = 0;
-                for (u8 c = 0; c < img->channels; c++) {
-                    mean += (f32) * (pixel + c);
-                }
-                mean /= img->channels;
+        for(u64 offset = 0; offset < img->size; offset += img->channels) {
+            auto pixel = img->data + offset;
 
-                // set new values
-                memset(pixel, (u8)mean, img->channels);
+            // calc mean
+            f32 mean = 0;
+            for (auto c = 0; c < channels; c++) {
+                mean += (f32) pixel[c];
             }
+            mean /= channels;
+            
+            // set new values
+            memset(pixel, (u8)mean, channels);
         }
     }
 }

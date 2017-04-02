@@ -67,7 +67,7 @@ void resize() {
 }
 
 void grayscale() {
-    auto image = pixl::read(IMAGE_LENA);
+    auto image = pixl::read(IMAGE_LENA_ALPHA);
     image->grayscale();
     pixl::write(image, "lena_gray.jpg");
     delete image;
@@ -112,7 +112,8 @@ int main() {
     // resize();
     // invert();
     // convolution();
-    add_alpha();
-    remove_alpha();
+    //add_alpha();
+    //remove_alpha();
+    grayscale();
     return 0;
 }
