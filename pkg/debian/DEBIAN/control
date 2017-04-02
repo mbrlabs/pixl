@@ -1,7 +1,10 @@
 Package: pixl
 Version: 0.1.0a
-Section: image
+Section: graphics
 Priority: optional
-Architecture: all
-Maintainer: Marcus Brummer 
-Description: Lightweight image processing library & tool in C++11
+Architecture: amd64
+Depends: libpng, libturbojpeg
+Maintainer: Marcus Brummer <mbrlabs7@gmail.com>
+Description: Lightweight image processing library & tool in C++11.
+ Pixl is a lightweight image proccessing library for C++. 
+ It also features a cli tool.
