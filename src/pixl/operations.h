@@ -67,6 +67,9 @@ namespace pixl {
         // Removes the alphe channel of an image if available.
         void remove_alpha_channel(Image* img);
 
+        // Adjusts the contrast of the image
+        void contrast(Image* img, f32 contrast);
+
     }
 }
 

@@ -114,4 +114,10 @@ void pixl_remove_alpha_channel(CPixlImage* image) {
     handle->removeAlphaChannel();
 }
 
+// ----------------------------------------------------------------------------
+void pixl_contrast(CPixlImage* image, float contrast) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    handle->contrast(contrast);
+}
+
 }

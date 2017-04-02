@@ -125,4 +125,10 @@ namespace pixl {
         return this;
     }
 
+    // ----------------------------------------------------------------------------    
+    Image* Image::contrast(f32 contrast) {
+        op::contrast(this, contrast);
+        return this;
+    }
+
 }

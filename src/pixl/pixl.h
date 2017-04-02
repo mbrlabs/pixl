@@ -57,6 +57,7 @@ void pixl_invert(CPixlImage* image);
 void pixl_convolution(CPixlImage* image, float kernel[9], float scale);
 void pixl_add_alpha_channel(CPixlImage* image, unsigned char default_value);
 void pixl_remove_alpha_channel(CPixlImage* image);
+void pixl_contrast(CPixlImage* image, float contrast);
 
 #ifdef __cplusplus
 }

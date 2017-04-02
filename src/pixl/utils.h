@@ -17,6 +17,7 @@
 #ifndef PIXL_UTILS_H
 #define PIXL_UTILS_H
 
+#include <algorithm>
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -76,6 +77,12 @@ namespace pixl {
     inline bool is_jpg(const std::string& name) {
         return str_ends_with(name, ".jpg") || str_ends_with(name, ".jpeg") ||
                str_ends_with(name, ".JPG") || str_ends_with(name, ".JPEG");
+    }
+
+    // Clamps a value.
+    template<typename T>
+    inline T clamp(const T &val, const T &min, const T &max) {
+        return std::max(min, std::min(max, val));
     }
 }
 

@@ -107,6 +107,12 @@ void remove_alpha() {
     pixl::write(image, "lena_removed_alpha.png");
 }
 
+void contrast() {
+    auto image = pixl::read(IMAGE_LENA_ALPHA);
+    image->contrast(2.0f);
+    pixl::write(image, "lena_contrast.png");
+}
+
 int main() {
     // flip();
     // resize();
@@ -114,6 +120,7 @@ int main() {
     // convolution();
     //add_alpha();
     //remove_alpha();
-    invert();
+    //invert();
+    contrast();
     return 0;
 }

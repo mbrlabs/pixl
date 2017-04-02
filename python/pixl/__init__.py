@@ -45,6 +45,7 @@ _LIBPIXL.pixl_invert.argtypes = [POINTER(IMAGE)]
 _LIBPIXL.pixl_convolution.argtypes = [POINTER(IMAGE), c_float*9, c_float]
 _LIBPIXL.pixl_add_alpha_channel.argtypes = [POINTER(IMAGE), c_ubyte]
 _LIBPIXL.pixl_remove_alpha_channel.argtypes = [POINTER(IMAGE)]
+_LIBPIXL.pixl_contrast.argtypes = [POINTER(IMAGE), c_float]
 
 
 # -----------------------------------------------------------------------------
@@ -139,4 +140,11 @@ class Image:
         Removes the alpha channel if available.
         """
         _LIBPIXL.pixl_remove_alpha_channel(self._IMAGE)
+        return self
+
+    def contrast(self, contrast):
+        """
+        Adjusts the contrast of the image.
+        """
+        _LIBPIXL.pixl_contrast(self._IMAGE, contrast)
         return self

@@ -96,7 +96,10 @@ namespace pixl {
         Image* addAlphaChannel(u8 defaultValue = 255);
 
         // Removes the alpha channel if present.
-        Image* removeAlphaChannel();        
+        Image* removeAlphaChannel();    
+
+        // Adjusts the contrast of the image. 
+        Image* contrast(f32 contrast);
                 
     public:
         u8* data;
