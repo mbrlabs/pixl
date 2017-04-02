@@ -102,4 +102,16 @@ void pixl_convolution(CPixlImage* image, float kernel[9], float scale) {
     handle->convolution(k, scale);
 }
 
+// ----------------------------------------------------------------------------
+void pixl_add_alpha_channel(CPixlImage* image, unsigned char default_value) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    handle->addAlphaChannel(default_value);
+}
+
+// ----------------------------------------------------------------------------
+void pixl_remove_alpha_channel(CPixlImage* image) {
+    auto handle = static_cast<pixl::Image*>(image->__handle);
+    handle->removeAlphaChannel();
+}
+
 }

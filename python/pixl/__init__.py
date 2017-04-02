@@ -43,6 +43,8 @@ _LIBPIXL.pixl_resize.argtypes = [POINTER(IMAGE), c_uint, c_uint, c_int]
 _LIBPIXL.pixl_grayscale.argtypes = [POINTER(IMAGE)]
 _LIBPIXL.pixl_invert.argtypes = [POINTER(IMAGE)]
 _LIBPIXL.pixl_convolution.argtypes = [POINTER(IMAGE), c_float*9, c_float]
+_LIBPIXL.pixl_add_alpha_channel.argtypes = [POINTER(IMAGE), c_ubyte]
+_LIBPIXL.pixl_remove_alpha_channel.argtypes = [POINTER(IMAGE)]
 
 
 # -----------------------------------------------------------------------------
@@ -62,6 +64,13 @@ class Image:
     def __init__(self, path):
         """Loads the image, located at path."""
         self._IMAGE = _LIBPIXL.pixl_load_image(c_char_p(path.encode()))
+
+    def save(self, path, quality=75):
+        """
+        Saves the image at the provided path.
+        You can also specify the output quality of the image (1-100).
+        """
+        _LIBPIXL.pixl_save_image(self._IMAGE, c_char_p(path.encode()), quality)
 
     def destroy(self):
         """
@@ -118,10 +127,16 @@ class Image:
         _LIBPIXL.pixl_convolution(self._IMAGE, arr, scale)
         return self
 
+    def add_alpha_channel(self, default_value=255):
+        """
+        Adds an alpha channel to the image if not already available.
+        """
+        _LIBPIXL.pixl_add_alpha_channel(self._IMAGE, default_value)
+        return self
 
-    def save(self, path, quality=75):
+    def remove_alpha_channel(self):
         """
-        Saves the image at the provided path.
-        You can also specify the output quality of the image (1-100).
+        Removes the alpha channel if available.
         """
-        _LIBPIXL.pixl_save_image(self._IMAGE, c_char_p(path.encode()), quality)
+        _LIBPIXL.pixl_remove_alpha_channel(self._IMAGE)
+        return self
