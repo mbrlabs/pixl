@@ -4,10 +4,8 @@
 *ppm
 *.o
 
-# Binaries
-bin/
-*.so
-*.a
+# Build directory
+build/
 
 # Package files
 *.deb

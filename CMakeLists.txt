@@ -2,10 +2,9 @@
 # │  Projects Settings                                               │
 # └──────────────────────────────────────────────────────────────────┘
 cmake_minimum_required(VERSION 2.8)
-set(EXECUTABLE_OUTPUT_PATH "bin")
-
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
-
 project(pixl)
 
 # ┌──────────────────────────────────────────────────────────────────┐
@@ -53,16 +52,16 @@ target_link_libraries(pixl-cli apixl)
 # └──────────────────────────────────────────────────────────────────┘
 
 # --------------------------------------------------------------------------
-# examples/e_operations.cc
-add_executable(e_operations examples/e_operations.cc)
-target_include_directories(e_operations PUBLIC src/)
-target_link_libraries(e_operations apixl)
+# examples/examples.cc
+add_executable(examples examples/examples.cc)
+target_include_directories(examples PUBLIC src/)
+target_link_libraries(examples apixl)
 
 # --------------------------------------------------------------------------
 # examples/mandelbrot.cc
-add_executable(e_mandelbrot examples/e_mandelbrot.cc)
-target_include_directories(e_mandelbrot PUBLIC src/)
-target_link_libraries(e_mandelbrot apixl)
+add_executable(mandelbrot examples/mandelbrot.cc)
+target_include_directories(mandelbrot PUBLIC src/)
+target_link_libraries(mandelbrot apixl)
 
 # --------------------------------------------------------------------------
 # examples/bench.cc

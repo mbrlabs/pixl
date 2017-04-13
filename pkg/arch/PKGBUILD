@@ -19,7 +19,8 @@ md5sums=('SKIP')
 
 build() {
 	cd "$pkgname-$pkgver"
-	cmake -DCMAKE_BUILD_TYPE=Release
+	mkdir build && cd build
+	cmake -DCMAKE_BUILD_TYPE=Release ..
 	make pixl pixl-cli
 }
 
@@ -39,9 +40,9 @@ package() {
 
 	# install shared library
 	mkdir -p $pkgdir/usr/lib
-	install libpixl.so $pkgdir/usr/lib
+	install build/libpixl.so $pkgdir/usr/lib
 
 	# install cli tool
 	mkdir -p $pkgdir/usr/bin
-	install bin/pixl-cli $pkgdir/usr/bin/pixl
+	install build/pixl-cli $pkgdir/usr/bin/pixl
 }
