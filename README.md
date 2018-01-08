@@ -14,7 +14,7 @@ int main() {
 	// Resize image
 	auto image = pixl::read("path/to/image.png"); 
 	image->resize(256, 256);
-	pixl::write("path/to/small_image.png", image);
+	pixl::write(image, "path/to/small_image.png");
 
 	return 0;
 }
